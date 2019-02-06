@@ -1,0 +1,54 @@
+//colors
+$white: white;
+$color_quill_gray_approx: lightgray;
+$nav: #4f5051;
+$black: black;
+
+
+mat-toolbar {
+    height: 100px;
+}
+
+mat-toolbar.mat-primary {
+    background-color: $nav;
+    height: 100px;
+}
+
+mat-sidenav-container {
+    background-color: $black;
+    height: 100%;
+}
+
+mat-sidenav-content {
+	height: 100%;
+}
+mat-sidenav {
+	height: 100%;
+    width: 250px;
+    background-color: $nav;
+    color: $white;
+}
+a {
+    text-decoration: none;
+    font-size: 18px;
+	color: $white;
+	&:hover {
+		color: $color_quill_gray_approx;
+	}
+	&:active {
+		color: $color_quill_gray_approx;
+	}
+}
+.navigation-items {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+    cursor: pointer;
+}
+
+.label {
+	display: inline-block;
+	line-height: 30px;
+	margin: 0;
+	width: 100%;
+}
