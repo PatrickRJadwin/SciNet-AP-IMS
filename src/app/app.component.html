@@ -1,24 +1,29 @@
 <mat-sidenav-container>
         <mat-sidenav  #sidenav role="navigation">
          <mat-nav-list>
-          <a mat-list-item>
-            <span class="label">Logout</span>
-          </a>
           <a mat-list-item
-              routerLink="/">
+              routerLink="/"
+              (click)="sidenav.close()">
               <span class="label">Inventory</span>
           </a>
           <a mat-list-item
-            routerLink="/reports">
+            routerLink="/reports"
+            (click)="sidenav.close()">
             <span class="label">Reports</span>
           </a>
           <a mat-list-item
-              routerLink="/plot">
+              routerLink="/plot"
+              (click)="sidenav.close()">
             <span class="label">Plotting</span>
           </a>
           <a mat-list-item
-              routerLink="/users">
+              routerLink="/users"
+              (click)="sidenav.close()">
             <span class="label">Users</span>
+          </a>
+          <a mat-list-item>
+            <span class="label"
+            (click)="sidenav.close()">Logout</span>
           </a>
           </mat-nav-list>
         </mat-sidenav>
@@ -30,9 +35,9 @@
             </button>
           </div>
       <div fxFlex fxLayout fxLayoutAlign="flex-start">
-             <a routerLink="/">
-                SCiNet
-             </a>
+             
+                <img src="../assets/images/scinetwireless.PNG" alt="SciNet">
+             
            </div>
            <div fxFlex fxLayout fxLayoutAlign="center" fxHide.xs>
               <ul fxLayout fxLayoutGap="50px" class="navigation-items">
@@ -45,7 +50,7 @@
                   <li>
                       <a
                         routerLink="/reports">
-                          <span class="label">REPORTS</span>
+                          <span class="hover hover-3">REPORTS</span>
                       </a>
                     </li>
                   <li>
