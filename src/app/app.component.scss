@@ -32,9 +32,33 @@ a {
     text-decoration: none;
     font-size: 18px;
 	color: $white;
-	&:hover {
-		color: $color_quill_gray_approx;
+	text-shadow: 2px 3px 0px rgba(0, 0, 0, .2);
+	position: relative;
+	display: inline-block;
+
+	&:after {
+		background: none repeat scroll 0 0 transparent;
+		bottom: 0;
+		content: "";
+		display: block;
+		height: 2px;
+		left: 50%;
+		position: absolute;
+		background: #fff;
+		transition: width 0.3s ease 0s, left 0.3s ease 0s;
+		width: 0;
 	}
+	&:hover:after { 
+		width: 100%; 
+		left: 0; 
+	  }
+	  @media screen and (max-height: 300px) {
+		  ul {
+			  margin-top: 40px;
+		  }
+	  }
+	  
+
 	&:active {
 		color: $color_quill_gray_approx;
 	}
@@ -52,3 +76,15 @@ a {
 	margin: 0;
 	width: 100%;
 }
+
+ul { 
+	margin: 0; 
+	padding: 0; 
+	list-style: none; 
+	display: table;
+  }
+li { 
+	display: table-cell; 
+	position: relative; 
+	padding: 0;
+  }
