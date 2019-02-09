@@ -8,7 +8,6 @@ $white: white;
 
 table {
     width: 100%;
-    overflow-x: auto;
 }
 
 mat-card {
@@ -17,4 +16,5 @@ mat-card {
     margin-top: 5%;
     width: 90%;
     background: $white;
+    overflow: auto;
 }
