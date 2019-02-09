@@ -13,6 +13,8 @@ export interface PeriodicElement {
   trash: string;
 }
 
+
+// **Sample data**
 const dateString = '11-05-2018';
 const date = new Date(dateString);
 
@@ -27,7 +29,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   {seqNo: 8, name: 'AP-BDB2', location: 'C-5', port: 'Desktop Switch', created_at: date, created_by: 'undefined', joined: true, complete: true, edit: 'edit', trash: 'trash'},
 
 ];
-
+// **Sample data**
 
 @Component({
   selector: 'app-inventory',
