@@ -15,7 +15,7 @@ export interface PeriodicElement {
 
 
 // **Sample data**
-const dateString = '11-05-2018';
+const dateString = '11/05/2018';
 const date = new Date(dateString);
 
 const ELEMENT_DATA: PeriodicElement[] = [
