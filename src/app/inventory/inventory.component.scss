@@ -5,3 +5,18 @@ $white: white;
     color: $white;
     background-color: $black;
 }
+
+table {
+    width: 100%;
+    min-width: 900px;
+    table-layout: fixed;
+}
+
+mat-card {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    width: 90%;
+    background: $white;
+    overflow-x: auto;
+}
