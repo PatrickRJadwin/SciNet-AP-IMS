@@ -1,28 +1,33 @@
 <div style="text-align:center">
     <h1>Users</h1>
 </div>
-
+<div class="form-input">
+    <label>
+      <input (keyup)="applyFilter($event.target.value)">
+      <span class="placeholder">Filter</span>
+    </label>
+  </div>
 <mat-card>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
   
     <!-- Position Column -->
     <ng-container matColumnDef="seqNo">
-      <th mat-header-cell *matHeaderCellDef></th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
       <td mat-cell *matCellDef="let element"> {{element.seqNo}} </td>
     </ng-container>
   
     <!-- Name Column -->
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
     </ng-container>
   
     <!-- Weight Column -->
     <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef> Role </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
       <td mat-cell *matCellDef="let element"> {{element.role}} </td>
     </ng-container>
   
