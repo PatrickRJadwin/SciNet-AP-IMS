@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
 
 export interface PeriodicElement {
   seqNo: number;
@@ -12,6 +13,7 @@ export interface PeriodicElement {
   edit: string;
   trash: string;
 }
+
 
 
 // **Sample data**
@@ -39,11 +41,16 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class InventoryComponent implements OnInit {
 
   displayedColumns: string[] = ['seqNo', 'name', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
-  dataSource = ELEMENT_DATA;
+  dataSource = new MatTableDataSource(ELEMENT_DATA);
 
-  constructor() { }
+  @ViewChild(MatSort) sort: MatSort;
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
   ngOnInit() {
+    this.dataSource.sort = this.sort;
   }
 
 }
