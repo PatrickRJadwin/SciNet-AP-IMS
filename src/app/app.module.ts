@@ -11,6 +11,7 @@ import { UsersComponent } from './users/users.component';
 import { PlottingComponent } from './plotting/plotting.component';
 import { ReportsComponent } from './reports/reports.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { AdditemComponent } from './additem/additem.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     InventoryComponent,
     UsersComponent,
     PlottingComponent,
-    ReportsComponent
+    ReportsComponent,
+    AdditemComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +29,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MaterialModule,
     FlexLayoutModule
   ],
+  entryComponents: [AdditemComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
