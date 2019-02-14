@@ -1,6 +1,7 @@
 $black: black;
 $white: white;
 $nav: #4f5051;
+$purple: purple;
 
 * {
     color: $white;
@@ -65,5 +66,9 @@ mat-card {
         border-bottom: 2px solid $nav;
     }
 
+}
+
+.mat-icon {
+  color: $purple;
 }
 
