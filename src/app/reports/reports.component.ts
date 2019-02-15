@@ -30,6 +30,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ReportsComponent implements OnInit {
 
   displayedColumns: string[] = ['seqNo', 'name', 'location', 'port'];
+  // dataSource var, replace with db data
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;

@@ -1,101 +1,111 @@
+
 <div style="text-align:center">
     <h1>Inventory</h1>
-    <button mat-raised-button (click)="openDialog()" color="warn">Add Item</button>
 </div>
 
-<div class="form">
-  <label>
-    <select>
-      <option value="all" disabled selected>Filter</option>
-      <option value="all">All</option>
-      <option value="joined">Joined</option>
-      <option value="notJoined">Not Joined</option>
-      <option value="joinedNotCompleted">Joined Not Completed</option>
-      <option value="completed">Completed</option>
-    </select>
-  </label>
-</div>
+<mat-grid-list cols="3" rowHeight="100px">
+  <mat-grid-tile>
+    <div class="form">
+      <label>
+        <select>
+          <option value="all" disabled selected>Filter</option>
+          <option value="all">All</option>
+          <option value="joined">Joined</option>
+          <option value="notJoined">Not Joined</option>
+          <option value="joinedNotCompleted">Joined Not Completed</option>
+          <option value="completed">Completed</option>
+        </select>
+      </label>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="form-input">
+      <label>
+        <input (keyup)="applyFilter($event.target.value)">
+        <span class="placeholder">Search</span>
+      </label>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div layout="column">
+      <button mat-raised-button (click)="openDialog()" color="warn">Add Item</button>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+  <mat-card>
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
-<div class="form-input">
-  <label>
-    <input (keyup)="applyFilter($event.target.value)">
-    <span class="placeholder">Search</span>
-  </label>
-</div>
-<mat-card>
-  <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-
-    <!--- Note that these columns can be defined in any order.
-          The actual rendered columns are set as a property on the row definition" -->
-  
-    <!-- Position Column -->
-    <ng-container matColumnDef="seqNo">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
-      <td mat-cell *matCellDef="let element"> {{element.seqNo}} </td>
-    </ng-container>
-  
-    <!-- Name Column -->
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-  
-    <!-- Weight Column -->
-    <ng-container matColumnDef="location">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
-      <td mat-cell *matCellDef="let element"> {{element.location}} </td>
-    </ng-container>
-  
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="port">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Port </th>
-      <td mat-cell *matCellDef="let element"> {{element.port}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="created_at">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At </th>
-      <td mat-cell *matCellDef="let element"> {{element.created_at | date:'yyyy-MM-dd HH:mm'}} </td>
-    </ng-container>
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
     
-    <ng-container matColumnDef="created_by">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Created By </th>
-      <td mat-cell *matCellDef="let element"> {{element.created_by}} </td>
-    </ng-container>
-
-    <ng-container matColumnDef="joined">
-      <th mat-header-cell *matHeaderCellDef> Joined </th>
-      <td mat-cell *matCellDef="let element">
-        <mat-checkbox [checked]="element.joined" color="primary"></mat-checkbox></td>
-    </ng-container>
+      <!-- Position Column -->
+      <ng-container matColumnDef="seqNo">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>No.</th>
+        <td mat-cell *matCellDef="let element"> {{element.seqNo}} </td>
+      </ng-container>
     
-    <ng-container matColumnDef="complete">
-      <th mat-header-cell *matHeaderCellDef> Complete </th>
-      <td mat-cell *matCellDef="let element">
-          <mat-checkbox [checked]="element.complete" color="primary"></mat-checkbox></td>
-    </ng-container>
-  
-    <!--{{element.edit}}-->
-    <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef>  </th>
-      <td mat-cell *matCellDef="let element">
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+    
+      <!-- Weight Column -->
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+        <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+      </ng-container>
+    
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="port">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Port </th>
+        <td mat-cell *matCellDef="let element"> {{element.port}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At </th>
+        <td mat-cell *matCellDef="let element"> {{element.created_at | date:'yyyy-MM-dd HH:mm'}} </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="created_by">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Created By </th>
+        <td mat-cell *matCellDef="let element"> {{element.created_by}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="joined">
+        <th mat-header-cell *matHeaderCellDef> Joined </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox [checked]="element.joined" color="primary"></mat-checkbox></td>
+      </ng-container>
+      
+      <ng-container matColumnDef="complete">
+        <th mat-header-cell *matHeaderCellDef> Complete </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.complete" color="primary"></mat-checkbox></td>
+      </ng-container>
+    
+      <!--{{element.edit}}-->
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button>
+            <mat-icon>edit</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <!--{{element.trash}}-->
+      <ng-container matColumnDef="trash">
+        <th mat-header-cell *matHeaderCellDef>  </th>
+        <td mat-cell *matCellDef="let element">
         <button mat-button>
-          <mat-icon>edit</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+          <mat-icon>delete</mat-icon>
+        </button>  
+        </td>
+      </ng-container>
 
-    <!--{{element.trash}}-->
-    <ng-container matColumnDef="trash">
-      <th mat-header-cell *matHeaderCellDef>  </th>
-      <td mat-cell *matCellDef="let element">
-       <button mat-button>
-         <mat-icon>delete</mat-icon>
-       </button>  
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  
-</mat-card>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    
+  </mat-card>
