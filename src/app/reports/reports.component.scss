@@ -20,9 +20,10 @@ mat-card {
     overflow: auto;
 }
 
-.form-input {
-    margin: 50px;
+.form {
+    margin: 20px;
     width: 10%;
+    padding-left: 26px;
 
     label {
         position: relative;
@@ -31,17 +32,7 @@ mat-card {
         width: 10%;
     }
 
-    .placeholder {
-        position: absolute;
-        display: block;
-        top: 21px;
-        z-index: 2;
-        font-size: 16px;
-        transition: all 200ms ease-in-out;
-        cursor: text;
-    }
-
-    input {
+    select {
         position: absolute;
         top: 15px;
         z-index: 1;
@@ -54,16 +45,4 @@ mat-card {
         margin: 0;
         height: 30px;
     }
-
-    input:focus {
-        & + .placeholder {
-            top: 0;
-            cursor: inherit;
-            font-size: 14px;
-            color: $nav;
-        }
-        border-bottom: 2px solid $nav;
-    }
-
 }
-
