@@ -34,6 +34,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['seqNo', 'email', 'role', 'edit'];
+  // data source, replace with db data
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;

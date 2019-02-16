@@ -40,8 +40,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./inventory.component.scss']
 })
 export class InventoryComponent implements OnInit {
-
+  // Columns for table
   displayedColumns: string[] = ['seqNo', 'name', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
+  // Datasource var, will replace with db data
   dataSource = new MatTableDataSource(ELEMENT_DATA);
 
   @ViewChild(MatSort) sort: MatSort;
@@ -61,7 +62,7 @@ export class InventoryComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-
+  
 
   ngOnInit() {
     this.dataSource.sort = this.sort;
