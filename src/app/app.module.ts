@@ -13,6 +13,11 @@ import { ReportsComponent } from './reports/reports.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdditemComponent } from './additem/additem.component';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+import { environment } from 'src/environments/environment';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +32,9 @@ import { AdditemComponent } from './additem/additem.component';
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireDatabaseModule
   ],
   entryComponents: [AdditemComponent],
   providers: [],
