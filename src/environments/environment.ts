@@ -2,15 +2,17 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import CONFIG from '../assets/CONFIG';
+
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyD1DWBebZOAGk5VhC2fkaapjQpUrluctIM",
-    authDomain: "scinet-ap-ims.firebaseapp.com",
-    databaseURL: "https://scinet-ap-ims.firebaseio.com",
-    projectId: "scinet-ap-ims",
-    storageBucket: "scinet-ap-ims.appspot.com",
-    messagingSenderId: "642944138783"
+    apikey: CONFIG["apiKey"],
+    authDomain: CONFIG["authDomain"],
+    databaseURL: CONFIG["databaseURL"],
+    projectId: CONFIG["projectId"],
+    storageBucket: CONFIG["storageBucket"],
+    messagingSenderId: CONFIG["messagingSenderId"]
   }
 };
 
