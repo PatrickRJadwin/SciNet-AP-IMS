@@ -1,12 +1,15 @@
 <div style="text-align:center">
     <h1>Users</h1>
 </div>
-<div class="form-input">
-    <label>
-      <input (keyup)="applyFilter($event.target.value)">
-      <span class="placeholder">Search</span>
-    </label>
-  </div>
+<mat-grid-list cols="3" rowHeight="50px">
+    <mat-grid-tile>
+        <form class="search">
+          <mat-form-field class="searching">
+            <input matInput placeholder="Search..." (keyup)="applyFilter($event.target.value)">
+          </mat-form-field>
+        </form>
+      </mat-grid-tile>
+  </mat-grid-list>
 <mat-card>
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
