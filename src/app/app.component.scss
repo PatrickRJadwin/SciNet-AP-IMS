@@ -1,99 +1,92 @@
+@import '@angular/material/prebuilt-themes/purple-green.css';
 //colors
 $white: white;
 $color_quill_gray_approx: lightgray;
 $nav: #4f5051;
 $black: black;
 
-
 mat-toolbar {
-    height: 100px;
+	height: 100px;
 }
 
 mat-toolbar.mat-primary {
-    background-color: $nav;
-    height: 100px;
+	height: 100px;
 }
 
 mat-sidenav-container {
-    background-color: $black;
-	height: 100%;
-	position: absolute;
-	left: 0;
-	right: 0;
+height: 100%;
+position: absolute;
+left: 0;
+right: 0;
 }
 
 mat-sidenav-content {
-	height: 100%;
+height: 100%;
 }
 mat-sidenav {
-	height: 100%;
-    width: 250px;
-    background-color: $nav;
-    color: $white;
+height: 100%;
+	width: 250px;
+	color: $white;
 }
 a {
-    text-decoration: none;
-    font-size: 18px;
-	color: $white;
-	text-shadow: 2px 3px 0px rgba(0, 0, 0, .2);
-	position: relative;
-	display: inline-block;
+	text-decoration: none;
+	font-size: 18px;
+color: $white;
+text-shadow: 2px 3px 0px rgba(0, 0, 0, .2);
+position: relative;
+display: inline-block;
 
-	&:after {
-		background: none repeat scroll 0 0 transparent;
-		bottom: 0;
-		content: "";
-		display: block;
-		height: 2px;
-		left: 50%;
-		position: absolute;
-		background: #fff;
-		transition: width 0.3s ease 0s, left 0.3s ease 0s;
-		width: 0;
+&:after {
+	background: none repeat scroll 0 0 transparent;
+	bottom: 0;
+	content: "";
+	display: block;
+	height: 2px;
+	left: 50%;
+	position: absolute;
+	background: #fff;
+	transition: width 0.3s ease 0s, left 0.3s ease 0s;
+	width: 0;
+}
+&:hover:after { 
+	width: 100%; 
+	left: 0; 
 	}
-	&:hover:after { 
-		width: 100%; 
-		left: 0; 
-	  }
-	  @media screen and (max-height: 300px) {
-		  ul {
-			  margin-top: 40px;
-		  }
-	  }
-	  
-
-	&:active {
-		color: $color_quill_gray_approx;
+	@media screen and (max-height: 300px) {
+		ul {
+			margin-top: 40px;
+		}
 	}
+	
 }
 .navigation-items {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-  cursor: pointer;
-  color: $white;
+list-style: none;
+padding: 0;
+margin: 0;
+cursor: pointer;
+color: $white;
 }
 
 .label {
-	display: inline-block;
-	line-height: 30px;
-	margin: 0;
-	width: 100%;
-  color: $white;
+display: inline-block;
+line-height: 30px;
+margin: 0;
+width: 100%;
+color: $white;
 }
 
 ul { 
-	margin: 0; 
-	padding: 0; 
-	list-style: none; 
-	display: table;
-  }
+margin: 0; 
+padding: 0; 
+list-style: none; 
+display: table;
+}
 li { 
-	display: table-cell; 
-	position: relative; 
-	padding: 0;
-  }
+display: table-cell; 
+position: relative; 
+padding: 0;
+}
 
-  img {
-	  display: inline;
-  }
+img {
+	display: inline;
+}

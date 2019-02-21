@@ -12,7 +12,7 @@ import { PlottingComponent } from './plotting/plotting.component';
 import { ReportsComponent } from './reports/reports.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdditemComponent } from './additem/additem.component';
-
+import { LoginComponent } from './login/login.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 
@@ -25,7 +25,8 @@ import { environment } from 'src/environments/environment';
     UsersComponent,
     PlottingComponent,
     ReportsComponent,
-    AdditemComponent
+    AdditemComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

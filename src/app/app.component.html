@@ -21,7 +21,8 @@
               (click)="sidenav.close()">
             <span class="label">Users</span>
           </a>
-          <a mat-list-item>
+          <a mat-list-item
+              routerLink="/login">
             <span class="label"
             (click)="sidenav.close()">Logout</span>
           </a>
@@ -35,10 +36,7 @@
             </button>
           </div>
       <div fxFlex fxLayout fxLayoutAlign="flex-start">
-             
-                <img src="../assets/images/scinetwireless.PNG" alt="SciNet">
-             
-           </div>
+      </div>
            <div fxFlex fxLayout fxLayoutAlign="center" fxHide.xs>
               <ul fxLayout fxLayoutGap="50px" class="navigation-items">
                   <li>
@@ -70,7 +68,8 @@
            <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
                 <ul fxLayout class="navigation-items">
                   <li>
-                    <a>
+                    <a
+                      routerLink="/login">
                       <span class="label">Logout</span>
                     </a>
                   </li>
@@ -82,4 +81,3 @@
           </main>
         </mat-sidenav-content>
       </mat-sidenav-container>
-      

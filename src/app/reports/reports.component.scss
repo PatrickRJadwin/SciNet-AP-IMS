@@ -1,10 +1,7 @@
-$black: black;
 $white: white;
-$nav: #4f5051;
 
 * {
     color: $white;
-    background-color: $black;
 }
 
 table {
@@ -20,29 +17,6 @@ mat-card {
     overflow: auto;
 }
 
-.form {
-    margin: 20px;
-    width: 10%;
-    padding-left: 26px;
-
-    label {
-        position: relative;
-        display: block;
-        min-height: 40px;
-        width: 10%;
-    }
-
-    select {
-        position: absolute;
-        top: 15px;
-        z-index: 1;
-        font-size: 16px;
-        border: 0;
-        border-bottom: 1px solid $white;
-        transition: $white 200ms ease-in-out;
-        outline: none;
-        padding: 0;
-        margin: 0;
-        height: 30px;
-    }
+.mat-form-field {
+    padding-left: 20px; //Needed for mobile
 }
