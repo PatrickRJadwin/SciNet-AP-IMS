@@ -1,11 +1,7 @@
-$black: black;
 $white: white;
-$nav: #4f5051;
-$purple: purple;
 
 * {
     color: $white;
-    background-color: $black;
 }
 
 table {
@@ -27,87 +23,6 @@ th.mat-sort-header-sorted {
     color: $white;
 }
 
-.form-input {
-    margin: 50px;
-    width: 10%;
-
-    label {
-        position: relative;
-        display: block;
-        min-height: 40px;
-        width: 10%;
-    }
-
-    .placeholder {
-        position: absolute;
-        display: block;
-        top: 21px;
-        z-index: 2;
-        font-size: 16px;
-        transition: all 200ms ease-in-out;
-        cursor: text;
-    }
-
-    input {
-        position: absolute;
-        top: 15px;
-        z-index: 1;
-        font-size: 16px;
-        border: 0;
-        border-bottom: 1px solid $white;
-        transition: $white 200ms ease-in-out;
-        outline: none;
-        padding: 0;
-        margin: 0;
-        height: 30px;
-    }
-
-    input:focus {
-        & + .placeholder {
-            top: 0;
-            cursor: inherit;
-            font-size: 14px;
-            color: $nav;
-        }
-        border-bottom: 2px solid $nav;
-    }
-
-}
-
-::ng-deep .mat-checkbox .mat-checkbox-frame {
-    background-color: $white;
-  }
-
-.form {
-    margin: 20px;
-    width: 10%;
-    padding-left: 26px;
-
-    label {
-        position: relative;
-        display: block;
-        min-height: 40px;
-        width: 10%;
-    }
-
-    select {
-        position: absolute;
-        top: 15px;
-        z-index: 1;
-        font-size: 16px;
-        border: 0;
-        border-bottom: 1px solid $white;
-        transition: $white 200ms ease-in-out;
-        outline: none;
-        padding: 0;
-        margin: 0;
-        height: 30px;
-    }
-}
-
-.mat-warn {
-    background-color: $purple;
-}
-.mat-icon {
-    color: $purple;
+.mat-form-field {
+    padding-left: 20px; //Needed for mobile.
 }
