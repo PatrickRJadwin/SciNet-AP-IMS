@@ -15,7 +15,7 @@ import { AdditemComponent } from './additem/additem.component';
 import { LoginComponent } from './login/login.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-
+import { SignupComponent } from './signup/signup.component';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -26,7 +26,8 @@ import { environment } from 'src/environments/environment';
     PlottingComponent,
     ReportsComponent,
     AdditemComponent,
-    LoginComponent
+    LoginComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

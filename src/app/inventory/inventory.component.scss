@@ -1,4 +1,5 @@
 $white: white;
+$background: #424242;
 
 * {
     color: $white;
@@ -11,8 +12,6 @@ table {
 }
 
 mat-card {
-    margin-left: auto;
-    margin-right: auto;
     margin-top: 5%;
     width: 90%;
     background: $white;
