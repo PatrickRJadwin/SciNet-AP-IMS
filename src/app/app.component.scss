@@ -3,7 +3,7 @@
 $white: white;
 $color_quill_gray_approx: lightgray;
 $nav: #4f5051;
-$black: black;
+$background: #424242;
 
 mat-toolbar {
 	height: 100px;
@@ -89,4 +89,9 @@ padding: 0;
 
 img {
 	display: inline;
+}
+
+.mat-drawer-container[_ngcontent-c0] {
+    background-color: #424242;
+    color: #fff;
 }
