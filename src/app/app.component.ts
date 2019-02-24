@@ -10,7 +10,7 @@ export class AppComponent {
   title = 'SciNet Access Point Inventory';
   inventories: any[]
   constructor(db: AngularFireDatabase) {
-    db.list('/inventorys-list').valueChanges()
+    db.list('/items').valueChanges()
       .subscribe(inventories => {
         this.inventories = inventories;
         console.log(this.inventories);
