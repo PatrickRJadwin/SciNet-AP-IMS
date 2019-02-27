@@ -1,0 +1,57 @@
+$whitesmoke: whitesmoke;
+$gainsboro: gainsboro;
+$lightgrey: lightgrey;
+$white: white;
+$black: black;
+$darkgrey: darkgrey;
+
+/* Sidenav Toggles */
+.navbartoggleContainer {
+  float: right;
+  height: 605px;
+  overflow: hidden;
+}
+.navbartoggleButton {
+  z-index: 2;
+  top: 50%;
+  height: 50px;
+  background-color: $darkgrey;
+}
+
+/* Sidenav Styles */
+.sidenavMenu {
+  background-color: $whitesmoke;
+}
+.sidenavmenuButton {
+  background-color: $gainsboro;
+  margin-right: 5px;
+}
+.sidenavcontentContainer {
+  height: 605px;
+  border: gainsboro;
+  border-style: inset;
+  overflow: scroll;
+}
+
+/* canvas styles */
+.canvasStyle {
+  position: fixed;
+}
+
+.workspaceStyle {
+  border: 3px solid #000;
+  background-color: $white;
+  border-color: dimgrey;
+  border-style: groove;
+  margin: 10px;
+}
+
+/* Floorplan Card Styles (temporary) */
+.floorplanCard {
+  background-color: $lightgrey;
+  margin: 10px;
+}
+.floorplancardContent {
+  background-color: $white;
+  color: $black;
+}
