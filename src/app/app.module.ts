@@ -36,8 +36,6 @@ import {SidenavmenuComponent} from './plotting/sidenavmenu/sidenavmenu.component
     SignupComponent,
     PlottingComponent, // Plotting Imports - Start
     SidenavmenuComponent,
-    FloorplancardComponent,
-    DevicecardComponent,
     CanvasComponent, // Plotting Imports - End
   ],
   imports: [
