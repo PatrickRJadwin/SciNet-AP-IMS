@@ -18,16 +18,27 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { SignupComponent } from './signup/signup.component';
 import { environment } from 'src/environments/environment';
 
+import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
+
+import {MatSidenavModule, MatButtonModule, MatCardModule,
+        MatDividerModule, MatRippleModule, MatFormFieldModule} from '@angular/material'; // <-- Material Sidenav
+import {CanvasComponent} from './plotting/sidenavmenu/canvas.component';
+import {SidenavmenuComponent} from './plotting/sidenavmenu/sidenavmenu.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     InventoryComponent,
     UsersComponent,
-    PlottingComponent,
     ReportsComponent,
     AdditemComponent,
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    PlottingComponent, // Plotting Imports - Start
+    SidenavmenuComponent,
+    FloorplancardComponent,
+    DevicecardComponent,
+    CanvasComponent, // Plotting Imports - End
   ],
   imports: [
     BrowserModule,
@@ -36,7 +47,14 @@ import { environment } from 'src/environments/environment';
     MaterialModule,
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDividerModule,
+    BrowserAnimationsModule,
+    MatRippleModule,
+    MatFormFieldModule
   ],
   entryComponents: [AdditemComponent],
   providers: [],
