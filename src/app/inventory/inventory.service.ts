@@ -9,7 +9,7 @@ import 'firebase/storage';
 })
 export class InventoryService {
   item: Item;
-  itemList: AngularFireList<any[]>;
+  itemList: AngularFireList<any>;
   constructor(private db: AngularFireDatabase, private firebaseApp: FirebaseApp) {
 
     this.itemList = db.list('items');
@@ -18,5 +18,13 @@ export class InventoryService {
 
   getAllItems() {
     return this.itemList;
+  }
+
+  deletebyKey($key: string) {
+    this.itemList.remove($key);
+  }
+
+  addItem(item: Item) {
+    this.itemList.push(item);
   }
 }
