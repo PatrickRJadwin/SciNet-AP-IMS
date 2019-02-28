@@ -54,4 +54,9 @@ export class InventoryComponent implements OnInit {
       this.dataSource.sort = this.sort;
     });
   }
+
+  onDelete(key: string) {
+    this.inventoryService.deletebyKey(key);
+  }
+
 }
