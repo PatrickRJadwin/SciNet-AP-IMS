@@ -1,40 +1,33 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav [fixedInViewport]="true" mode="side" position="end" class="sidenavBorder">
-    <mat-card class="sidenavMenu">
+  <mat-sidenav #sidenav [fixedInViewport]="true" mode="side" position="end" class="sidenavContainer">
+    <mat-card class="sidenavStyle">
       <mat-card-title>
         <span>
-          <button mat-button class="sidenavmenuButton">Floorplans</button>
-          <button mat-button class="sidenavmenuButton">Devices</button>
-          <button mat-button class="sidenavmenuButton">Notifications</button>
+          <button mat-button class="sidenavmenuButton leftMergedButton">Floorplans</button>
+          <button mat-button class="sidenavmenuButton centerMergedButton">Devices</button>
+          <button mat-button class="sidenavmenuButton rightMergedButton">Notifications</button>
         </span>
-          <div>
-            <input matInput placeholder="Input">
+          <div style="margin-top: 3%;">
+            <span class="sidenavmenuButton searchBarMerged">
+              <input matInput class="textboxSearch">
+
+            </span>
+
+            <button mat-button class="sidenavmenuButton rightMergedButton">
+              <img class="searchIcon"
+                   src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png"
+                   alt="Search">
+            </button>
           </div>
       </mat-card-title>
 
-      <div class="sidenavcontentContainer">
-        <mat-card class="floorplanCard">
-          <mat-card-title>
-            Test Card
-          </mat-card-title>
+      <mat-card-content class="sidenavcontentContainer">
+        <app-floorplancard></app-floorplancard>
+      </mat-card-content>
 
-          <mat-card-content class="floorplancardContent">
-            Lorem
-              <br>
-            Ipsum
-              <br>
-            Dolor
-              <br>
-            Set
-              <br>
-            Amet
-          </mat-card-content>
-        </mat-card>
-      </div>
-
-      <mat-card-actions>
+      <mat-card-footer class="sidenavFooter">
         <button class="sidenavuploadButton" mat-button>Add New Floorplan</button>
-      </mat-card-actions>
+      </mat-card-footer>
     </mat-card>
   </mat-sidenav>
 
@@ -46,3 +39,5 @@
     <app-canvas class="canvasStyle"></app-canvas>
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+

@@ -21,9 +21,13 @@ import { environment } from 'src/environments/environment';
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
 import {MatSidenavModule, MatButtonModule, MatCardModule,
-        MatDividerModule, MatRippleModule, MatFormFieldModule} from '@angular/material'; // <-- Material Sidenav
+        MatDividerModule, MatRippleModule, MatFormFieldModule,
+        MatTooltipModule} from '@angular/material'; // <-- Material imports
 import {CanvasComponent} from './plotting/sidenavmenu/canvas.component';
 import {SidenavmenuComponent} from './plotting/sidenavmenu/sidenavmenu.component';
+
+import {FloorplancardComponent} from './plotting/sidenav_cards/floorplan_card.component';
+import {DevicecardComponent} from './plotting/sidenav_cards/device_card.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +40,8 @@ import {SidenavmenuComponent} from './plotting/sidenavmenu/sidenavmenu.component
     SignupComponent,
     PlottingComponent, // Plotting Imports - Start
     SidenavmenuComponent,
+    FloorplancardComponent,
+    DevicecardComponent,
     CanvasComponent, // Plotting Imports - End
   ],
   imports: [
@@ -52,7 +58,8 @@ import {SidenavmenuComponent} from './plotting/sidenavmenu/sidenavmenu.component
     MatDividerModule,
     BrowserAnimationsModule,
     MatRippleModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTooltipModule,
   ],
   entryComponents: [AdditemComponent],
   providers: [],

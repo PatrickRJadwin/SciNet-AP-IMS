@@ -8,7 +8,7 @@ import {pairwise, switchMap, takeUntil} from 'rxjs/operators';
 @Component({
   selector: 'app-canvas',
   template: '<canvas #canvas></canvas>',
-  styles: ['canvas { border: 3px solid #000; background-color: white; border-color: dimgrey; border-style: groove; margin: 10px;}']
+  styles: ['canvas { border: 3px solid #000; background-color: white; border-color: dimgrey; border-style: groove}']
 })
 export class CanvasComponent implements AfterViewInit {
   //  a reference to the canvas element from our template

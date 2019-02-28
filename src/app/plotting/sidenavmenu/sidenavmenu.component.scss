@@ -3,7 +3,18 @@ $gainsboro: gainsboro;
 $lightgrey: lightgrey;
 $white: white;
 $black: black;
+$navbarblack: rgb(60,60,60);
+$navbargrey: rgb(70,70,70);
+$navbarlightgrey: rgb(105,105,105);
 $darkgrey: darkgrey;
+
+/* Trying to fix annoying scrollbar issue with mat-sidenav; no progress yet...
+
+.mat-drawer-inner-container {
+  overflow: hidden !important;
+}
+
+*/
 
 /* Sidenav Toggles */
 .navbartoggleContainer {
@@ -19,18 +30,87 @@ $darkgrey: darkgrey;
 }
 
 /* Sidenav Styles */
-.sidenavMenu {
-  background-color: $whitesmoke;
+.sidenavContainer {
+  height: 100%;
+  overflow: hidden;
+  border-top-left-radius: 1%;
+  border-bottom-left-radius: 1%;
 }
-.sidenavmenuButton {
-  background-color: $gainsboro;
-  margin-right: 5px;
+
+.sidenavStyle {
+  background-color: $navbarblack;
 }
+
 .sidenavcontentContainer {
-  height: 605px;
   border: gainsboro;
   border-style: inset;
-  overflow: scroll;
+  overflow-y: scroll;
+  background-color: $navbarlightgrey;
+}
+
+.sidenavFooter {
+  width: auto;
+}
+
+/* Menu Item Styles */
+.sidenavmenuButton {
+  background: #7d7e7d;
+  background: -moz-linear-gradient(top, #7d7e7d 0%, #0e0e0e 100%);
+  background: -webkit-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%);
+  background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 );
+  color: $lightgrey;
+}
+
+.searchBarMerged {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  padding-left: 7px;
+  padding-right: 5px;
+  padding-bottom: 2.5%;
+}
+
+.textboxSearch {
+  background-color: $gainsboro;
+  border-color: $gainsboro;
+  border-style: inset;
+  width: 68%;
+}
+
+.leftMergedButton {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right-color: #7d7e7d;
+  border-right-style: groove;
+}
+
+.centerMergedButton {
+  border-radius: 0px;
+}
+
+.rightMergedButton {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-left-color: #7d7e7d;
+  border-left-style: groove;
+}
+
+.sidenavuploadButton {
+  background: #7d7e7d;
+  background: -moz-linear-gradient(top, #7d7e7d 0%, #0e0e0e 100%);
+  background: -webkit-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%);
+  background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 );
+  color: $lightgrey;
+  width: 100%;
+}
+
+/* Icon Styles */
+.searchIcon {
+  height: 30px;
+  width: 30px;
 }
 
 /* canvas styles */

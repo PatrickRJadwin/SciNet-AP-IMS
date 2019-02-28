@@ -1,0 +1,16 @@
+$whitesmoke: whitesmoke;
+$gainsboro: gainsboro;
+$lightgrey: lightgrey;
+$white: white;
+$black: black;
+$darkgrey: darkgrey;
+
+/* Device Card Styles */
+.cardContainer {
+  background-color: $lightgrey;
+  margin: 10px;
+}
+.cardContent {
+  background-color: $white;
+  color: $black;
+}
