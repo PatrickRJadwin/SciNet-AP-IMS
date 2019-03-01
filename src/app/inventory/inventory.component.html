@@ -118,23 +118,23 @@
 <ng-template #mytemplate>
   <h1 mat-dialog-title>Edit Item</h1>
 <form class="edititem">
-  <div mat-dialog-content>
+  <div mat-dialog-content data-backdrop="static" data-keyboard="false">
     <mat-form-field class="full-width">
-      <input matInput [(ngModel)]="selectedItem.mac" type="text" name="name">
+      <input matInput [(ngModel)]="edit.mac" type="text" name="name">
     </mat-form-field>
     <br>
     <mat-form-field class="full-width">
-      <input matInput [(ngModel)]="selectedItem.location" type="text" name="location">
+      <input matInput [(ngModel)]="edit.location" type="text" name="location">
     </mat-form-field>
     <br>
     <mat-form-field class="full-width">
-      <input matInput [(ngModel)]="selectedItem.port" type="text" name="notes">
+      <input matInput [(ngModel)]="edit.port" type="text" name="notes">
     </mat-form-field>
   </div>
 
   <div mat-dialog-actions>
-    <button mat-raised-button color="accent" (click)="onSave()">Save</button>
-    <button mat-raised-button (click)="closeDialog()">Close</button>
+    <button mat-raised-button matDialogClose color="accent" (click)="onSave()">Save</button>
+    <button mat-raised-button color="warn" matDialogClose>Cancel</button>
   </div>
 </form>
 </ng-template>
