@@ -30,6 +30,6 @@ export class InventoryService {
   }
 
   editItem(key: string, item: Item) {
-    this.db.object('items' + key).update(item);
+    this.db.object('/items/' + key).update(item);
   }
 }
