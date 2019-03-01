@@ -18,6 +18,11 @@ export class InventoryComponent implements OnInit {
   itemList: Item[];
   selectedItem: Item;
 
+  //edit data
+  name: '';
+  location: '';
+  notes: '';
+
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort) sort: MatSort;
@@ -30,6 +35,7 @@ export class InventoryComponent implements OnInit {
     inventoryService.getAllItems();
   }
 
+  //Additem dialog open
   openDialog(): void {
     const dialogRef = this.dialog.open(AdditemComponent, {
     });
@@ -38,7 +44,21 @@ export class InventoryComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-  
+
+  openModal(templateRef) {
+    let dialogRef = this.dialog.open(templateRef, {
+        width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+    });
+  }
+
+  closeDialog() {
+    this.closeDialog();
+  }
+
 
   ngOnInit() {
     let data = this.inventoryService.getAllItems();
@@ -57,6 +77,24 @@ export class InventoryComponent implements OnInit {
 
   onDelete(key: string) {
     this.inventoryService.deletebyKey(key);
+  }
+
+  
+  selectItem(key: string, modal: string) {
+    this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
+    this.openModal(modal);
+    console.log(this.selectedItem);
+  }
+
+  onSave() {
+    let editedItem = new Item(this.name, this.location, this.notes, this.selectedItem.created_at,
+      this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
+      
+    editedItem.lastUpdate = new Date().toString();
+
+    this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+    
+    this.closeDialog();
   }
 
 }
