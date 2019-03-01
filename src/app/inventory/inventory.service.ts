@@ -10,6 +10,7 @@ import 'firebase/storage';
 export class InventoryService {
   item: Item;
   itemList: AngularFireList<any>;
+  selectedItem: Item;
   constructor(private db: AngularFireDatabase, private firebaseApp: FirebaseApp) {
 
     this.itemList = db.list('items');
@@ -26,5 +27,9 @@ export class InventoryService {
 
   addItem(item: Item) {
     this.itemList.push(item);
+  }
+
+  editItem(key: string, item: Item) {
+    this.db.object('items' + key).update(item);
   }
 }
