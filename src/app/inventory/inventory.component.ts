@@ -19,9 +19,7 @@ export class InventoryComponent implements OnInit {
   selectedItem: Item;
 
   //edit data
-  name: '';
-  location: '';
-  notes: '';
+  edit = new Item("","","","","",true,true,true);
 
   dataSource = new MatTableDataSource();
 
@@ -45,9 +43,10 @@ export class InventoryComponent implements OnInit {
     });
   }
 
+  //Edit item dialog
   openModal(templateRef) {
     let dialogRef = this.dialog.open(templateRef, {
-        width: '250px'
+        width: '250px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -55,11 +54,7 @@ export class InventoryComponent implements OnInit {
     });
   }
 
-  closeDialog() {
-    this.closeDialog();
-  }
-
-
+  //initializing data
   ngOnInit() {
     let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
@@ -75,6 +70,7 @@ export class InventoryComponent implements OnInit {
     });
   }
 
+  //Delete/Edit functions
   onDelete(key: string) {
     this.inventoryService.deletebyKey(key);
   }
@@ -82,19 +78,21 @@ export class InventoryComponent implements OnInit {
   
   selectItem(key: string, modal: string) {
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
+    this.edit.mac = this.selectedItem.mac;
+    this.edit.location = this.selectedItem.location;
+    this.edit.port = this.selectedItem.port;
     this.openModal(modal);
     console.log(this.selectedItem);
+    console.log(this.edit);
   }
 
+
   onSave() {
-    let editedItem = new Item(this.name, this.location, this.notes, this.selectedItem.created_at,
+    let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
       this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
-      
     editedItem.lastUpdate = new Date().toString();
 
     this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    
-    this.closeDialog();
   }
 
 }
