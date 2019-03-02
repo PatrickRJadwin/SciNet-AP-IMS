@@ -35,23 +35,13 @@ export class InventoryService {
     this.db.object('/items/' + key).update(item);
   }
 
-  getJoined() {
-    this.queryList = this.db.list('items', ref => ref.orderByChild('joined').equalTo(true));
+  getTrue(thing: string) {
+    this.queryList = this.db.list('items', ref => ref.orderByChild(thing).equalTo(true));
     return this.queryList;
   }
 
-  getCompleted() {
-    this.queryList = this.db.list('items', ref => ref.orderByChild('complete').equalTo(true));
-    return this.queryList;
-  }
-
-  getNotJoined() {
-    this.queryList = this.db.list('items', ref => ref.orderByChild('joined').equalTo(false));
-    return this.queryList;
-  }
-
-  getJoinedNotCompleted() {
-    this.queryList = this.db.list('items', ref => ref.orderByChild('complete').equalTo(false));
+  getFalse(thing: string) {
+    this.queryList = this.db.list('items', ref => ref.orderByChild(thing).equalTo(false));
     return this.queryList;
   }
 }
