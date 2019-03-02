@@ -8,7 +8,6 @@
       <mat-option value="all" (click)="ngOnInit()">All</mat-option>
       <mat-option value="joined" (click)="getJoined()">Joined</mat-option>
       <mat-option value="notJoined" (click)="getNotJoined()">Not Joined</mat-option>
-      <!--Joined Not Completed filter not working properly. Can't figure out how to have multiple orderby's from a firebase list -->
       <mat-option value="joinedNotCompleted" (click)="getJoinedNotCompleted()">Joined Not Completed</mat-option>
       <mat-option value="completed" (click)="getComplete()">Completed</mat-option>
     </mat-select>
@@ -30,11 +29,11 @@
       </mat-grid-tile>
       <mat-grid-tile></mat-grid-tile>
       <mat-grid-tile>
-        <mat-slide-toggle [(ngModel)]="myModel">{{setup}}</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="myModel" (change)="toggleSet($event)">{{setUpDown}}</mat-slide-toggle>
       </mat-grid-tile>
   </mat-grid-list>
   <mat-card style="margin: auto;">
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" id="items">
 
       <!--- Note that these columns can be defined in any order.
             The actual rendered columns are set as a property on the row definition" -->
@@ -71,6 +70,13 @@
       <ng-container matColumnDef="created_by">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Created By </th>
         <td mat-cell *matCellDef="let element"> {{element.created_by}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="checkedIn">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Checked In </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox [checked]="element.checkedIn" (click)="selectCheckedInToggle(element.$key)"></mat-checkbox>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="joined">
@@ -113,8 +119,8 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-    <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
-    
+    <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons id="itemsp"></mat-paginator>
+  
   </mat-card>
 
 <ng-template #mytemplate>
