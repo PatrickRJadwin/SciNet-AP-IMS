@@ -50,7 +50,6 @@ export class InventoryService {
     return this.queryList;
   }
 
-  //Needs work. Only returns non-completed items even if item.joined is true
   getJoinedNotCompleted() {
     this.queryList = this.db.list('items', ref => ref.orderByChild('complete').equalTo(false));
     return this.queryList;
