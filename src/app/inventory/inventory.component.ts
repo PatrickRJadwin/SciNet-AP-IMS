@@ -22,6 +22,11 @@ export class InventoryComponent implements OnInit {
   edit = new Item("","","","","",true,true,true);
 
   setUpDown = "Setup";
+  countAll: number;
+  countJoined: number;
+  countCompleted: number;
+  countCheckedIn: number;
+  selected: string;
 
   dataSource = new MatTableDataSource();
 
@@ -32,11 +37,11 @@ export class InventoryComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-
-
   constructor(public dialog: MatDialog, private inventoryService: InventoryService) {
     inventoryService.getAllItems();
   }
+
+
 
   //Additem dialog open
   openDialog(): void {
@@ -80,6 +85,7 @@ export class InventoryComponent implements OnInit {
   //Delete/Edit functions
   onDelete(key: string) {
     this.inventoryService.deletebyKey(key);
+    this.refreshAfterEdit();
   }
   
   selectItem(key: string, modal: string) {
@@ -110,6 +116,7 @@ export class InventoryComponent implements OnInit {
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }
+    this.refreshAfterEdit();
   }
 
   selectCompleteToggle(key: string) {
@@ -130,6 +137,7 @@ export class InventoryComponent implements OnInit {
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }
+    this.refreshAfterEdit();
   }
 
   selectCheckedInToggle(key: string) {
@@ -147,6 +155,7 @@ export class InventoryComponent implements OnInit {
       editedItem.lastUpdate = new Date().toString();
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }
+    this.refreshAfterEdit();
   }
 
   onSave() {
@@ -155,12 +164,31 @@ export class InventoryComponent implements OnInit {
     editedItem.lastUpdate = new Date().toString();
 
     this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+    this.refreshAfterEdit();
   }
 
+  //After edit, refresh query
+  refreshAfterEdit() {
+    if (this.selected === 'joined') {
+      this.getJoined();
+    }
+    else if (this.selected === 'notJoined') {
+      this.getNotJoined();
+    }
+    else if (this.selected === 'joinedNotCompleted') {
+      this.getJoinedNotCompleted();
+    }
+    else if (this.selected === 'completed') {
+      this.getComplete();
+    }
+    else {
+      this.ngOnInit();
+    }
+  }
 
     //Query functions for mat-select
   getJoined() {
-    let data = this.inventoryService.getJoined();
+    let data = this.inventoryService.getTrue('joined');
     data.snapshotChanges().subscribe(item => {
         this.itemList = [];
   
@@ -176,7 +204,7 @@ export class InventoryComponent implements OnInit {
     }
   
   getComplete() {
-    let data = this.inventoryService.getCompleted();
+    let data = this.inventoryService.getTrue('complete');
     data.snapshotChanges().subscribe(item => {
         this.itemList = [];
   
@@ -192,7 +220,7 @@ export class InventoryComponent implements OnInit {
     }
 
   getNotJoined() {
-    let data = this.inventoryService.getNotJoined();
+    let data = this.inventoryService.getFalse('joined');
     data.snapshotChanges().subscribe(item => {
           this.itemList = [];
     
@@ -208,8 +236,7 @@ export class InventoryComponent implements OnInit {
     }
   
   getJoinedNotCompleted() {
-    let data = this.inventoryService.getJoinedNotCompleted();
-    
+    let data = this.inventoryService.getFalse('complete');
     data.snapshotChanges().subscribe(item => {
           this.itemList = [];
     
