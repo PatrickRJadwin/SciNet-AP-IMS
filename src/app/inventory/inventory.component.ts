@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatSort, MatTableDataSource, MatDialog, MatDialogRef, MatPaginator } from '@angular/material';
+import { MatSort, MatTableDataSource, MatDialog, MatDialogRef, MatPaginator, MatSlideToggleChange } from '@angular/material';
 import { AdditemComponent } from '../additem/additem.component';
 import { InventoryService } from './inventory.service';
 import { Item } from './inventory.model';
@@ -21,6 +21,8 @@ export class InventoryComponent implements OnInit {
   //edit data
   edit = new Item("","","","","",true,true,true);
 
+  setUpDown = "Setup";
+
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort) sort: MatSort;
@@ -29,6 +31,8 @@ export class InventoryComponent implements OnInit {
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+
 
   constructor(public dialog: MatDialog, private inventoryService: InventoryService) {
     inventoryService.getAllItems();
@@ -128,6 +132,23 @@ export class InventoryComponent implements OnInit {
     }
   }
 
+  selectCheckedInToggle(key: string) {
+    this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
+
+    if (this.selectedItem.checkedIn === true) {
+      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+        this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, false);
+      editedItem.lastUpdate = new Date().toString();
+      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+    }
+    else {
+      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+        this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, true);
+      editedItem.lastUpdate = new Date().toString();
+      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+    }
+  }
+
   onSave() {
     let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
       this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
@@ -137,7 +158,7 @@ export class InventoryComponent implements OnInit {
   }
 
 
-  //Query functions for mat-select
+    //Query functions for mat-select
   getJoined() {
     let data = this.inventoryService.getJoined();
     data.snapshotChanges().subscribe(item => {
@@ -202,5 +223,16 @@ export class InventoryComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       });
+  }
+
+  toggleSet(changeEvent: MatSlideToggleChange) {
+    if (changeEvent.checked) {
+      this.setUpDown = "Tear Down";
+      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'checkedIn', 'edit'];
+    }
+    else {
+      this.setUpDown = "Setup";
+      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash', 'key'];
+    }
   }
 }
