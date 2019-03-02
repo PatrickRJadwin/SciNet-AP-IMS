@@ -30,8 +30,6 @@ export class InventoryComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-
-
   constructor(public dialog: MatDialog, private inventoryService: InventoryService) {
     inventoryService.getAllItems();
   }
@@ -139,7 +137,7 @@ export class InventoryComponent implements OnInit {
   }
 
 
-    //Query functions for mat-select
+  //Query functions for mat-select
   getJoined() {
     let data = this.inventoryService.getJoined();
     data.snapshotChanges().subscribe(item => {
