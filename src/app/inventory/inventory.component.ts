@@ -190,6 +190,7 @@ export class InventoryComponent implements OnInit {
   
   getJoinedNotCompleted() {
     let data = this.inventoryService.getJoinedNotCompleted();
+    
     data.snapshotChanges().subscribe(item => {
           this.itemList = [];
     
@@ -198,6 +199,7 @@ export class InventoryComponent implements OnInit {
             json["$key"] = element.key;
             this.itemList.push(json as Item);
           });
+      this.itemList = this.itemList.filter(t=>t.joined === true);
       this.dataSource = new MatTableDataSource(this.itemList);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
