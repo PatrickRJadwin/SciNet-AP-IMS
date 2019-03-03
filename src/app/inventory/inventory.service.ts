@@ -10,6 +10,8 @@ import 'firebase/storage';
 export class InventoryService {
   item: Item;
   itemList: AngularFireList<any>;
+  queryList: AngularFireList<any>;
+  noncompleteJoined: AngularFireList<any>;
   selectedItem: Item;
   constructor(private db: AngularFireDatabase, private firebaseApp: FirebaseApp) {
 
@@ -31,5 +33,15 @@ export class InventoryService {
 
   editItem(key: string, item: Item) {
     this.db.object('/items/' + key).update(item);
+  }
+
+  getTrue(thing: string) {
+    this.queryList = this.db.list('items', ref => ref.orderByChild(thing).equalTo(true));
+    return this.queryList;
+  }
+
+  getFalse(thing: string) {
+    this.queryList = this.db.list('items', ref => ref.orderByChild(thing).equalTo(false));
+    return this.queryList;
   }
 }
