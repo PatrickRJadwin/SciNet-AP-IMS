@@ -39,9 +39,9 @@ export class AuthService {
   }
 
   SetUserData(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc('users/${user.id}');
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc('users/${user.uid}');
     const userData: User = {
-      uid: user.id,
+      uid: user.uid,
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
@@ -56,7 +56,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((result) => {
         this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['inventory']);
         });
         this.SetUserData(result.user);
       }).catch((error) => {
