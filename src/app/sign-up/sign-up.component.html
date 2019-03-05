@@ -10,7 +10,7 @@
     </mat-form-field>
     <mat-form-field class="full-width">
       <mat-label>Password</mat-label>
-      <input matInput placeholder="Password" name="password" #password required>
+      <input matInput placeholder="Password" name="password" type="password" #password required>
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="authService.SignUp(email.value, password.value)">Sign up</button>
     <button mat-raised-button color="accent" style="float: right;" routerLink="/login">Login</button>
