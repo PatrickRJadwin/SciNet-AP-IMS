@@ -21,10 +21,9 @@
               (click)="sidenav.close()">
             <span class="label">Users</span>
           </a>
-          <a mat-list-item
-              routerLink="/login">
+          <a mat-list-item>
             <span class="label"
-            (click)="sidenav.close()">Logout</span>
+            (click)="authService.SignOut()">Logout</span>
           </a>
           </mat-nav-list>
         </mat-sidenav>

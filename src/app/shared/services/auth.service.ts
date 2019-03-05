@@ -10,6 +10,7 @@ import { Router } from "@angular/router";
 })
 export class AuthService {
   userData: any;
+  user: any;
 
   constructor(
 
@@ -80,7 +81,9 @@ export class AuthService {
   }
 
   SignOut() {
-    return this.afAuth.auth.signOut().then(() => {
+    console.log(localStorage.getItem('user'));
+    this.afAuth.auth.signOut().then(() => {
+      console.log(localStorage.getItem('user'));
       localStorage.removeItem('user');
       this.router.navigate(['login']);
     })

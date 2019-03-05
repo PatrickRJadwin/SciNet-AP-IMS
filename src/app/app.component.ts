@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { AuthService } from './shared/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +8,14 @@ import { AngularFireDatabase } from 'angularfire2/database';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'SciNet Access Point Inventory';
   inventories: any[]
-  constructor(db: AngularFireDatabase) {
+  constructor(
+    db: AngularFireDatabase,
+    public authService: AuthService
+  ) {
     db.list('/items').valueChanges()
       .subscribe(inventories => {
         this.inventories = inventories;
-        console.log(this.inventories);
       });
   }
 }
