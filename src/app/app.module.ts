@@ -15,19 +15,22 @@ import { AdditemComponent } from './additem/additem.component';
 import { LoginComponent } from './login/login.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { SignupComponent } from './signup/signup.component';
+import { AngularFireAuthModule } from "@angular/fire/auth";
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
-import {MatSidenavModule, MatButtonModule, MatCardModule,
+import { MatSidenavModule, MatButtonModule, MatCardModule,
         MatDividerModule, MatRippleModule, MatFormFieldModule,
-        MatTooltipModule} from '@angular/material'; // <-- Material imports
-import {CanvasComponent} from './plotting/sidenavmenu/canvas.component';
-import {SidenavmenuComponent} from './plotting/sidenavmenu/sidenavmenu.component';
+        MatTooltipModule } from '@angular/material'; // <-- Material imports
+import { CanvasComponent } from './plotting/sidenavmenu/canvas.component';
+import { SidenavmenuComponent } from './plotting/sidenavmenu/sidenavmenu.component';
 
-import {FloorplancardComponent} from './plotting/sidenav_cards/floorplan_card.component';
-import {DevicecardComponent} from './plotting/sidenav_cards/device_card.component';
+import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.component';
+import { DevicecardComponent } from './plotting/sidenav_cards/device_card.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -37,12 +40,12 @@ import {DevicecardComponent} from './plotting/sidenav_cards/device_card.componen
     ReportsComponent,
     AdditemComponent,
     LoginComponent,
-    SignupComponent,
     PlottingComponent, // Plotting Imports - Start
     SidenavmenuComponent,
     FloorplancardComponent,
     DevicecardComponent,
-    CanvasComponent, // Plotting Imports - End
+    CanvasComponent,
+    SignUpComponent, // Plotting Imports - End
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,8 @@ import {DevicecardComponent} from './plotting/sidenav_cards/device_card.componen
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFirestoreModule,
     MatSidenavModule,
     MatButtonModule,
     MatCardModule,
@@ -62,7 +67,7 @@ import {DevicecardComponent} from './plotting/sidenav_cards/device_card.componen
     MatTooltipModule,
   ],
   entryComponents: [AdditemComponent],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

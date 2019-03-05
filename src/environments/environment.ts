@@ -7,7 +7,7 @@ import CONFIG from '../assets/CONFIG';
 export const environment = {
   production: false,
   firebase: {
-    apikey: CONFIG["apiKey"],
+    apiKey: CONFIG["apiKey"],
     authDomain: CONFIG["authDomain"],
     databaseURL: CONFIG["databaseURL"],
     projectId: CONFIG["projectId"],
