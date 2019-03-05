@@ -20,6 +20,7 @@ export class AuthService {
     public ngZone: NgZone
 
   ) { 
+
     this.afAuth.authState.subscribe(user => {
 
       if (user) {
@@ -47,7 +48,6 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL
     }
-    console.log(userData);
     return userRef.set(userData, {
       merge: true
     })
@@ -81,10 +81,9 @@ export class AuthService {
   }
 
   SignOut() {
-    console.log(localStorage.getItem('user'));
+    console.log("Signing Out");
+    localStorage.removeItem('user');
     this.afAuth.auth.signOut().then(() => {
-      console.log(localStorage.getIgitem('user'));
-      localStorage.removeItem('user');
       this.router.navigate(['login']);
     })
   }
