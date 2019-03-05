@@ -1,21 +1,21 @@
 <h1 mat-dialog-title>Add Item</h1>
+<form class="additem">
   <div mat-dialog-content>
-    <form class="additem">
     <mat-form-field class="full-width">
-      <input matInput placeholder="Name">
+      <input matInput placeholder="Name" [(ngModel)]="add.mac" name="name">
     </mat-form-field>
     <br>
     <mat-form-field class="full-width">
-      <input matInput placeholder="Location">
+      <input matInput placeholder="Location" [(ngModel)]="add.location" name="location">
     </mat-form-field>
     <br>
     <mat-form-field class="full-width">
-      <input matInput placeholder="Notes">
+      <input matInput placeholder="Notes" [(ngModel)]="add.port" name="notes">
     </mat-form-field>
-  </form>
   </div>
 
   <div mat-dialog-actions>
-    <button mat-raised-button color="accent">Save</button>
+    <button mat-raised-button color="accent" (click)="addItem()">Save</button>
     <button mat-raised-button (click)="closeMe()">Close</button>
   </div>
+</form>
