@@ -44,9 +44,9 @@ export class AuthService {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
-      photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      photoURL: user.photoURL
     }
+    console.log(userData);
     return userRef.set(userData, {
       merge: true
     })
@@ -59,6 +59,7 @@ export class AuthService {
           this.router.navigate(['inventory']);
         });
         this.SetUserData(result.user);
+
       }).catch((error) => {
         window.alert(error.message)
       })
@@ -75,7 +76,7 @@ export class AuthService {
 
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false) ? true : false;
+    return (user !== null) ? true : false;
   }
 
   SignOut() {
