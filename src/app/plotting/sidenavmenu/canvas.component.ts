@@ -3,7 +3,6 @@ import {
   Component, Input, ElementRef, AfterViewInit, ViewChild
 } from '@angular/core';
 import {fromEvent} from 'rxjs';
-import {pairwise, switchMap, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-canvas',
@@ -15,8 +14,8 @@ export class CanvasComponent implements AfterViewInit {
   @ViewChild('canvas') public canvas: ElementRef;
 
   // setting a width and height for the canvas
-  @Input() public width = 1515;
-  @Input() public height = 700;
+  @Input() public width = 1000;
+  @Input() public height = 600;
 
   private cx: CanvasRenderingContext2D;
 
@@ -34,44 +33,26 @@ export class CanvasComponent implements AfterViewInit {
   }
 
   private captureEvents(canvasEl: HTMLCanvasElement) {
-    fromEvent(canvasEl, 'mousedown').pipe(
-      switchMap((e) => {
-        // after a mouse down, we'll record all mouse moves
-        return fromEvent(canvasEl, 'mousemove')
-          .pipe(
-            // we'll stop (and unsubscribe) once the user releases the mouse
-            // this will trigger a 'mouseup' event
-            takeUntil(fromEvent(canvasEl, 'mouseup')),
-            // we'll also stop (and unsubscribe) once the mouse leaves the canvas (mouseleave event)
-            takeUntil(fromEvent(canvasEl, 'mouseleave')),
-            // pairwise lets us get the previous value to draw a line from
-            // the previous point to the current point
-            pairwise()
-          );
-      })
-    )
-      .subscribe((res: [MouseEvent, MouseEvent]) => {
+    fromEvent(canvasEl, 'mousedown')
+      .subscribe((click: MouseEvent) => {
         const rect = canvasEl.getBoundingClientRect();
 
-        // previous and current position with the offset
-        const prevPos = {
-          x: res[0].clientX - rect.left,
-          y: res[0].clientY - rect.top
-        };
-
         const currentPos = {
-          x: res[1].clientX - rect.left,
-          y: res[1].clientY - rect.top
+          x: click.clientX - (rect.left * 2),
+          y: click.clientY - (rect.top * 2)
         };
 
-        // this method we'll implement soon to do the actual drawing
         this.drawOnCanvas(currentPos);
       });
   }
 
   private drawOnCanvas(currentPos: { x: number, y: number }) {
+    const smallIcon = [15, 85, 25];
+    const mediumIcon = [28, 70, 50];
+    const largeIcon = [50, 50, 100];
+
     const deviceIcon = new Image();
-    deviceIcon.src = 'https://i.imgur.com/Q5skAxA.png';
-    this.cx.drawImage(deviceIcon, currentPos.x, currentPos.y, 100, 100);
+    deviceIcon.src = 'https://i.imgur.com/oUTwG7U.png';
+    this.cx.drawImage(deviceIcon, (currentPos.x - mediumIcon[0]), (currentPos.y + mediumIcon[1]), mediumIcon[2], mediumIcon[2]);
   }
 }
