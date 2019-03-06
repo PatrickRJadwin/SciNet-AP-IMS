@@ -51,8 +51,10 @@ export class CanvasComponent implements AfterViewInit {
     const mediumIcon = [28, 70, 50];
     const largeIcon = [50, 50, 100];
 
+    const IconSize = smallIcon;
+
     const deviceIcon = new Image();
     deviceIcon.src = 'https://i.imgur.com/oUTwG7U.png';
-    this.cx.drawImage(deviceIcon, (currentPos.x - mediumIcon[0]), (currentPos.y + mediumIcon[1]), mediumIcon[2], mediumIcon[2]);
+    this.cx.drawImage(deviceIcon, (currentPos.x - IconSize[0]), (currentPos.y + IconSize[1]), IconSize[2], IconSize[2]);
   }
 }
