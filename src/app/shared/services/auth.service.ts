@@ -70,7 +70,7 @@ export class AuthService {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
         this.SetUserData(result.user);
-        this.router.navigate(['inventory'])
+        this.router.navigate(['login']);
       }).catch((error) => {
         window.alert(error.message)
       })
