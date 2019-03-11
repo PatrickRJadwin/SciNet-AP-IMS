@@ -52,8 +52,6 @@ export class ReportsComponent implements OnInit {
         this.selList.push(json as Item);
       });
     });
-    console.log(this.selList);
-
   }
 
   setListByDate(date: string) {
