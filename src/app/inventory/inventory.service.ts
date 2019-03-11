@@ -44,4 +44,14 @@ export class InventoryService {
     this.queryList = this.db.list('items', ref => ref.orderByChild(thing).equalTo(false));
     return this.queryList;
   }
+  
+  getRecentDates() {
+    this.queryList = this.db.list('items', ref => ref.orderByChild('created_at').limitToLast(5));
+    return this.queryList;
+  }
+
+  getDateBy(date: string) {
+    this.queryList = this.db.list('items', ref => ref.orderByChild('created_at').equalTo(date));
+    return this.queryList;
+  }
 }
