@@ -1,26 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
-
-export interface PeriodicElement {
-  seqNo: number;
-  name: string;
-  location: string;
-  port: string;
-}
-
-// **Sample data**
-const ELEMENT_DATA: PeriodicElement[] = [
-  {seqNo: 1, name: 'AP-BDE4', location: 'C-1', port: 'Desktop Switch'},
-  {seqNo: 2, name: 'AP-BDX9', location: 'C-3', port: 'Desktop Switch'},
-  {seqNo: 3, name: 'AP-BDS7', location: 'C-3', port: 'Desktop Switch'},
-  {seqNo: 4, name: 'AP-WB5', location: 'C-2', port: 'Desktop Switch'},
-  {seqNo: 5, name: 'AP-BSB1', location: 'C-1', port: 'Desktop Switch'},
-  {seqNo: 6, name: 'AP-ZDB3', location: 'C-2', port: 'Desktop Switch'},
-  {seqNo: 7, name: 'AP-BDC1', location: 'C-1', port: 'Desktop Switch'},
-  {seqNo: 8, name: 'AP-BDB2', location: 'C-5', port: 'Desktop Switch'},
-
-];
-// **Sample data**
+import { InventoryService } from '../inventory/inventory.service';
+import { Item } from '../inventory/inventory.model';
+import { AngularFireList } from 'angularfire2/database';
 
 @Component({
   selector: 'app-reports',
@@ -29,9 +11,17 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class ReportsComponent implements OnInit {
 
-  displayedColumns: string[] = ['seqNo', 'name', 'location', 'port'];
+  displayedColumns: string[] = ['seqNo', 'mac', 'location', 'port'];
   // dataSource var, replace with db data
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+  dataSource = new MatTableDataSource();
+
+  itemList: Item[];
+  selectList: AngularFireList<any[]>;
+  selList: Item[];
+
+  constructor(private inventoryService: InventoryService) {
+
+  }
 
   @ViewChild(MatSort) sort: MatSort;
 
@@ -40,7 +30,45 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    let data = this.inventoryService.getAllItems();
+    data.snapshotChanges().subscribe(item => {
+      this.itemList = [];
+
+      item.forEach(element => {
+        let json = element.payload.toJSON();
+        json["$key"] = element.key;
+        this.itemList.push(json as Item);
+      });
+      this.dataSource = new MatTableDataSource(this.itemList);
+      this.dataSource.sort = this.sort;
+    });
+
+    this.selectList = this.inventoryService.getRecentDates();
+    this.selectList.snapshotChanges().subscribe(item => {
+      this.selList = [];
+      item.forEach(sel => {
+        let json = sel.payload.toJSON();
+        json["$key"] = sel.key;
+        this.selList.push(json as Item);
+      });
+    });
+    console.log(this.selList);
+
+  }
+
+  setListByDate(date: string) {
+    let data = this.inventoryService.getDateBy(date);
+    data.snapshotChanges().subscribe(item => {
+        this.itemList = [];
+  
+      item.forEach(element => {
+          let json = element.payload.toJSON();
+          json["$key"] = element.key;
+          this.itemList.push(json as Item);
+        });
+      this.dataSource = new MatTableDataSource(this.itemList);
+      this.dataSource.sort = this.sort;
+      });
   }
 
 }
