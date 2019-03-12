@@ -45,9 +45,11 @@ export class AuthService {
     const userData: User = {
       uid: user.uid,
       email: user.email,
-      displayName: user.displayName,
-      photoURL: user.photoURL
+      roles: {
+        user: true
+      }
     }
+    console.log(userData);
     return userRef.set(userData, {
       merge: true
     })
@@ -79,6 +81,12 @@ export class AuthService {
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return (user !== null) ? true : false;
+  }
+
+  get isAdmin(): boolean {
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log(user);
+    return (user['roles']['admin'] !== false);
   }
 
   SignOut() {
