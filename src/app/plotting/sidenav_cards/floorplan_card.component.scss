@@ -4,14 +4,14 @@ $lightgrey: lightgrey;
 $white: white;
 $black: black;
 $darkgrey: grey;
-$footertextbox: rgb(65,65,65);
+$footertextbox: rgb(70,70,70);
+$cardbackground: rgb(55,55,55);
 $cardshadow: rgb(25,25,25);
 
 /* Floorplan Card Styles */
 .cardContainer {
-  background-color: $footertextbox;
+  background-color: $cardbackground;
   margin: 10px;
-  margin-bottom: 5%;
   border-radius: 5%;
   box-shadow:
     5px 5px 15px 1px $cardshadow;
@@ -26,11 +26,6 @@ $cardshadow: rgb(25,25,25);
   padding-left: 5%;
   padding-top: 3%;
   padding-bottom: 6%;
-  background: #4c4c4c;
-  background: -moz-linear-gradient(top, #4c4c4c 0%, #595959 12%, #666666 33%, #474747 39%, #2c2c2c 42%, #000000 52%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%);
-  background: -webkit-linear-gradient(top, #4c4c4c 0%,#595959 12%,#666666 33%,#474747 39%,#2c2c2c 42%,#000000 52%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%);
-  background: linear-gradient(to bottom, #4c4c4c 0%,#595959 12%,#666666 33%,#474747 39%,#2c2c2c 42%,#000000 52%,#111111 60%,#2b2b2b 76%,#1c1c1c 91%,#131313 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=0 );
 }
 
 .floorplanName {
@@ -45,9 +40,22 @@ $cardshadow: rgb(25,25,25);
   position: absolute;
   left: 83%;
   bottom: 2%;
-  width: 11%;
+  width: 12%;
   border-radius: 50%;
   border-color: $footertextbox;
   border-style: inset;
   border-width: 3px;
+}
+
+.floorplanPreview {
+  width: 200px;
+}
+
+#viewOptions {
+  display: none;
+  position: absolute;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparentize($cardbackground, .2);
 }
