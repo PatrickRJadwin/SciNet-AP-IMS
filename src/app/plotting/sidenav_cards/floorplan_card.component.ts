@@ -12,4 +12,8 @@ export class FloorplancardComponent implements OnInit {
   ngOnInit() {
   }
 
+  floorplanClicked(el) {
+    // el.innerHTML
+  }
+
 }
