@@ -1,61 +1,29 @@
-<mat-card class="cardContainer"> <!-- Example Card w/ Green "All Devices Working" icon -->
+<mat-card class="cardContainer"> <!-- Floorplan Card w/ Grey "No Plotted Devices" icon -->
+
   <mat-card-content class="cardContent"> <!-- Floorplan image will go here-->
-    Lorem
-    <br>
-    Ipsum
-    <br>
-    Dolor
-    <br>
-    Set
-    <br>
-    Amet
+    <button mat-stroked-button (click)="floorplanClicked($event.target)">
+      <div id="viewOptions">
+        <button mat-button>View</button>
+        <button mat-button>Edit</button>
+      </div>
+      <img class="floorplanPreview" src="https://i.imgur.com/c2MknHv.png" alt="Floorplan Preview">
+    </button>
   </mat-card-content> <!-- Floorplan image will go here-->
 
   <mat-card-footer class="cardFooter">
-    <span class="floorplanName">Floorplan Name</span>
-    <img class="icon" src="https://i.imgur.com/DHY73sx.png" alt="Green Checkmark Icon" matTooltip="All devices online">
+    <span class="floorplanName">Floorplan Name</span> <!-- Floorplan name goes here -->
+    <img class="icon" src="https://i.imgur.com/2ojng1R.png" alt="Grey Disconnected Icon"> <!-- Floorplan Status Icon -->
   </mat-card-footer>
 </mat-card>
 
-<mat-card class="cardContainer"> <!-- Example Card w/ Yellow "Attention Needed" icon -->
-  <mat-card-content class="cardContent"> <!-- Floorplan image will go here-->
-    Lorem
-    <br>
-    Ipsum
-    <br>
-    Dolor
-    <br>
-    Set
-    <br>
-    Amet
-  </mat-card-content> <!-- Floorplan image will go here-->
+<!-- Temporary links to different floorplan status icons
 
-  <mat-card-footer class="cardFooter">
-    <span class="floorplanName">Floorplan Name</span>
-    <img class="icon" src="https://i.imgur.com/ZkaGTp3.png" alt="Yellow Exclamation Icon" matTooltip="X devices need attention">
-  </mat-card-footer>
-</mat-card>
+    No Plotted Devices: https://i.imgur.com/2ojng1R.png
 
-<mat-card class="cardContainer"> <!-- Example Card w/ Blue "Tear Down Complete" icon -->
-  <mat-card-content class="cardContent"> <!-- Floorplan image will go here-->
-    Lorem
-    <br>
-    Ipsum
-    <br>
-    Dolor
-    <br>
-    Set
-    <br>
-    Amet
-  </mat-card-content> <!-- Floorplan image will go here-->
+    All Devices Okay: https://i.imgur.com/JfxYEz5.png
 
-  <mat-card-footer class="cardFooter">
-    <div>
-      <span class="floorplanName">Floorplan Name</span>
-      <img class="icon" src="https://i.imgur.com/8goMNfS.png" alt="Blue Box Icon" matTooltip="Tear down complete">
-    </div>
+    Attention Needed: https://i.imgur.com/Wz4t724.png
 
-  </mat-card-footer>
-</mat-card>
+    Teardown Complete: https://i.imgur.com/BFId2dQ.png
 
-<img src="https://i.imgur.com/oUTwG7U.png" style="display: none;" />
+-->
