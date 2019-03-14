@@ -1,42 +1,38 @@
 <mat-sidenav-container>
-  <mat-sidenav #sidenav [fixedInViewport]="true" mode="side" position="end" class="sidenavContainer">
-    <mat-card class="sidenavStyle">
+  <mat-sidenav #sidenav [fixedInViewport]="true" mode="side" position="end" class="sidenavBorder">
+    <mat-card class="sidenavMenu">
       <mat-card-title>
         <span>
-          <button mat-button class="sidenavmenuButton leftMergedButton">Floorplans</button>
-          <button mat-button class="sidenavmenuButton centerMergedButton">Devices</button>
-          <button mat-button class="sidenavmenuButton rightMergedButton">Notifications</button>
+          <button mat-button class="sidenavmenuButton">Floorplans</button>
+          <button mat-button class="sidenavmenuButton">Devices</button>
+          <button mat-button class="sidenavmenuButton">Notifications</button>
         </span>
-          <div style="margin-top: 3%;">
-            <span class="sidenavmenuButton searchBarMerged">
-              <input matInput class="textboxSearch">
-
+          <div>
+            <span>
+              <input matInput placeholder="Input">
+              <button mat-button class="sidenavmenuButton">Search</button>
             </span>
-
-            <button mat-button class="sidenavmenuButton rightMergedButton">
-              <img class="searchIcon"
-                   src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png"
-                   alt="Search">
-            </button>
           </div>
       </mat-card-title>
 
-      <mat-card-content class="sidenavcontentContainer">
+      <div class="sidenavcontentContainer">
         <app-floorplancard></app-floorplancard>
-      </mat-card-content>
+      </div>
 
-      <mat-card-footer class="sidenavFooter">
+      <mat-card-actions>
         <button class="sidenavuploadButton" mat-button>Add New Floorplan</button>
-      </mat-card-footer>
+      </mat-card-actions>
     </mat-card>
   </mat-sidenav>
 
   <mat-sidenav-content>
-      <div class="navbartoggleContainer">
-      <button class="navbartoggleButton" mat-button (click)="sidenav.toggle()"><</button>
+    <div class="navbartoggleContainer">
+      <button class="navbartoggleButton" mat-button (click)="sidenav.toggle()"> < </button>
     </div>
 
-    <app-canvas class="canvasStyle"></app-canvas>
+    <div id="canvasDiv">
+      <canvas id="myCanvas" class="canvasStyle"></canvas>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>
 
