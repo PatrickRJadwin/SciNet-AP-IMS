@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {fabric} from 'fabric';
 
 @Component({
   selector: 'app-sidenav',
@@ -9,7 +10,11 @@ export class SidenavmenuComponent implements OnInit {
 
   constructor() { }
 
+  canvas: any;
+
   ngOnInit() {
+    this.canvas = new fabric.Canvas('myCanvas');
+    this.canvas.add(new fabric.IText('Test'));
   }
 
 }
