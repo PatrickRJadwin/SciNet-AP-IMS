@@ -24,7 +24,6 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { MatSidenavModule, MatButtonModule, MatCardModule,
         MatDividerModule, MatRippleModule, MatFormFieldModule,
         MatTooltipModule, MatSelectModule } from '@angular/material'; // <-- Material imports
-import { CanvasComponent } from './plotting/sidenavmenu/canvas.component';
 import { SidenavmenuComponent } from './plotting/sidenavmenu/sidenavmenu.component';
 
 import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.component';
@@ -44,7 +43,6 @@ import { AuthService } from './shared/services/auth.service';
     SidenavmenuComponent,
     FloorplancardComponent,
     DevicecardComponent,
-    CanvasComponent,
     SignUpComponent, // Plotting Imports - End
   ],
   imports: [
