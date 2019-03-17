@@ -17,6 +17,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { environment } from 'src/environments/environment';
 
 import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
@@ -55,6 +56,7 @@ import { AuthService } from './shared/services/auth.service';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     MatSidenavModule,
     MatButtonModule,
     MatCardModule,
