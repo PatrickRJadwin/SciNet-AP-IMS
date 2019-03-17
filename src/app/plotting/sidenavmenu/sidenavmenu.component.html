@@ -13,6 +13,12 @@
               <button mat-button class="sidenavmenuButton">Search</button>
             </span>
           </div>
+          <div>
+            <span>
+              <button mat-raised-button color="primary" (click)="fileInput.click()">Upload Floorplan</button>
+              <input #fileInput type="file" (change)="chooseFiles($event)" style="display:none;" />
+            </span>
+          </div>
       </mat-card-title>
 
       <div class="sidenavcontentContainer">
