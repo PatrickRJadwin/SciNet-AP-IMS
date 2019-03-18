@@ -36,7 +36,7 @@ export class SidenavmenuComponent implements AfterViewInit {
         console.log(options.e.clientX - rect.left, options.e.clientY);
 
         const imgElement = new Image();
-        imgElement.src = 'https://i.imgur.com/Q5skAxA.png'; // Device Icon URL
+        imgElement.src = 'https://i.imgur.com/Q5skAxA.png'; // Device Icon URL; must match the URL of the hidden img on template ("my-image")
         const imgInstance = new fabric.Image(imgElement, {
           left: options.e.clientX - (rect.left * 1.25),
           top: options.e.clientY - (rect.top * 1.2),
