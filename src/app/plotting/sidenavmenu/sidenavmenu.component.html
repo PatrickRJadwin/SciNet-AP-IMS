@@ -1,5 +1,5 @@
-<mat-sidenav-container>
-  <mat-sidenav #sidenav [fixedInViewport]="true" mode="side" position="end" class="sidenavBorder">
+<mat-sidenav-container [hasBackdrop]="false">
+  <mat-sidenav #sidenav [fixedInViewport]="true" mode="over" position="end" class="sidenavBorder">
     <mat-card class="sidenavMenu">
       <mat-card-title>
         <span>
@@ -30,10 +30,10 @@
       <button class="navbartoggleButton" mat-button (click)="sidenav.toggle()"> < </button>
     </div>
 
-    <div id="canvasDiv">
-      <canvas id="myCanvas" class="canvasStyle"></canvas>
-    </div>
+    <canvas id="myCanvas"></canvas> <!-- Canvas for plotting -->
+
   </mat-sidenav-content>
 </mat-sidenav-container>
 
+<img src='https://i.imgur.com/Q5skAxA.png' id="my-image" style="display: none;">
 
