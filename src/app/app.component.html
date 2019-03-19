@@ -24,7 +24,7 @@
           <a mat-list-item
               routerLink="/login">
             <span class="label"
-            (click)="authService.SignOut()">Logout</span>
+            (click)="auth.signout()">Logout</span>
           </a>
           </mat-nav-list>
         </mat-sidenav>
@@ -69,7 +69,7 @@
                 <ul fxLayout class="navigation-items">
                   <li>
                     <a
-                    (click)="authService.SignOut()"
+                    (click)="auth.signout()"
                       routerLink="/login">
                       <span class="label">Logout</span>
                     </a>
