@@ -14,8 +14,8 @@ export class SidenavmenuComponent implements AfterViewInit {
 
   canvas: any;
 
-  @Input() public fpWidth = window.screenX * .9;
-  @Input() public fpHeight = 750;
+  @Input() public fpWidth = 1000/*window.screenX * .9*/;
+  @Input() public fpHeight = 800;
 
   ngAfterViewInit() {
     this.canvas = new fabric.Canvas('myCanvas');
