@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { AuthService } from './shared/services/auth.service';
+import { AuthenticationService } from './shared/services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ export class AppComponent {
   inventories: any[]
   constructor(
     db: AngularFireDatabase,
-    public authService: AuthService
+    public auth: AuthenticationService
   ) {
     db.list('/items').valueChanges()
       .subscribe(inventories => {
