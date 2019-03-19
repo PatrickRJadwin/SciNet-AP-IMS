@@ -3,6 +3,7 @@ import { MatSort, MatTableDataSource, MatDialog, MatDialogRef, MatPaginator, Mat
 import { AdditemComponent } from '../additem/additem.component';
 import { InventoryService } from './inventory.service';
 import { Item } from './inventory.model';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class InventoryComponent implements OnInit {
 
   itemList: Item[];
   selectedItem: Item;
+
 
   //edit data
   edit = new Item("","","","","",true,true,true);
@@ -37,8 +39,10 @@ export class InventoryComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  constructor(public dialog: MatDialog, private inventoryService: InventoryService) {
+  constructor(public dialog: MatDialog, private inventoryService: InventoryService, private auth: AuthenticationService) {
     inventoryService.getAllItems();
+
+
   }
 
 
@@ -80,6 +84,7 @@ export class InventoryComponent implements OnInit {
       this.dataSource.paginator = this.paginator;
     });
   }
+
 
 
   //Delete/Edit functions
