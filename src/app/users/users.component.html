@@ -19,7 +19,7 @@
     <!-- Position Column -->
     <ng-container matColumnDef="seqNo">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.seqNo}} </td>
+      <td mat-cell *matCellDef="let element; let i = index;"> {{i+1}} </td>
     </ng-container>
   
     <!-- Name Column -->
@@ -31,7 +31,7 @@
     <!-- Weight Column -->
     <ng-container matColumnDef="role">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-      <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.rolestring}} </td>
     </ng-container>
   
     <!-- Symbol Column -->
@@ -39,7 +39,7 @@
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef> </th>
       <td mat-cell *matCellDef="let element">
-          <button mat-button>
+          <button mat-button (click)="selectUser(element.$key, mytemplate)">
               <mat-icon>edit</mat-icon>
           </button>
       </td>
@@ -50,3 +50,29 @@
   </table>
   
 </mat-card>
+
+<ng-template #mytemplate>
+  <h1 mat-dialog-title>Edit Item</h1>
+<form class="edititem">
+  <div mat-dialog-content data-backdrop="static" data-keyboard="false">
+    <mat-form-field class="full-width">
+      <input matInput [(ngModel)]="edit.email" type="text" name="email">
+    </mat-form-field>
+    <br>
+    <mat-form-field class="full-width">
+      <mat-select [(value)]="selected">
+        <mat-option value="noaccess">No Access</mat-option>
+        <mat-option value="user">User</mat-option>
+        <mat-option value="admin">Admin</mat-option>
+        <mat-option value="superuser">Super User</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <br>
+  </div>
+
+  <div mat-dialog-actions>
+    <button mat-raised-button matDialogClose color="accent" (click)="onSave()">Save</button>
+    <button mat-raised-button color="warn" matDialogClose>Cancel</button>
+  </div>
+</form>
+</ng-template>
