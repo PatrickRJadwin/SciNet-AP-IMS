@@ -1,30 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatTableDataSource } from '@angular/material';
-
-export interface PeriodicElement {
-  seqNo: number;
-  email: string;
-  role: string;
-  edit: string;
-}
-
-// **Sample data**
-const ELEMENT_DATA: PeriodicElement[] = [
-  {seqNo: 1, email: 'something@something.com', role: 'superuser', edit: 'edit'},
-  {seqNo: 2, email: 'something@something.com', role: 'superuser', edit: 'edit'},
-  {seqNo: 3, email: 'something@something.com', role: 'admin', edit: 'edit'},
-  {seqNo: 4, email: 'something@something.com', role: 'user', edit: 'edit'},
-  {seqNo: 5, email: 'something@something.com', role: 'user', edit: 'edit'},
-  {seqNo: 6, email: 'something@something.com', role: 'user', edit: 'edit'},
-  {seqNo: 7, email: 'something@something.com', role: 'noaccess', edit: 'edit'},
-  {seqNo: 8, email: 'something@something.com', role: 'admin', edit: 'edit'},
-  {seqNo: 9, email: 'something@something.com', role: 'superuser', edit: 'edit'},
-  {seqNo: 10, email: 'something@something.com', role: 'user', edit: 'edit'},
-  {seqNo: 11, email: 'something@something.com', role: 'user', edit: 'edit'},
-  {seqNo: 12, email: 'something@something.com', role: 'superuser', edit: 'edit'},
-  {seqNo: 13, email: 'something@something.com', role: 'superuser', edit: 'edit'},
-];
-// **Sample data**
+import { MatSort, MatTableDataSource, MatDialog } from '@angular/material';
+import { AuthenticationService } from '../shared/services/authentication.service';
+import { Router } from '@angular/router';
+import { SnackbarService } from '../shared/snackbar.service';
+import { User } from '../shared/services/user.model';
 
 @Component({
   selector: 'app-users',
@@ -34,17 +13,100 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['seqNo', 'email', 'role', 'edit'];
-  // data source, replace with db data
-  dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  userList: User[];
+  user: User;
+  selectedUser: User;
+
+  selected;
+
+  edit = new User("","");
+
+  dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private auth: AuthenticationService,
+              private router: Router,
+              private snack: SnackbarService,
+              public dialog: MatDialog,) {
+
+  }
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    if (this.auth.isloggedIn() === false) {
+      this.router.navigate(['/login']);
+    }
+
+    let data = this.auth.getallUsers();
+    data.snapshotChanges().subscribe(item => {
+      this.userList = [];
+
+      item.forEach(element => {
+        let json = element.payload.toJSON();
+        json["$key"] = element.key;
+        this.userList.push(json as User);
+      });
+      this.dataSource = new MatTableDataSource(this.userList);
+      this.dataSource.sort = this.sort;
+    });
+  }
+
+  openModal(templateRef) {
+    let dialogRef = this.dialog.open(templateRef, {
+        width: '250px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+    });
+  }
+
+  selectUser(key: string, modal: string) {
+    this.selectedUser = this.userList.filter(x => x.$key === key)[0];
+    this.edit.email = this.selectedUser.email;
+    this.selected = this.selectedUser.rolestring;
+    this.openModal(modal);
+    console.log(this.selectedUser);
+    console.log(this.edit);
+  }
+
+  onSave() {
+    if(this.auth.canDelete() === false) {
+      this.snack.openSnackBar('You do not have permissions for this', 2000);
+    }
+    else {
+    let editedUser = new User(this.selectedUser.$key, this.edit.email);
+    editedUser.rolestring = this.selected;
+    if (this.selected === 'noaccess') {
+      editedUser.role.user = false;
+      editedUser.role.admin = false;
+      editedUser.role.superuser = false;
+      this.auth.updateUser(this.selectedUser.$key, editedUser);
+    }
+    else if (this.selected === 'user') {
+      editedUser.role.user = true;
+      editedUser.role.admin = false;
+      editedUser.role.superuser = false;
+      this.auth.updateUser(this.selectedUser.$key, editedUser);
+    }
+    else if (this.selected === 'admin') {
+      editedUser.role.user = true;
+      editedUser.role.admin = true;
+      editedUser.role.superuser = false;
+      this.auth.updateUser(this.selectedUser.$key, editedUser);
+    }
+    else {
+      editedUser.role.user = true;
+      editedUser.role.admin = true;
+      editedUser.role.superuser = true;
+      this.auth.updateUser(this.selectedUser.$key, editedUser);
+    }
+    }
   }
 
 }
