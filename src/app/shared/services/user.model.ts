@@ -2,13 +2,14 @@ export class User {
     uid: string;
     email: string;
     displayName: string;
-    $key: string;
+    $key?: string;
     role: {
         noaccess: boolean;
         user?: boolean;
         admin?: boolean;
         superuser?: boolean;
     }
+    rolestring: string;
 
     constructor(uid: string, email: string) {
         this.uid = uid;
@@ -20,5 +21,6 @@ export class User {
             admin: false,
             superuser: false
         }
+        this.rolestring = "noaccess";
     }
 }
