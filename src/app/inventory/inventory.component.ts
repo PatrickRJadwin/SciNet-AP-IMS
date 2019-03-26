@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatSort, MatTableDataSource, MatDialog, MatDialogRef, MatPaginator, MatSlideToggleChange } from '@angular/material';
+import { MatSort, MatTableDataSource, MatDialog, MatDialogRef, MatPaginator, MatSlideToggleChange, MatCheckbox } from '@angular/material';
 import { AdditemComponent } from '../additem/additem.component';
 import { InventoryService } from './inventory.service';
 import { Item } from './inventory.model';
 import { AuthenticationService } from '../shared/services/authentication.service';
+import { Router } from '@angular/router';
+import { User } from '../shared/services/user.model';
+import { SnackbarService } from '../shared/snackbar.service';
 
 
 @Component({
@@ -18,7 +21,8 @@ export class InventoryComponent implements OnInit {
 
   itemList: Item[];
   selectedItem: Item;
-
+ 
+  user: User;
 
   //edit data
   edit = new Item("","","","","",true,true,true);
@@ -35,13 +39,18 @@ export class InventoryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  @ViewChild('jcheck') jcheck: MatCheckbox;
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  constructor(public dialog: MatDialog, private inventoryService: InventoryService, private auth: AuthenticationService) {
+  constructor(public dialog: MatDialog,
+    private inventoryService: InventoryService, 
+    private auth: AuthenticationService,
+    private router: Router,
+    private snack: SnackbarService) {
     inventoryService.getAllItems();
-
 
   }
 
@@ -70,6 +79,10 @@ export class InventoryComponent implements OnInit {
 
   //initializing data
   ngOnInit() {
+    if (this.auth.isloggedIn() === false) {
+      this.router.navigate(['/login']);
+    }
+
     let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
       this.itemList = [];
@@ -89,8 +102,13 @@ export class InventoryComponent implements OnInit {
 
   //Delete/Edit functions
   onDelete(key: string) {
+    if(this.auth.canDelete() === false) {
+      this.snack.openSnackBar('You do not have permissions for this', 2000);
+    }
+    else {
     this.inventoryService.deletebyKey(key);
     this.refreshAfterEdit();
+    }
   }
   
   selectItem(key: string, modal: string) {
@@ -104,6 +122,10 @@ export class InventoryComponent implements OnInit {
   }
 
   selectJoinedToggle(key: string) {
+    if(this.auth.canEdit() === false) {
+      this.snack.openSnackBar('You do not have permissions for this', 2000);
+    }
+    else {
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
     if (this.selectedItem.joined === true) {
       this.edit.joined = false;
@@ -123,8 +145,13 @@ export class InventoryComponent implements OnInit {
     }
     this.refreshAfterEdit();
   }
+  }
 
   selectCompleteToggle(key: string) {
+    if(this.auth.canEdit() === false) {
+      this.snack.openSnackBar('You do not have permissions for this', 2000);
+    }
+    else {
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
     if (this.selectedItem.complete === true) {
       this.edit.complete = false;
@@ -144,8 +171,13 @@ export class InventoryComponent implements OnInit {
     }
     this.refreshAfterEdit();
   }
+  }
 
   selectCheckedInToggle(key: string) {
+    if(this.auth.canEdit() === false) {
+      this.snack.openSnackBar('You do not have permissions for this', 2000);
+    }
+    else {
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
     if (this.selectedItem.checkedIn === true) {
@@ -162,14 +194,20 @@ export class InventoryComponent implements OnInit {
     }
     this.refreshAfterEdit();
   }
+  }
 
   onSave() {
+    if(this.auth.canEdit() === false) {
+      this.snack.openSnackBar('You do not have permissions for this', 2000);
+    }
+    else {
     let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
       this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
     editedItem.lastUpdate = new Date().toString();
 
     this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     this.refreshAfterEdit();
+    }
   }
 
   //After edit, refresh query
