@@ -29,6 +29,7 @@ import { SidenavmenuComponent } from './plotting/sidenavmenu/sidenavmenu.compone
 import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.component';
 import { DevicecardComponent } from './plotting/sidenav_cards/device_card.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { AuthGuard } from './shared/services/auth.guard';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     MatSelectModule
   ],
   entryComponents: [AdditemComponent],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
