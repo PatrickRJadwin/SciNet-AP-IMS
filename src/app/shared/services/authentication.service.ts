@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { AngularFireDatabase, AngularFireList, AngularFireObject, snapshotChanges } from 'angularfire2/database';
 import { User } from './user.model';
 import { SnackbarService } from '../snackbar.service';
 
@@ -12,6 +12,8 @@ import { SnackbarService } from '../snackbar.service';
   providedIn: 'root'
 })
 export class AuthenticationService {
+
+  tf;
 
   duration = 10;
   public authInfo: Observable<firebase.User>;
@@ -44,9 +46,9 @@ export class AuthenticationService {
     return new Promise<any>((resolve, reject) => {
       this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then(res => {
-        resolve(res);
-        this.setLocalStorage();
-        this.router.navigate(['/inventory']);
+        resolve(res),
+        localStorage.setItem('log', 'loggedin'),
+        this.router.navigate(['inventory'])
       }, err => reject(err));
     });
    }
@@ -60,33 +62,45 @@ export class AuthenticationService {
        if (this.afAuth.auth.currentUser) {
          this.afAuth.auth.signOut();
          resolve();
-         localStorage.setItem('uid', null);
-         localStorage.setItem('displayName', null);
+         localStorage.setItem('log', 'notloggedin');
          this.router.navigate(['/login']);
-       } else {
+       } else {        
          reject();
        }
      })
    }
 
    isloggedIn() {
-     if (localStorage.getItem('uid') === 'null') {
-       return false;
+     if (localStorage.getItem('log') == 'loggedin') {
+       return true
      }
-     else return true;
+     else {
+       return false
+     }
    }
 
    signUp(email, password) {
      return new Promise<any>((resolve, reject) => {
        this.afAuth.auth.createUserWithEmailAndPassword(email, password)
        .then(res => {
-         resolve(res);
-         this.setupUser(email);
-         this.router.navigate(['/inventory']);
+        this.setupUser(email)
+         resolve(res)
+         this.router.navigate(['/inventory'])
        }, err => reject(err));
-       this.snack.openSnackBar('Could not create this user. Try another Email.', 2000);
-     });
+      });
    }
+
+   signup(email, password) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+    .then((result) => {
+      this.setupUser(result.user.email),
+      localStorage.setItem('log', 'loggedin'),
+      this.router.navigate(['/inventory'])
+    }).catch((error) => {
+      window.alert(error.message)
+    })
+   }
+
 
    setupUser(email) {
      this.user = new User(this.afAuth.auth.currentUser.uid, email);
@@ -103,8 +117,6 @@ export class AuthenticationService {
        rolestring: "noaccess"
      });
      //this.userList.push(this.user);
-     localStorage.setItem('uid', this.user.uid);
-     localStorage.setItem('displayName', this.user.displayName);
    }
 
    setLocalStorage() {
@@ -134,7 +146,9 @@ export class AuthenticationService {
    }
 
    getUser(): User {
+     this.db.database.ref().child('users/' + this.afAuth.auth.currentUser.uid + '/role/admin').toString();
      return this.queryList.filter(x => x.uid === this.afAuth.auth.currentUser.uid)[0];
+     
    }
 
    //testing for reading roles, you can see this in action on the inventory page, the add item dissappears or is shown
@@ -142,7 +156,7 @@ export class AuthenticationService {
    canRead(): boolean {
      //let k = this.getUser();
     //if (k.role.noaccess === true) {return false} else {return true}
-    let k = this.getUser();
+    const k = this.getUser();
     if (k.role.user === true) return true;
     else if (k.role.admin === true) return true;
     else if (k.role.superuser === true) return true;
@@ -150,16 +164,51 @@ export class AuthenticationService {
    }
 
    canEdit(): boolean {
-     let k = this.getUser();
-     if (k.role.admin === true) return true;
-     else if (k.role.superuser === true) return true;
+     this.user = this.getUser();
+     if (this.user.role.admin === true) return true;
+     else if (this.user.role.superuser === true) return true;
      else return false;
    }
 
-   canDelete(): boolean {
-     let k = this.getUser();
-     if (k.role.superuser === true) return true;
-     else return false;
+   isAdmin() {
+    const ref = this.db.database.ref('/users/' + this.afAuth.auth.currentUser.uid + '/role');
+    ref.once("value").then((snapshot => {
+      let n = snapshot.child('admin').val();
+      this.tf = n;
+    }));
+    if (this.tf === true) {return true;}
+    else {return false;}
+   }
+
+   isUser() {
+    const ref = this.db.database.ref('/users/' + this.afAuth.auth.currentUser.uid + '/role');
+    ref.once("value").then((snapshot => {
+      let n = snapshot.child('user').val();
+      this.tf = n;
+    }));
+    if (this.tf == true) {return true;}
+    else {return false;}
+   }
+
+   getrole() {
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+     .child('superuser').once('value').then(snapshot => {
+       this.tf = snapshot.val();
+       console.log(this.tf);
+     })
+     return this.tf;
+     
+   }
+
+   isSuperUser() {
+   /* const ref = this.getrole();
+    ref.once('value').then((snapshot => {
+      let n = snapshot.child('superuser').val();
+      this.tf = n;
+    })) */
+    this.tf = this.getrole();
+    console.log(this.tf);
+    return this.tf;
    }
 
    updateUser(key: string, user: User) {
