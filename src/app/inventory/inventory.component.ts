@@ -56,7 +56,7 @@ export class InventoryComponent implements OnInit {
   //Edit item dialog
   openModal(templateRef) {
     let dialogRef = this.dialog.open(templateRef, {
-        width: '250px',
+        width: '600px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -261,5 +261,9 @@ export class InventoryComponent implements OnInit {
       this.setUpDown = "Setup";
       this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash', 'key'];
     }
+  }
+
+  openMap(modal: string) {
+    this.openModal(modal);
   }
 }

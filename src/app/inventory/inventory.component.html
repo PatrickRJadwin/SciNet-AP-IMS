@@ -112,8 +112,13 @@
       </ng-container>
 
       <ng-container matColumnDef="key">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Key </th>
-        <td mat-cell *matCellDef="let element"> {{element.$key}} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Location </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="openMap(maptemp)">
+            <mat-icon>map</mat-icon>
+          </button>
+          
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -143,6 +148,19 @@
   <div mat-dialog-actions>
     <button mat-raised-button matDialogClose color="accent" (click)="onSave()">Save</button>
     <button mat-raised-button color="warn" matDialogClose>Cancel</button>
+  </div>
+</form>
+</ng-template>
+
+<ng-template #maptemp>
+  <h1 mat-dialog-title>AP Location Info</h1>
+<form class="mapinfo">
+  <div mat-dialog-content data-backdrop="static" data-keyboard="false">
+    <label>Location Notes: "By B-3 Outlet near large plant"</label>
+    <br>
+    <br>
+    <br>
+    <img src="https://i.imgur.com/c2MknHv.png" style="width: 100%;">
   </div>
 </form>
 </ng-template>
