@@ -7,7 +7,6 @@ import { AuthenticationService } from '../shared/services/authentication.service
 import { Router } from '@angular/router';
 import { User } from '../shared/services/user.model';
 import { SnackbarService } from '../shared/snackbar.service';
-import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -24,6 +23,10 @@ export class InventoryComponent implements OnInit {
   selectedItem: Item;
  
   user: User;
+
+  usertf: boolean;
+  admintf: boolean;
+  superusertf: boolean;
 
   //edit data
   edit = new Item("","","","","",true,true,true);
@@ -48,8 +51,7 @@ export class InventoryComponent implements OnInit {
     private inventoryService: InventoryService, 
     private auth: AuthenticationService,
     private router: Router,
-    private snack: SnackbarService,
-    public app: AppComponent) {
+    private snack: SnackbarService) {
     inventoryService.getAllItems();
 
   }
@@ -79,8 +81,6 @@ export class InventoryComponent implements OnInit {
 
   //initializing data
   ngOnInit() {
-
-    this.app.log = "Logout";
 
     let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
@@ -116,6 +116,8 @@ export class InventoryComponent implements OnInit {
   }
 
   selectJoinedToggle(key: string) {
+    this.admintf = this.auth.isAdmin();
+    if (this.admintf == true) {
 
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
@@ -134,11 +136,18 @@ export class InventoryComponent implements OnInit {
       editedItem.lastUpdate = new Date().toString();
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    }
+    };
+  }
+  else if (this.admintf == false) {
+    this.snack.openSnackBar('You do not have permission for this.', 2000);
+  };
     this.refreshAfterEdit();
   }
 
   selectCompleteToggle(key: string) {
+    this.admintf = this.auth.isAdmin();
+    if (this.admintf == true) {
+
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
     if (this.selectedItem.complete === true) {
       this.edit.complete = false;
@@ -155,11 +164,18 @@ export class InventoryComponent implements OnInit {
       editedItem.lastUpdate = new Date().toString();
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    }
+    };
+  }
+  else if (this.admintf == false) {
+    this.snack.openSnackBar('You do not have permission for this.', 2000);
+  };
     this.refreshAfterEdit();
   }
 
   selectCheckedInToggle(key: string) {
+    this.admintf = this.auth.isAdmin();
+    if (this.admintf == true) {
+
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
     if (this.selectedItem.checkedIn === true) {
@@ -173,16 +189,26 @@ export class InventoryComponent implements OnInit {
         this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, true);
       editedItem.lastUpdate = new Date().toString();
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    }
+    };
+  }
+    else if (this.admintf == false) {
+      this.snack.openSnackBar('You do not have permission for this.', 2000);
+    };
     this.refreshAfterEdit();
   }
 
   onSave() {
+    this.admintf = this.auth.isAdmin();
+    if (this.admintf == true) {
     let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
       this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
     editedItem.lastUpdate = new Date().toString();
 
     this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+    }
+    else if (this.admintf == false) {
+      this.snack.openSnackBar('You do not have permission for this.', 2000);
+    };
     this.refreshAfterEdit();
   }
 
@@ -282,3 +308,4 @@ export class InventoryComponent implements OnInit {
     }
   }
 }
+
