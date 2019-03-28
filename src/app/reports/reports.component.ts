@@ -34,9 +34,6 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.auth.isloggedIn() === false) {
-      this.router.navigate(['/login']);
-    }
 
     let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
