@@ -28,11 +28,11 @@ export class AdditemComponent implements OnInit {
 
   //Need to add logged in user's name for created_by field
   addItem() {
-    if(this.auth.isUser() === false) {
+    if(this.auth.isUser() == false) {
       this.snack.openSnackBar('You do not have permissions for this', 2000);
       this.dialogRef.close();
     }
-    else {
+    else if(this.auth.isUser() == true) {
     const user = this.auth.getUser();
     this.item.created_by = user.displayName;
     this.item.mac = this.add.mac;
