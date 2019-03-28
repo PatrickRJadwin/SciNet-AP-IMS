@@ -151,43 +151,22 @@ export class AuthenticationService {
      
    }
 
-   //testing for reading roles, you can see this in action on the inventory page, the add item dissappears or is shown
-   //To test, go to the realtime database after signing up, and change your noaccess to false
-   canRead(): boolean {
-     //let k = this.getUser();
-    //if (k.role.noaccess === true) {return false} else {return true}
-    const k = this.getUser();
-    if (k.role.user === true) return true;
-    else if (k.role.admin === true) return true;
-    else if (k.role.superuser === true) return true;
-    else return false;
-   }
-
-   canEdit(): boolean {
-     this.user = this.getUser();
-     if (this.user.role.admin === true) return true;
-     else if (this.user.role.superuser === true) return true;
-     else return false;
-   }
-
    isAdmin() {
-    const ref = this.db.database.ref('/users/' + this.afAuth.auth.currentUser.uid + '/role');
-    ref.once("value").then((snapshot => {
-      let n = snapshot.child('admin').val();
-      this.tf = n;
-    }));
-    if (this.tf === true) {return true;}
-    else {return false;}
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+     .child('admin').once('value').then(snapshot => {
+       this.tf = snapshot.val();
+       console.log(this.tf);
+     })
+     return this.tf;
    }
 
    isUser() {
-    const ref = this.db.database.ref('/users/' + this.afAuth.auth.currentUser.uid + '/role');
-    ref.once("value").then((snapshot => {
-      let n = snapshot.child('user').val();
-      this.tf = n;
-    }));
-    if (this.tf == true) {return true;}
-    else {return false;}
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+     .child('user').once('value').then(snapshot => {
+       this.tf = snapshot.val();
+       console.log(this.tf);
+     })
+     return this.tf;
    }
 
    getrole() {
@@ -201,14 +180,12 @@ export class AuthenticationService {
    }
 
    isSuperUser() {
-   /* const ref = this.getrole();
-    ref.once('value').then((snapshot => {
-      let n = snapshot.child('superuser').val();
-      this.tf = n;
-    })) */
-    this.tf = this.getrole();
-    console.log(this.tf);
-    return this.tf;
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+     .child('superuser').once('value').then(snapshot => {
+       this.tf = snapshot.val();
+       console.log(this.tf);
+     })
+     return this.tf;
    }
 
    updateUser(key: string, user: User) {
