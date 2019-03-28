@@ -20,6 +20,8 @@ export class UsersComponent implements OnInit {
 
   selected;
 
+  tf: boolean;
+
   edit = new User("","");
 
   dataSource = new MatTableDataSource();
@@ -38,9 +40,6 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.auth.isloggedIn() === false) {
-      this.router.navigate(['/login']);
-    }
 
     let data = this.auth.getallUsers();
     data.snapshotChanges().subscribe(item => {
@@ -60,6 +59,7 @@ export class UsersComponent implements OnInit {
     let dialogRef = this.dialog.open(templateRef, {
         width: '250px',
     });
+    this.tf = this.auth.isSuperUser();
 
     dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
@@ -76,12 +76,14 @@ export class UsersComponent implements OnInit {
   }
 
   onSave() {
-    if(this.auth.canDelete() === false) {
-      this.snack.openSnackBar('You do not have permissions for this', 2000);
+
+    if (this.auth.isSuperUser() == false) {
+      this.snack.openSnackBar('You do not have permission for this.', 2000);
     }
-    else {
-    let editedUser = new User(this.selectedUser.$key, this.edit.email);
-    editedUser.rolestring = this.selected;
+    else if (this.auth.isSuperUser() == true) {
+
+    let editedUser = new User(this.selectedUser.$key, this.edit.email)
+    editedUser.rolestring = this.selected
     if (this.selected === 'noaccess') {
       editedUser.role.user = false;
       editedUser.role.admin = false;
@@ -105,8 +107,8 @@ export class UsersComponent implements OnInit {
       editedUser.role.admin = true;
       editedUser.role.superuser = true;
       this.auth.updateUser(this.selectedUser.$key, editedUser);
-    }
-    }
-  }
+    };
+  };
+}
 
 }
