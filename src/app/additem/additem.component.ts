@@ -28,7 +28,7 @@ export class AdditemComponent implements OnInit {
 
   //Need to add logged in user's name for created_by field
   addItem() {
-    if(this.auth.canDelete() === false) {
+    if(this.auth.isUser() === false) {
       this.snack.openSnackBar('You do not have permissions for this', 2000);
       this.dialogRef.close();
     }
