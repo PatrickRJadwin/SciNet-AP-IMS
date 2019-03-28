@@ -7,6 +7,7 @@ import { AuthenticationService } from '../shared/services/authentication.service
 import { Router } from '@angular/router';
 import { User } from '../shared/services/user.model';
 import { SnackbarService } from '../shared/snackbar.service';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -39,8 +40,6 @@ export class InventoryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  @ViewChild('jcheck') jcheck: MatCheckbox;
-
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -49,7 +48,8 @@ export class InventoryComponent implements OnInit {
     private inventoryService: InventoryService, 
     private auth: AuthenticationService,
     private router: Router,
-    private snack: SnackbarService) {
+    private snack: SnackbarService,
+    public app: AppComponent) {
     inventoryService.getAllItems();
 
   }
@@ -79,9 +79,8 @@ export class InventoryComponent implements OnInit {
 
   //initializing data
   ngOnInit() {
-    if (this.auth.isloggedIn() === false) {
-      this.router.navigate(['/login']);
-    }
+
+    this.app.log = "Logout";
 
     let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
@@ -102,13 +101,8 @@ export class InventoryComponent implements OnInit {
 
   //Delete/Edit functions
   onDelete(key: string) {
-    if(this.auth.canDelete() === false) {
-      this.snack.openSnackBar('You do not have permissions for this', 2000);
-    }
-    else {
     this.inventoryService.deletebyKey(key);
     this.refreshAfterEdit();
-    }
   }
   
   selectItem(key: string, modal: string) {
@@ -122,11 +116,9 @@ export class InventoryComponent implements OnInit {
   }
 
   selectJoinedToggle(key: string) {
-    if(this.auth.canEdit() === false) {
-      this.snack.openSnackBar('You do not have permissions for this', 2000);
-    }
-    else {
+
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
+
     if (this.selectedItem.joined === true) {
       this.edit.joined = false;
       let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
@@ -145,13 +137,8 @@ export class InventoryComponent implements OnInit {
     }
     this.refreshAfterEdit();
   }
-  }
 
   selectCompleteToggle(key: string) {
-    if(this.auth.canEdit() === false) {
-      this.snack.openSnackBar('You do not have permissions for this', 2000);
-    }
-    else {
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
     if (this.selectedItem.complete === true) {
       this.edit.complete = false;
@@ -171,13 +158,8 @@ export class InventoryComponent implements OnInit {
     }
     this.refreshAfterEdit();
   }
-  }
 
   selectCheckedInToggle(key: string) {
-    if(this.auth.canEdit() === false) {
-      this.snack.openSnackBar('You do not have permissions for this', 2000);
-    }
-    else {
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
     if (this.selectedItem.checkedIn === true) {
@@ -194,20 +176,14 @@ export class InventoryComponent implements OnInit {
     }
     this.refreshAfterEdit();
   }
-  }
 
   onSave() {
-    if(this.auth.canEdit() === false) {
-      this.snack.openSnackBar('You do not have permissions for this', 2000);
-    }
-    else {
     let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
       this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
     editedItem.lastUpdate = new Date().toString();
 
     this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     this.refreshAfterEdit();
-    }
   }
 
   //After edit, refresh query
