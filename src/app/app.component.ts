@@ -8,14 +8,9 @@ import { AuthenticationService } from './shared/services/authentication.service'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  inventories: any[]
   constructor(
     db: AngularFireDatabase,
     public auth: AuthenticationService
   ) {
-    db.list('/items').valueChanges()
-      .subscribe(inventories => {
-        this.inventories = inventories;
-      });
   }
 }
