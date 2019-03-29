@@ -3,10 +3,10 @@ import { MatSort, MatTableDataSource, MatDialog, MatDialogRef, MatPaginator, Mat
 import { AdditemComponent } from '../additem/additem.component';
 import { InventoryService } from './inventory.service';
 import { Item } from './inventory.model';
-import { AuthenticationService } from '../shared/services/authentication.service';
-import { Router } from '@angular/router';
 import { User } from '../shared/services/user.model';
 import { SnackbarService } from '../shared/snackbar.service';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 
 @Component({
@@ -23,6 +23,8 @@ export class InventoryComponent implements OnInit {
   selectedItem: Item;
  
   user: User;
+
+  public tf: boolean;
 
   usertf: boolean;
   admintf: boolean;
@@ -48,10 +50,10 @@ export class InventoryComponent implements OnInit {
   }
 
   constructor(public dialog: MatDialog,
-    private inventoryService: InventoryService, 
-    private auth: AuthenticationService,
-    private router: Router,
-    private snack: SnackbarService) {
+    private inventoryService: InventoryService,
+    private snack: SnackbarService,
+    private db: AngularFireDatabase,
+    private afAuth: AngularFireAuth) {
     inventoryService.getAllItems();
 
   }
@@ -101,8 +103,20 @@ export class InventoryComponent implements OnInit {
 
   //Delete/Edit functions
   onDelete(key: string) {
-    this.inventoryService.deletebyKey(key);
-    this.refreshAfterEdit();
+
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+    .child('superuser').once('value').then(snapshot => {
+      this.tf = snapshot.val();
+      console.log(this.tf);
+    });
+
+    if (this.tf) {
+      this.inventoryService.deletebyKey(key);
+
+    }
+    else if (!!this.tf) {
+      this.snack.openSnackBar('You do not have permission for this', 2000);
+    }
   }
   
   selectItem(key: string, modal: string) {
@@ -116,8 +130,13 @@ export class InventoryComponent implements OnInit {
   }
 
   selectJoinedToggle(key: string) {
-    this.admintf = this.auth.isAdmin();
-    if (this.admintf == true) {
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+    .child('admin').once('value').then(snapshot => {
+      this.tf = snapshot.val();
+      console.log(this.tf);
+    })
+
+    if (this.tf === true) {
 
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
@@ -138,15 +157,20 @@ export class InventoryComponent implements OnInit {
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     };
   }
-  else if (this.admintf == false) {
+  else if (this.tf === false) {
     this.snack.openSnackBar('You do not have permission for this.', 2000);
   };
     this.refreshAfterEdit();
   }
 
   selectCompleteToggle(key: string) {
-    this.admintf = this.auth.isAdmin();
-    if (this.admintf == true) {
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+    .child('admin').once('value').then(snapshot => {
+      this.tf = snapshot.val();
+      console.log(this.tf);
+    })
+
+    if (this.tf === true) {
 
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
     if (this.selectedItem.complete === true) {
@@ -166,15 +190,20 @@ export class InventoryComponent implements OnInit {
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     };
   }
-  else if (this.admintf == false) {
+  else if (this.tf === false) {
     this.snack.openSnackBar('You do not have permission for this.', 2000);
   };
     this.refreshAfterEdit();
   }
 
   selectCheckedInToggle(key: string) {
-    this.admintf = this.auth.isAdmin();
-    if (this.admintf == true) {
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+    .child('admin').once('value').then(snapshot => {
+      this.tf = snapshot.val();
+      console.log(this.tf);
+    })
+
+    if (this.tf === true) {
 
     this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
@@ -191,22 +220,27 @@ export class InventoryComponent implements OnInit {
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     };
   }
-    else if (this.admintf == false) {
+    else if (this.tf === false) {
       this.snack.openSnackBar('You do not have permission for this.', 2000);
     };
     this.refreshAfterEdit();
   }
 
   onSave() {
-    this.admintf = this.auth.isAdmin();
-    if (this.admintf == true) {
+    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
+    .child('admin').once('value').then(snapshot => {
+      this.tf = snapshot.val();
+      console.log(this.tf);
+    })
+
+    if (this.tf === true) {
     let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
       this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
     editedItem.lastUpdate = new Date().toString();
 
     this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }
-    else if (this.admintf == false) {
+    else if (this.tf === false) {
       this.snack.openSnackBar('You do not have permission for this.', 2000);
     };
     this.refreshAfterEdit();
@@ -308,4 +342,3 @@ export class InventoryComponent implements OnInit {
     }
   }
 }
-
