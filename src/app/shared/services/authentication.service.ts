@@ -79,17 +79,6 @@ export class AuthenticationService {
      }
    }
 
-   signUp(email, password) {
-     return new Promise<any>((resolve, reject) => {
-       this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-       .then(res => {
-        this.setupUser(email)
-         resolve(res)
-         this.router.navigate(['/inventory'])
-       }, err => reject(err));
-      });
-   }
-
    signup(email, password) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
     .then((result) => {
@@ -100,7 +89,6 @@ export class AuthenticationService {
       window.alert(error.message)
     })
    }
-
 
    setupUser(email) {
      this.user = new User(this.afAuth.auth.currentUser.uid, email);
