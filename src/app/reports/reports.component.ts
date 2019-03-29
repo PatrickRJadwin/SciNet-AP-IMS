@@ -3,6 +3,8 @@ import { MatSort, MatTableDataSource } from '@angular/material';
 import { InventoryService } from '../inventory/inventory.service';
 import { Item } from '../inventory/inventory.model';
 import { AngularFireList } from 'angularfire2/database';
+import { AuthenticationService } from '../shared/services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reports',
@@ -19,7 +21,9 @@ export class ReportsComponent implements OnInit {
   selectList: AngularFireList<any[]>;
   selList: Item[];
 
-  constructor(private inventoryService: InventoryService) {
+  constructor(private inventoryService: InventoryService,
+              private auth: AuthenticationService,
+              private router: Router) {
 
   }
 
@@ -30,6 +34,7 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
+
     let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
       this.itemList = [];
