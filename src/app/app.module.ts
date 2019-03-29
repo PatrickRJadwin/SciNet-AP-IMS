@@ -8,7 +8,6 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './shared/material.module';
 import { InventoryComponent } from './inventory/inventory.component';
 import { UsersComponent } from './users/users.component';
-import { PlottingComponent } from './plotting/plotting.component';
 import { ReportsComponent } from './reports/reports.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AdditemComponent } from './additem/additem.component';
@@ -24,10 +23,6 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 import { MatSidenavModule, MatButtonModule, MatCardModule,
         MatDividerModule, MatRippleModule, MatFormFieldModule,
         MatTooltipModule, MatSelectModule } from '@angular/material'; // <-- Material imports
-import { SidenavmenuComponent } from './plotting/sidenavmenu/sidenavmenu.component';
-
-import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.component';
-import { DevicecardComponent } from './plotting/sidenav_cards/device_card.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { AuthService } from './shared/services/auth.service';
 
@@ -39,10 +34,6 @@ import { AuthService } from './shared/services/auth.service';
     ReportsComponent,
     AdditemComponent,
     LoginComponent,
-    PlottingComponent, // Plotting Imports - Start
-    SidenavmenuComponent,
-    FloorplancardComponent,
-    DevicecardComponent,
     SignUpComponent, // Plotting Imports - End
   ],
   imports: [
