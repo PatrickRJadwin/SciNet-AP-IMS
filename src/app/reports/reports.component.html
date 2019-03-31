@@ -3,18 +3,21 @@
 </div>
 <mat-grid-list cols="3" rowHeight="100px">
 <mat-grid-tile>
-<!--Placeholder. Needs to grab dates from datasource-->
+<!--Placeholder. Needs to grab dates from datasource  (click)="setListByDate(sel.created_at)"-->
   <mat-form-field>
-    <mat-select [(value)]="selected" placeholder="Filter">
-      <mat-option *ngFor="let sel of selList" [value]="sel.created_at" (click)="setListByDate(sel.created_at)">
-        {{sel.created_at | date:'yyyy-MM-dd'}}
+    <mat-select [(value)]="selected" id="sel" placeholder="Select Date">
+      <mat-option *ngFor="let s of dates" [value]="s" (click)="setListByDate(s)">
+        {{s | date:'MM-dd-yyyy'}}
       </mat-option>
     </mat-select>
   </mat-form-field>
 </mat-grid-tile>
+<mat-grid-tile>
+    <button mat-raised-button (click)="savePDF()" color="primary">Generate PDF</button>
+</mat-grid-tile>
 </mat-grid-list>
 <mat-card style="margin: auto;">
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" id="items">
 
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
