@@ -99,8 +99,6 @@ export class InventoryComponent implements OnInit {
     });
   }
 
-
-
   //Delete/Edit functions
   onDelete(key: string) {
 
@@ -144,7 +142,7 @@ export class InventoryComponent implements OnInit {
       this.edit.joined = false;
       let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
         this.selectedItem.created_by, this.edit.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toString();
+      editedItem.lastUpdate = new Date().toISOString();
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }
@@ -152,7 +150,7 @@ export class InventoryComponent implements OnInit {
       this.edit.joined = true;
       let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
         this.selectedItem.created_by, this.edit.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toString();
+      editedItem.lastUpdate = new Date().toISOString();
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     };
@@ -177,7 +175,7 @@ export class InventoryComponent implements OnInit {
       this.edit.complete = false;
       let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
         this.selectedItem.created_by, this.selectedItem.joined, this.edit.complete, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toString();
+      editedItem.lastUpdate = new Date().toISOString();
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }
@@ -185,7 +183,7 @@ export class InventoryComponent implements OnInit {
       this.edit.joined = true;
       let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
         this.selectedItem.created_by, this.selectedItem.joined, true, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toString();
+      editedItem.lastUpdate = new Date().toISOString();
   
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     };
@@ -210,13 +208,13 @@ export class InventoryComponent implements OnInit {
     if (this.selectedItem.checkedIn === true) {
       let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
         this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, false);
-      editedItem.lastUpdate = new Date().toString();
+      editedItem.lastUpdate = new Date().toISOString();
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }
     else {
       let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
         this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, true);
-      editedItem.lastUpdate = new Date().toString();
+      editedItem.lastUpdate = new Date().toISOString();
       this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     };
   }
@@ -236,7 +234,7 @@ export class InventoryComponent implements OnInit {
     if (this.tf === true) {
     let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
       this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
-    editedItem.lastUpdate = new Date().toString();
+    editedItem.lastUpdate = new Date().toISOString();
 
     this.inventoryService.editItem(this.selectedItem.$key, editedItem);
     }

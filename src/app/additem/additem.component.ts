@@ -14,7 +14,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 })
 export class AdditemComponent implements OnInit {
 
-  item = new Item("","","","","user",true,true,true);
+  item = new Item("","","","","user",false,false,false);
   add = new Item("","","","","user",true,true,true);
 
   public tf: boolean;
@@ -44,12 +44,14 @@ export class AdditemComponent implements OnInit {
       this.snack.openSnackBar('You do not have permissions for this', 2000);
     }
     else if(this.tf === true) {
+    const format = 'dd/MM/yyyy';
     const user = this.auth.getUser();
     this.item.created_by = user.displayName;
     this.item.mac = this.add.mac;
     this.item.location = this.add.location;
     this.item.port = this.add.port;
-    this.item.created_at = new Date().toString();
+    this.item.created_at = new Date().toISOString();
+
     this.inventoryService.addItem(this.item);
     this.dialogRef.close();
     };

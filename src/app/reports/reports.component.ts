@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { InventoryService } from '../inventory/inventory.service';
 import { Item } from '../inventory/inventory.model';
 import { AngularFireList } from 'angularfire2/database';
 import { AuthenticationService } from '../shared/services/authentication.service';
 import { Router } from '@angular/router';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
   styleUrls: ['./reports.component.scss']
 })
+
 export class ReportsComponent implements OnInit {
 
   displayedColumns: string[] = ['seqNo', 'mac', 'location', 'port'];
@@ -20,6 +22,8 @@ export class ReportsComponent implements OnInit {
   itemList: Item[];
   selectList: AngularFireList<any[]>;
   selList: Item[];
+  it = new Array;
+  dates = new Array;
 
   constructor(private inventoryService: InventoryService,
               private auth: AuthenticationService,
@@ -34,7 +38,6 @@ export class ReportsComponent implements OnInit {
   }
 
   ngOnInit() {
-
     let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
       this.itemList = [];
@@ -46,21 +49,16 @@ export class ReportsComponent implements OnInit {
       });
       this.dataSource = new MatTableDataSource(this.itemList);
       this.dataSource.sort = this.sort;
-    });
-
-    this.selectList = this.inventoryService.getRecentDates();
-    this.selectList.snapshotChanges().subscribe(item => {
-      this.selList = [];
-      item.forEach(sel => {
-        let json = sel.payload.toJSON();
-        json["$key"] = sel.key;
-        this.selList.push(json as Item);
+      this.itemList.forEach(element => {
+        let k = formatDate(element.created_at, 'yyyy-MM-dd', 'en-us');
+        this.it.push(k);
       });
+      this.dates = this.it.filter((el, i, a) => i === a.indexOf(el));
     });
   }
-
+  
   setListByDate(date: string) {
-    let data = this.inventoryService.getDateBy(date);
+    let data = this.inventoryService.getAllItems();
     data.snapshotChanges().subscribe(item => {
         this.itemList = [];
   
@@ -69,9 +67,9 @@ export class ReportsComponent implements OnInit {
           json["$key"] = element.key;
           this.itemList.push(json as Item);
         });
-      this.dataSource = new MatTableDataSource(this.itemList);
-      this.dataSource.sort = this.sort;
       });
+      this.itemList = this.itemList.filter(x => x.created_at.substring(0, 10) == date);
+      this.dataSource = new MatTableDataSource(this.itemList); 
   }
 
 }

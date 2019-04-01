@@ -3,19 +3,25 @@ import { AngularFireDatabase, AngularFireList } from "angularfire2/database";
 import { Item } from './inventory.model';
 import { FirebaseApp} from 'angularfire2' ;
 import 'firebase/storage';
+import { Observable } from 'rxjs';
  
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService {
   item: Item;
+  l: Item[];
   itemList: AngularFireList<any>;
   queryList: AngularFireList<any>;
+  list: Observable<any[]>;
   noncompleteJoined: AngularFireList<any>;
   selectedItem: Item;
+  uniqueDates = [];
+  inv: [];
   constructor(private db: AngularFireDatabase, private firebaseApp: FirebaseApp) {
 
     this.itemList = db.list('items');
+    this.list = db.list('items').snapshotChanges();
 
   }
 
@@ -44,14 +50,5 @@ export class InventoryService {
     this.queryList = this.db.list('items', ref => ref.orderByChild(thing).equalTo(false));
     return this.queryList;
   }
-  
-  getRecentDates() {
-    this.queryList = this.db.list('items', ref => ref.orderByChild('created_at').limitToLast(5));
-    return this.queryList;
-  }
 
-  getDateBy(date: string) {
-    this.queryList = this.db.list('items', ref => ref.orderByChild('created_at').equalTo(date));
-    return this.queryList;
-  }
 }
