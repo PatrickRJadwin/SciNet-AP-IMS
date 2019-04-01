@@ -6,6 +6,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { UsersComponent } from './users/users.component';
 import { LoginComponent } from './login/login.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './shared/services/auth.guard';
 
 const routes: Routes = [
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'reports', component: ReportsComponent, canActivate: [AuthGuard]},
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent},
-  { path: 'signup', component: SignUpComponent}
+  { path: 'signup', component: SignUpComponent},
+  { path: 'admin', component: AdminComponent}
 ];
 
 @NgModule({

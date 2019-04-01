@@ -30,6 +30,7 @@ import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.
 import { DevicecardComponent } from './plotting/sidenav_cards/device_card.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { AuthGuard } from './shared/services/auth.guard';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AuthGuard } from './shared/services/auth.guard';
     SidenavmenuComponent,
     FloorplancardComponent,
     DevicecardComponent,
-    SignUpComponent, // Plotting Imports - End
+    SignUpComponent,
+    AdminComponent, // Plotting Imports - End
   ],
   imports: [
     BrowserModule,

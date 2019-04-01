@@ -16,7 +16,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class InventoryComponent implements OnInit {
   // Columns for table
-  displayedColumns: string[] = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash', 'key'];
+  displayedColumns: string[] = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
   // Datasource var, will replace with db data
 
   itemList: Item[];

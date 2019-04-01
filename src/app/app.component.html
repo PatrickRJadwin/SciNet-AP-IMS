@@ -26,6 +26,10 @@
             <span class="label"
             (click)="auth.signout()">Logout</span>
           </a>
+          <a mat-list-item
+              routerLink="/admin">
+            <span class="label">Admin</span>
+          </a>
           </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content>
@@ -61,6 +65,11 @@
                     <a
                       routerLink="/users">
                       <span class="label">USERS</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a routerLink="/admin">
+                      <span class="label">ADMIN</span>
                     </a>
                   </li>
               </ul>
