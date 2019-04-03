@@ -25,6 +25,13 @@
     <button mat-raised-button color="primary" (click)="fileInput.click()">Upload Floorplan</button>
     <input #fileInput type="file" (change)="chooseFiles($event)" style="display:none;" />
     <br>
+    <div id="file">{{info}}</div> 
+    <br>
+    <br>
+    <mat-form-field>
+    <input matInput placeholder="File Name" [(ngModel)]="name" name="notes">
+    </mat-form-field>
+    <br>
     <button mat-raised-button color="primary" style="margin-top: 10%; float: right;">Submit</button>
   </form>
 </ng-template>
