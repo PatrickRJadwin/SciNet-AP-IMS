@@ -1,8 +1,9 @@
 import { Component, OnInit, NgModule } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { AngularFireStorage } from 'angularfire2/storage';
-import { Observable } from 'rxjs/internal/Observable';
-import { finalize } from 'rxjs/operators';
+import { Image } from './image.model';
+import { ImageService } from '../shared/services/image.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -15,13 +16,18 @@ import { finalize } from 'rxjs/operators';
   exports: [AdminComponent]
 })
 export class AdminComponent implements OnInit {
-
-  uploadPercent: Observable<number>;
-  downloadURL: Observable<string>;
+  selectedFiles: FileList;
+  file: File;
+  imgsrc;
+  image: Image;
 
   constructor(public dialog: MatDialog,
-              private store: AngularFireStorage) { }
+              private storage: AngularFireStorage,
+              private imageService: ImageService) {
 
+  }
+
+              
   ngOnInit() {
   }
 
@@ -39,26 +45,22 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  uploadImage(event) {
+    this.selectedFiles = event.target.files;
+    if (this.selectedFiles.item(0))
+        this.uploadPic();
+  }
 
-/*  uploadImage(event) {
-    let file = event.target.files[0];
-    let path = 'floorplans/${file.name}'
-    if (file.type.split('/')[0] !== 'image') {
-      return alert('error')
-    }
-    else {
-      let ref = this.store.ref(path)
-      let task = this.store.upload(path, file);
-      this.uploadPercent = task.percentageChanges();
-      task.snapshotChanges().pipe(
-        finalize(() => {
-          this.downloadURL = ref.getDownloadURL();
-          this.downloadURL.subscribe(url => {
-            console.log(url);
-          });
-        }
-        )
-      ).subscribe();
-    }
-  }*/
+  uploadPic() {
+    let file = this.selectedFiles.item(0);
+    let uniqkey = 'pic' + Math.floor(Math.random() * 1000000);
+    const uploadTask = this.storage.upload('/floorplans/' + uniqkey, file).then(() => {
+      const ref = this.storage.ref('/floorplans/' + uniqkey);
+      const downloadUrl = ref.getDownloadURL().subscribe(url => {
+        this.image.url = url;
+        console.log(url);
+        this.imageService.addImage(this.image);
+      })
+    });
+  }
 }

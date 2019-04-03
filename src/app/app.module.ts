@@ -15,7 +15,7 @@ import { AdditemComponent } from './additem/additem.component';
 import { LoginComponent } from './login/login.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
-import { AngularFireStorage } from 'angularfire2/storage';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
@@ -41,12 +41,12 @@ import { AdminComponent } from './admin/admin.component';
     ReportsComponent,
     AdditemComponent,
     LoginComponent,
-    PlottingComponent, // Plotting Imports - Start
+    PlottingComponent, 
     SidenavmenuComponent,
     FloorplancardComponent,
     DevicecardComponent,
     SignUpComponent,
-    AdminComponent, // Plotting Imports - End
+    AdminComponent, 
   ],
   imports: [
     BrowserModule,
@@ -58,6 +58,7 @@ import { AdminComponent } from './admin/admin.component';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     MatSidenavModule,
     MatButtonModule,
     MatCardModule,
