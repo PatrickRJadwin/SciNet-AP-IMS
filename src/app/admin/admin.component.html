@@ -23,7 +23,7 @@
     <h1 mat-dialog-title>Upload Preview</h1>
   <form class="uploadFP">
     <button mat-raised-button color="primary" (click)="fileInput.click()">Upload Floorplan</button>
-    <input #fileInput type="file" (change)="uploadImage($event)" style="display:none;" />
+    <input #fileInput type="file" (change)="chooseFiles($event)" style="display:none;" />
     <br>
     <button mat-raised-button color="primary" style="margin-top: 10%; float: right;">Submit</button>
   </form>
