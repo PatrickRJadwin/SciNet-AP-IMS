@@ -24,6 +24,9 @@ export class AdminComponent implements OnInit {
   imgsrc;
   image: ImageModel;
   public tf: boolean;
+  name: string;
+  info;
+
 
   constructor(public dialog: MatDialog,
     private storage: AngularFireStorage,
@@ -52,8 +55,10 @@ export class AdminComponent implements OnInit {
   }
   chooseFiles(event) {
     this.selectedFiles = event.target.files;
-    if (this.selectedFiles.item(0))
+    if (this.selectedFiles.item(0)) {
       this.uploadPic();
+      this.info = this.selectedFiles.item(0).name;
+    }
   }
 
   uploadPic() {
@@ -64,11 +69,12 @@ export class AdminComponent implements OnInit {
       const ref = this.storage.ref('/floorplans/' + uniqkey);
       const downloadUrl = ref.getDownloadURL().subscribe(url => {
         
-        this.image = new ImageModel(url);
+        this.image = new ImageModel(url, this.name);
         console.log(this.image.url);
         this.image.url = url;
         console.log(this.image.url);
         this.imageService.addLink(this.image);
+        //this.imageService.addImage(this.image);
       })
     });
   }
