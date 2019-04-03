@@ -69,7 +69,6 @@ export class AdminComponent implements OnInit {
         this.image.url = url;
         console.log(this.image.url);
         this.imageService.addLink(this.image);
-        this.imageService.addImage(this.image);
       })
     });
   }
