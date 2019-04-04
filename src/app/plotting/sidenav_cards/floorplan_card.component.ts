@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {SidenavmenuComponent} from '../sidenavmenu/sidenavmenu.component';
 
 @Component({
   selector: 'app-floorplancard',
@@ -13,7 +14,15 @@ export class FloorplancardComponent implements OnInit {
   }
 
   floorplanClicked(el) {
-    // el.innerHTML
+    console.log(el.src + ' ' + el.id);
+
+    let fpImage;
+    let fpName;
+
+    fpImage = el.src;
+    fpName = el.id;
+
+    SidenavmenuComponent.loadFloorplan(fpImage, fpName);
   }
 
 }
