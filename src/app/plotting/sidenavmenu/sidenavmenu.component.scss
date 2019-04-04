@@ -9,10 +9,22 @@ $navbarlightgrey: rgb(95,95,95);
 $backgroundgrey: rgb(60,60,60);
 $darkgrey: darkgrey;
 
+$footertextbox: rgb(70,70,70);
+$cardbackground: rgb(55,55,55);
+$cardshadow: rgb(25,25,25);
+
+
+mat-sidenav {
+  background-color: $navbarblack;
+}
+
 mat-sidenav-container {
-  height: 100vh;
+  height: 85vh;
   width: 99.1vw;
-  background-color: $backgroundgrey;
+}
+
+.mat-button {
+  min-width: 1%;
 }
 
 /* Sidenav Toggles */
@@ -28,11 +40,18 @@ mat-sidenav-container {
   height: 50px;
   background-color: $darkgrey;
 }
+.navbartoggleInnerButton {
+  z-index: 3;
+  float: left;
+  position: absolute;
+  top: 40%;
+  height: 50px;
+  background-color: $darkgrey;
+}
 
 /* Sidenav Styles */
 .sidenavMenu {
   background-color: $navbarblack;
-  height: 100%;
 }
 .sidenavmenuButton {
   background: #7d7e7d;
@@ -55,7 +74,7 @@ mat-sidenav-container {
 }
 
 .sidenavcontentContainer {
-  height: 83%;
+  height: 100%;
   border: gainsboro;
   border-style: inset;
   overflow-y: scroll;
@@ -63,8 +82,9 @@ mat-sidenav-container {
 }
 
 /* canvas styles */
-canvas {
-  position: relative;
+
+.canvas-wrapper {
+  position: absolute;
   border: 3px solid #000;
   background-color: $white;
   border-color: dimgrey;
@@ -72,3 +92,68 @@ canvas {
   margin: 2%;
   margin-left: 5%;
 }
+
+/* infobox styles */
+#infoboxform {
+  height: 200px;
+  width: 250px;
+  display: none;
+  position: absolute;
+  z-index: 5;
+  background-color: $navbargrey;
+  border-color: $navbargrey;
+  border-radius: 10%;
+}
+
+.formInput {
+  margin-top: .5%;
+}
+
+.partial-width {
+  width: 75%;
+}
+
+.iconMenuButton {
+  position: absolute;
+  right: 13%;
+  top: 5%;
+}
+
+.statusMenu {
+  position: absolute;
+  top: 100px;
+}
+
+.statusMenuIcon {
+  position: absolute;
+  width: 120%;
+  border-radius: 50%;
+  border-color: darkgrey;
+  border-style: ridge;
+  border-width: 3px;
+}
+
+.statusMenuItem {
+  border-color: dimgrey;
+  border-bottom-style: groove;
+  border-left-style: groove;
+  border-right-style: groove;
+  padding-bottom: 25%;
+}
+
+.statusIcon {
+  width: 25%;
+  margin-top: 5px;
+}
+
+
+.topMenuItem {
+  border-color: dimgrey;
+  border-style: groove;
+  padding-bottom: 25%;
+}
+
+.infoboxFooter {
+  float: bottom;
+}
+
