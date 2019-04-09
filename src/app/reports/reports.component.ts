@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Injectable } from '@angular/core';
+import { Component, OnInit, ViewChild, Injectable, ElementRef} from '@angular/core';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { InventoryService } from '../inventory/inventory.service';
 import { Item } from '../inventory/inventory.model';
@@ -6,6 +6,8 @@ import { AngularFireList } from 'angularfire2/database';
 import { AuthenticationService } from '../shared/services/authentication.service';
 import { Router } from '@angular/router';
 import { formatDate } from '@angular/common';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 @Component({
   selector: 'app-reports',
@@ -24,6 +26,7 @@ export class ReportsComponent implements OnInit {
   selList: Item[];
   it = new Array;
   dates = new Array;
+  @ViewChild('TABLE') table: ElementRef;
 
   constructor(private inventoryService: InventoryService,
               private auth: AuthenticationService,
@@ -55,6 +58,7 @@ export class ReportsComponent implements OnInit {
       });
       this.dates = this.it.filter((el, i, a) => i === a.indexOf(el));
     });
+
   }
   
   setListByDate(date: string) {
@@ -70,6 +74,27 @@ export class ReportsComponent implements OnInit {
       });
       this.itemList = this.itemList.filter(x => x.created_at.substring(0, 10) == date);
       this.dataSource = new MatTableDataSource(this.itemList); 
+  }
+
+  savePDF() {
+    let name = this.auth.getUser().displayName;
+    let date = formatDate(new Date(), 'medium', 'en-us');
+    let dateshort = formatDate(new Date(), 'M-d-yy-h.mm', 'en-us');
+    let doc = new jsPDF();
+
+    let header = function (data) {
+      doc.setFontSize(12);
+      doc.setTextColor(40);
+      doc.setFontStyle('normal');
+      doc.text("SciNet Report by " + name + " on " + date, data.settings.margin.left, 12);
+    }
+
+    doc.autoTable({
+      didDrawPage: header,
+      html: '#items'
+    });
+
+    doc.save(name + "-Report-" + dateshort + ".pdf");
   }
 
 }
