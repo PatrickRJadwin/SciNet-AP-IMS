@@ -16,7 +16,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 })
 export class InventoryComponent implements OnInit {
   // Columns for table
-  displayedColumns: string[] = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash', 'key'];
+  displayedColumns: string[] = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
   // Datasource var, will replace with db data
 
   itemList: Item[];
@@ -38,6 +38,7 @@ export class InventoryComponent implements OnInit {
   countJoined: number;
   countCompleted: number;
   countCheckedIn: number;
+  show = true;
   selected: string;
 
   dataSource = new MatTableDataSource();
@@ -73,7 +74,7 @@ export class InventoryComponent implements OnInit {
   //Edit item dialog
   openModal(templateRef) {
     let dialogRef = this.dialog.open(templateRef, {
-        width: '250px',
+        width: '500px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -96,7 +97,12 @@ export class InventoryComponent implements OnInit {
       this.dataSource = new MatTableDataSource(this.itemList);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
+      this.countAll = this.itemList.length;
+      this.countJoined = this.itemList.filter(x => x.joined === true).length;
+      this.countCompleted = this.itemList.filter(x => x.complete === true).length;
+      this.countCheckedIn = this.itemList.filter(x => x.checkedIn === true).length;
     });
+
   }
 
   //Delete/Edit functions
@@ -331,12 +337,14 @@ export class InventoryComponent implements OnInit {
 
   toggleSet(changeEvent: MatSlideToggleChange) {
     if (changeEvent.checked) {
+      this.show = false;
       this.setUpDown = "Tear Down";
       this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'checkedIn', 'edit'];
     }
     else {
       this.setUpDown = "Setup";
-      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash', 'key'];
+      this.show = true;
+      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
     }
   }
 }
