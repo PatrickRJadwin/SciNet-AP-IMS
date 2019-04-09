@@ -1,27 +1,24 @@
-<mat-sidenav-container [hasBackdrop]="false">
+<mat-sidenav-container id="sidenav" [hasBackdrop]="false">
   <mat-sidenav #sidenav [fixedInViewport]="true" mode="over" position="end" class="sidenavBorder">
+
+    <button class="navbartoggleInnerButton" mat-button (click)="sidenav.toggle()"> < </button>
+
     <mat-card class="sidenavMenu">
-      <mat-card-title>
-        <span>
-          <button mat-button class="sidenavmenuButton">Floorplans</button>
-          <button mat-button class="sidenavmenuButton">Devices</button>
-          <button mat-button class="sidenavmenuButton">Notifications</button>
-        </span>
-          <div>
-            <span>
-              <input matInput placeholder="Input">
-              <button mat-button class="sidenavmenuButton">Search</button>
-            </span>
+      <mat-tab-group>
+        <mat-tab class="sidenavcontentContainer" label="Floorplans">
+          <div >
+            <app-floorplancard></app-floorplancard>
           </div>
-      </mat-card-title>
+        </mat-tab>
 
-      <div class="sidenavcontentContainer">
-        <app-floorplancard></app-floorplancard>
-      </div>
+        <mat-tab class="sidenavcontentContainer" label="Devices">
+          <div>
+            <app-floorplancard></app-floorplancard>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
 
-      <mat-card-actions>
-        <button class="sidenavuploadButton" mat-button>Add New Floorplan</button>
-      </mat-card-actions>
+
     </mat-card>
   </mat-sidenav>
 
@@ -30,10 +27,12 @@
       <button class="navbartoggleButton" mat-button (click)="sidenav.toggle()"> < </button>
     </div>
 
-    <canvas id="myCanvas"></canvas> <!-- Canvas for plotting -->
+    <div id="canvasWrap" class="canvas-wrapper">
+      <canvas id="myCanvas"></canvas> <!-- Canvas for plotting -->
+    </div>
+
 
   </mat-sidenav-content>
 </mat-sidenav-container>
 
 <img src='https://i.imgur.com/Q5skAxA.png' id="my-image" style="display: none;">
-

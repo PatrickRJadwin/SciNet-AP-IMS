@@ -2,28 +2,28 @@
 
   <mat-card-content class="cardContent"> <!-- Floorplan image will go here-->
     <button mat-stroked-button (click)="floorplanClicked($event.target)">
-      <div id="viewOptions">
-        <button mat-button>View</button>
-        <button mat-button>Edit</button>
-      </div>
-      <img class="floorplanPreview" src="https://i.imgur.com/c2MknHv.png" alt="Floorplan Preview">
+      <img class="floorplanPreview" id="floorplan-1" src="https://i.imgur.com/c2MknHv.png" alt="Floorplan Preview">
     </button>
   </mat-card-content> <!-- Floorplan image will go here-->
 
   <mat-card-footer class="cardFooter">
     <span class="floorplanName">Floorplan Name</span> <!-- Floorplan name goes here -->
-    <img class="icon" src="https://i.imgur.com/2ojng1R.png" alt="Grey Disconnected Icon"> <!-- Floorplan Status Icon -->
+    <img class="icon" src="https://i.imgur.com/2ojng1R.png" alt="Grey Disconnected Icon" matTooltip="No Plotted Devices"> <!-- Floorplan Status Icon -->
   </mat-card-footer>
 </mat-card>
 
 <!-- Temporary links to different floorplan status icons
 
     No Plotted Devices: https://i.imgur.com/2ojng1R.png
+        matTooltip="No Plotted Devices"
 
     All Devices Okay: https://i.imgur.com/JfxYEz5.png
+        matTooltip="All Devices Okay"
 
     Attention Needed: https://i.imgur.com/Wz4t724.png
+        matTooltip="Attention Needed"
 
     Teardown Complete: https://i.imgur.com/BFId2dQ.png
+        matTooltip="Teardown Complete"
 
 -->

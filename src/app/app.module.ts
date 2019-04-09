@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
 import { MatSidenavModule, MatButtonModule, MatCardModule,
         MatDividerModule, MatRippleModule, MatFormFieldModule,
-        MatTooltipModule, MatSelectModule } from '@angular/material'; // <-- Material imports
+        MatTooltipModule, MatSelectModule, MatTabsModule } from '@angular/material'; // <-- Material imports
 import { SidenavmenuComponent } from './plotting/sidenavmenu/sidenavmenu.component';
 
 import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.component';
@@ -59,6 +59,7 @@ import { AuthGuard } from './shared/services/auth.guard';
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
+    MatTabsModule,
     BrowserAnimationsModule,
     MatRippleModule,
     MatFormFieldModule,
