@@ -8,13 +8,26 @@ import { AngularFireStorage } from 'angularfire2/storage';
 })
 export class ImageService {
   image: ImageModel;
+  itemList: AngularFireList<any>
   linkList: AngularFireList<any>
 
   constructor(private af: AngularFireStorage, private db: AngularFireDatabase) { 
     this.linkList = db.list('floorplans')
   }
 
+  getLinks() {
+    return this.linkList;
+  }
+
+  addImage(image: ImageModel) {
+    this.itemList.push(image);
+  }
+
   addLink(image: ImageModel) {
     this.linkList.push(image);
+  }
+
+  getImage() {
+    return this.itemList;
   }
 }
