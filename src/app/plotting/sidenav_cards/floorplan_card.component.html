@@ -1,8 +1,8 @@
-<mat-card class="cardContainer"> <!-- Floorplan Card w/ Grey "No Plotted Devices" icon -->
+<mat-card *ngFor="let element of itemList" class="cardContainer"> <!-- Floorplan Card w/ Grey "No Plotted Devices" icon -->
 
   <mat-card-content class="cardContent"> <!-- Floorplan image will go here-->
     <button mat-stroked-button (click)="floorplanClicked($event.target)">
-      <img class="floorplanPreview" id="floorplan-1" src="https://i.imgur.com/c2MknHv.png" alt="Floorplan Preview">
+      <img class="floorplanPreview" id="floorplan-1" src="{{element.url}}" alt="Floorplan Preview">
     </button>
   </mat-card-content> <!-- Floorplan image will go here-->
 
