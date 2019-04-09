@@ -17,6 +17,7 @@
 </mat-grid-tile>
 </mat-grid-list>
 <mat-card style="margin: auto;">
+  <div #TABLE>
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8" id="items">
 
   <!--- Note that these columns can be defined in any order.
@@ -49,5 +50,6 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+</div>
 
 </mat-card>
