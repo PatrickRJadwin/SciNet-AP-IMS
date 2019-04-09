@@ -15,6 +15,7 @@ import { AdditemComponent } from './additem/additem.component';
 import { LoginComponent } from './login/login.component';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireAuthModule } from "@angular/fire/auth";
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
@@ -30,6 +31,7 @@ import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.
 import { DevicecardComponent } from './plotting/sidenav_cards/device_card.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { AuthGuard } from './shared/services/auth.guard';
+import { AdminComponent } from './admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -39,11 +41,12 @@ import { AuthGuard } from './shared/services/auth.guard';
     ReportsComponent,
     AdditemComponent,
     LoginComponent,
-    PlottingComponent, // Plotting Imports - Start
+    PlottingComponent, 
     SidenavmenuComponent,
     FloorplancardComponent,
     DevicecardComponent,
-    SignUpComponent, // Plotting Imports - End
+    SignUpComponent,
+    AdminComponent, 
   ],
   imports: [
     BrowserModule,
@@ -55,6 +58,7 @@ import { AuthGuard } from './shared/services/auth.guard';
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    AngularFireStorageModule,
     MatSidenavModule,
     MatButtonModule,
     MatCardModule,
@@ -64,7 +68,7 @@ import { AuthGuard } from './shared/services/auth.guard';
     MatRippleModule,
     MatFormFieldModule,
     MatTooltipModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   entryComponents: [AdditemComponent],
   providers: [AuthGuard],
