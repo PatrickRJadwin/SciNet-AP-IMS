@@ -1,5 +1,6 @@
 $white: white;
 $background: #424242;
+$black: black;
 
 * {
     color: $white;
@@ -9,6 +10,18 @@ table {
     width: 100%;
     min-width: 900px;
     table-layout: fixed;
+}
+
+caption {
+    background-color: $background;
+    text-align: left;
+}
+.dep {
+    padding-left: 14px;
+}
+
+mat-paginator {
+    width: 100%;
 }
 
 mat-card {
@@ -24,4 +37,8 @@ th.mat-sort-header-sorted {
 
 .mat-form-field {
     padding-left: 20px; //Needed for mobile.
+}
+
+.full-width {
+    width: 90%;
 }
