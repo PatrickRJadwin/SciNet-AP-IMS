@@ -19,8 +19,8 @@ mat-sidenav {
 }
 
 mat-sidenav-container {
-  height: 85vh;
-  width: 99.1vw;
+  height: 89.2vh;
+  width: 100vw;
 }
 
 .mat-button {
@@ -91,6 +91,7 @@ mat-sidenav-container {
   border-style: groove;
   margin: 2%;
   margin-left: 5%;
+  display: none;
 }
 
 /* infobox styles */
@@ -157,3 +158,11 @@ mat-sidenav-container {
   float: bottom;
 }
 
+.toolbar {
+  top: 1vh;
+  left: .5vw;
+  position: absolute;
+  float: left;
+  z-index: 10;
+  background-color: #424242;
+}
