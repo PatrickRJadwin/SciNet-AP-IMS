@@ -1,7 +1,22 @@
-
 import {AfterViewInit, Component, HostListener, Input} from '@angular/core';
 import {fabric} from 'fabric';
 import {fromEvent} from 'rxjs';
+import { AngularFireDatabase } from 'angularfire2/database';
+
+
+@Component({
+  selector: 'img-model'
+})
+export class Img {
+  $key: string;
+  url: string;
+  json: string;
+
+  constructor(url, string) {
+    this.url = url;
+    this.json = string;
+  }
+}
 
 @Component({
   selector: 'app-sidenav',
@@ -9,7 +24,7 @@ import {fromEvent} from 'rxjs';
   styleUrls: ['./sidenavmenu.component.scss']
 })
 export class SidenavmenuComponent implements AfterViewInit {
-  constructor() { }
+  constructor(private db: AngularFireDatabase) { }
 
 // Getter and Setter for EDIT_MODE boolean
   static get EDIT_MODE(): boolean {
@@ -47,13 +62,19 @@ export class SidenavmenuComponent implements AfterViewInit {
   // Reference variables to be used for programmatic modification of canvas and canvas objects
   static canvasRef;
 
+  // Variables for current URL, and imgList
+  public static current;
+  public static imgList: Img[];
+
   canvas: any;
 
 // Method to load floorplan image from floorplan card
   public static loadFloorplan(fpImage, fpName) {
     console.log('Received Floorplan: ' + fpImage + ' ' + fpName);
+    this.current = fpImage;
 
     const tempImage = new Image();
+    
     tempImage.addEventListener('load', () => {
       console.log('width: ' + tempImage.naturalWidth + ', height: ' + tempImage.naturalHeight);
     });
@@ -75,7 +96,8 @@ export class SidenavmenuComponent implements AfterViewInit {
       stroke: 'black'
     });
 
-    this.prototype.implementFloorplan();
+
+    this.prototype.implementFloorplan(fpImage);
   }
 
 // Event Handler for keyboard events on canvas
@@ -139,10 +161,10 @@ export class SidenavmenuComponent implements AfterViewInit {
   }
 
 // Method to update canvas with chosen floorplan as background
-  implementFloorplan() {
+  implementFloorplan(url) {
     document.getElementById('canvasWrap').style.display = 'block';
 
-    try {
+    /*try {
       SidenavmenuComponent.plottedDevices.length = 0;
       SidenavmenuComponent.textboxOpen = false;
 
@@ -150,7 +172,7 @@ export class SidenavmenuComponent implements AfterViewInit {
       SidenavmenuComponent.canvasRef.dispose();
     } catch (err) {
       console.log(err);
-    }
+    }*/
 
     SidenavmenuComponent.canvasRef = new fabric.Canvas('myCanvas');
 
@@ -160,12 +182,21 @@ export class SidenavmenuComponent implements AfterViewInit {
     SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpWidth);
 
 
+    SidenavmenuComponent.fpImageCurrent.crossOrigin = "Anonymous";
 
     SidenavmenuComponent.canvasRef.setBackgroundImage(SidenavmenuComponent.fpImageCurrent);
 
-    this.captureEvents();
-    this.panView();
-    console.log('Loaded Floorplan');
+    if (SidenavmenuComponent.imgList.filter(x => x.url === url).length === 1) {
+      SidenavmenuComponent.canvasRef.loadFromJSON(SidenavmenuComponent.imgList.filter(x=>x.url === url)[0].json);
+      this.captureEvents();
+      this.panView();
+      console.log('Loaded Floorplan');
+    }
+    else {
+      this.captureEvents();
+      this.panView();
+      console.log('Loaded Floorplan');
+    }
   }
 
 // Method to change plotted device's name
@@ -220,6 +251,17 @@ export class SidenavmenuComponent implements AfterViewInit {
     this.canvas.setHeight(this.fpHeight);
     this.canvas.setWidth(this.fpWidth);
     this.captureEvents(); */
+
+    let data = this.db.list('floorplanJson');
+    data.snapshotChanges().subscribe(item => {
+      SidenavmenuComponent.imgList = [];
+
+      item.forEach(element => {
+        let json = element.payload.toJSON();
+        json["$key"] = element.key;
+        SidenavmenuComponent.imgList.push(json as Img);
+      });
+    });
   }
 
 
@@ -356,4 +398,21 @@ export class SidenavmenuComponent implements AfterViewInit {
       this.selection = true;
     });
   }
+
+  //Will save Json and url in fb or update if already in fb
+  saveJson() {
+    var json = JSON.stringify(SidenavmenuComponent.canvasRef);
+
+    var img = new Img(SidenavmenuComponent.current, json);
+    console.log(img);
+
+    if (SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current).length === 1) {
+      this.db.object('floorplanJson/' + SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current)[0].$key).update(img);
+    }
+    else {
+      this.db.list('floorplanJson').push(img);
+    }
+    
+  }
+
 }
