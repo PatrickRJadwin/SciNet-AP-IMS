@@ -1,5 +1,7 @@
 <mat-sidenav-container id="sidenav" [hasBackdrop]="false">
-  <mat-sidenav #sidenav [fixedInViewport]="true" mode="over" position="end" class="sidenavBorder">
+
+  <!-- Content to be displayed within sidenav -->
+  <mat-sidenav #sidenav [fixedInViewport]="true" mode="over" position="end" class="sidenavBorder" id="sidenavContainer">
 
     <button class="navbartoggleInnerButton" mat-button (click)="sidenav.toggle()"> < </button>
 
@@ -18,11 +20,13 @@
         </mat-tab>
       </mat-tab-group>
 
-
     </mat-card>
   </mat-sidenav>
 
+  <!-- Content not displayed within sidenav -->
   <mat-sidenav-content>
+    <app-toolbar class="toolbar"></app-toolbar>
+
     <div class="navbartoggleContainer">
       <button class="navbartoggleButton" mat-button (click)="sidenav.toggle()"> < </button>
     </div>
@@ -30,7 +34,6 @@
     <div id="canvasWrap" class="canvas-wrapper">
       <canvas id="myCanvas"></canvas> <!-- Canvas for plotting -->
     </div>
-
 
   </mat-sidenav-content>
 </mat-sidenav-container>
