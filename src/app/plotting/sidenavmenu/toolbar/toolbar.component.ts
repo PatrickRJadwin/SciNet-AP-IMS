@@ -8,7 +8,7 @@ import {SidenavmenuComponent} from '../sidenavmenu.component';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(public side: SidenavmenuComponent) { }
 
   ngOnInit() {
   }
@@ -43,6 +43,9 @@ export class ToolbarComponent implements OnInit {
 
 // Placeholder function for PDF creation
   exportPDF() {
+  }
 
+  saveJ() {
+    this.side.saveJson();
   }
 }
