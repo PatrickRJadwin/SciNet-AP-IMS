@@ -37,11 +37,15 @@ export class SidenavmenuComponent implements AfterViewInit {
     private afAuth: AngularFireAuth,
     private auth: AuthenticationService) { }
 
-  selectedFiles: FileList;
+  selectedFiles: File;
   file: File;
   imgsrc;
   image: ImageModel;
   public tf: boolean;
+  public message: String;
+  public imagePath;
+  imgURL: any;
+
 
   openUpload(modal: string) {
     this.openModal(modal);
@@ -57,15 +61,31 @@ export class SidenavmenuComponent implements AfterViewInit {
     });
   }
 
-  chooseFiles(event) {
-    this.selectedFiles = event.target.files;
-    if (this.selectedFiles.item(0))
-      this.uploadPic();
+
+  preview(files, event) {
+    this.selectedFiles = event.target.files[0];
+    
+    if (files.length === 0)
+      return;
+    
+    var mimetype = files[0].type;
+    if (mimetype.match(/image\/*/) == null) {
+      this.message = "Only images are supported";
+      return
+    }
+
+    var reader = new FileReader();
+
+    this.imagePath = files;
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
+    }
   }
 
   uploadPic() {
-
-    let file = this.selectedFiles.item(0);
+    console.log("TESTETSETESTE:    " + this.selectedFiles);
+    let file = this.selectedFiles;
     let uniqkey = 'pic' + Math.floor(Math.random() * 1000000);
     const uploadTask = this.storage.upload('/floorplans/' + uniqkey, file).then(() => {
       const ref = this.storage.ref('/floorplans/' + uniqkey);
