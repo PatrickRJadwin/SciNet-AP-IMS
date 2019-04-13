@@ -90,7 +90,6 @@ export class SidenavmenuComponent implements AfterViewInit {
     const uploadTask = this.storage.upload('/floorplans/' + uniqkey, file).then(() => {
       const ref = this.storage.ref('/floorplans/' + uniqkey);
       const downloadUrl = ref.getDownloadURL().subscribe(url => {
-        
         this.image = new ImageModel(url);
         console.log(this.image.url);
         this.image.url = url;

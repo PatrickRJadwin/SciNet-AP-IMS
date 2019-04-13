@@ -48,10 +48,9 @@
     <span style="color:red;" *ngIf="message">{{message}}</span>
     <input #file type="file" accept='image/*' (change)="preview(file.files, $event)" style="display:none;" />
     <img [src]="imgURL" height="200" style="margin-top: 5%" *ngIf="imgURL">
-    <button mat-raised-button color="primary" style="margin-top: 10%; float: right;"
+    <button mat-raised-button color="primary" style="margin-top: 10%; float: right; margin-bottom: 10%;"
       (click)="uploadPic()">Submit</button>
   </form>
-
 </ng-template>
 
 <img src='https://i.imgur.com/Q5skAxA.png' id="my-image" style="display: none;">
