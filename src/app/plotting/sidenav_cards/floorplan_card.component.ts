@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {SidenavmenuComponent} from '../sidenavmenu/sidenavmenu.component';
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
-import { ImageModel } from 'src/app/admin/image.model';
+import { ImageModel } from 'src/app/shared/image.model';
 import { ImageService } from 'src/app/shared/services/image.service';
 
 @Component({

@@ -32,7 +32,6 @@ import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.
 import { DevicecardComponent } from './plotting/sidenav_cards/device_card.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { AuthGuard } from './shared/services/auth.guard';
-import { AdminComponent } from './admin/admin.component';
 import { ToolbarComponent } from './plotting/sidenavmenu/toolbar/toolbar.component';
 
 @NgModule({
@@ -48,7 +47,6 @@ import { ToolbarComponent } from './plotting/sidenavmenu/toolbar/toolbar.compone
     FloorplancardComponent,
     DevicecardComponent,
     SignUpComponent,
-    AdminComponent,
     ToolbarComponent,
   ],
   imports: [

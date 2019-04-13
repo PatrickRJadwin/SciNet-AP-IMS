@@ -2,6 +2,11 @@
 
   <!-- Content to be displayed within sidenav -->
   <mat-sidenav #sidenav [fixedInViewport]="true" mode="over" position="end" class="sidenavBorder" id="sidenavContainer">
+    <mat-card class="uploadButton">
+      <button mat-raised-button color="primary" (click)="openUpload(uploadfp)" class="mod-button-card">
+        Upload Floorplan
+      </button>
+    </mat-card>
 
     <button class="navbartoggleInnerButton" mat-button (click)="sidenav.toggle()"> < </button>
 
@@ -37,5 +42,15 @@
 
   </mat-sidenav-content>
 </mat-sidenav-container>
+
+<ng-template #uploadfp>
+    <h1 mat-dialog-title>Upload Preview</h1>
+  <form class="uploadFP">
+    <button mat-raised-button color="primary" (click)="fileInput.click()">Upload Floorplan</button>
+    <input #fileInput type="file" (change)="chooseFiles($event)" style="display:none;" />
+    <br>
+    <button mat-raised-button color="primary" style="margin-top: 10%; float: right;">Submit</button>
+  </form>
+</ng-template>
 
 <img src='https://i.imgur.com/Q5skAxA.png' id="my-image" style="display: none;">
