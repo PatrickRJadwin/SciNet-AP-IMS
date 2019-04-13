@@ -24,7 +24,8 @@ import { FormsModule } from '@angular/forms'; // <-- NgModel lives here
 
 import { MatSidenavModule, MatButtonModule, MatCardModule,
         MatDividerModule, MatRippleModule, MatFormFieldModule,
-        MatTooltipModule, MatSelectModule, MatTabsModule } from '@angular/material'; // <-- Material imports
+        MatTooltipModule, MatSelectModule, MatTabsModule,
+        MatButtonToggleModule} from '@angular/material'; // <-- Material imports
 import { SidenavmenuComponent } from './plotting/sidenavmenu/sidenavmenu.component';
 
 import { FloorplancardComponent } from './plotting/sidenav_cards/floorplan_card.component';
@@ -32,6 +33,7 @@ import { DevicecardComponent } from './plotting/sidenav_cards/device_card.compon
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { AuthGuard } from './shared/services/auth.guard';
 import { AdminComponent } from './admin/admin.component';
+import { ToolbarComponent } from './plotting/sidenavmenu/toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -41,12 +43,13 @@ import { AdminComponent } from './admin/admin.component';
     ReportsComponent,
     AdditemComponent,
     LoginComponent,
-    PlottingComponent, 
+    PlottingComponent,
     SidenavmenuComponent,
     FloorplancardComponent,
     DevicecardComponent,
     SignUpComponent,
-    AdminComponent, 
+    AdminComponent,
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +72,7 @@ import { AdminComponent } from './admin/admin.component';
     MatFormFieldModule,
     MatTooltipModule,
     MatSelectModule,
+    MatButtonToggleModule
   ],
   entryComponents: [AdditemComponent],
   providers: [AuthGuard],
