@@ -1,12 +1,13 @@
-import { Component, OnInit, ViewChild, Inject } from '@angular/core';
-import { MatSort, MatTableDataSource, MatDialog, MatDialogRef, MatPaginator, MatSlideToggleChange, MatCheckbox } from '@angular/material';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatSort, MatTableDataSource, MatDialog, MatPaginator, MatSlideToggleChange } from '@angular/material';
 import { AdditemComponent } from '../additem/additem.component';
 import { InventoryService } from './inventory.service';
 import { Item } from './inventory.model';
-import { User } from '../shared/services/user.model';
+import { Userm } from '../shared/services/user.model';
 import { SnackbarService } from '../shared/snackbar.service';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class InventoryComponent implements OnInit {
   itemList: Item[];
   selectedItem: Item;
  
-  user: User;
+  user: Userm;
 
   public tf: boolean;
 
@@ -54,7 +55,8 @@ export class InventoryComponent implements OnInit {
     private inventoryService: InventoryService,
     private snack: SnackbarService,
     private db: AngularFireDatabase,
-    private afAuth: AngularFireAuth) {
+    private afAuth: AngularFireAuth,
+    public auth: AuthenticationService) {
     inventoryService.getAllItems();
 
   }
@@ -107,18 +109,11 @@ export class InventoryComponent implements OnInit {
 
   //Delete/Edit functions
   onDelete(key: string) {
-
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-    .child('superuser').once('value').then(snapshot => {
-      this.tf = snapshot.val();
-      console.log(this.tf);
-    });
-
-    if (this.tf) {
+    if (this.auth.isAdmin() == true) {
       this.inventoryService.deletebyKey(key);
-
+      this.refreshAfterEdit();
     }
-    else if (!!this.tf) {
+    else {
       this.snack.openSnackBar('You do not have permission for this', 2000);
     }
   }
@@ -134,120 +129,107 @@ export class InventoryComponent implements OnInit {
   }
 
   selectJoinedToggle(key: string) {
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-    .child('admin').once('value').then(snapshot => {
-      this.tf = snapshot.val();
-      console.log(this.tf);
-    })
 
-    if (this.tf === true) {
+    if (this.auth.isAdmin() == true) {
 
-    this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
+      this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
-    if (this.selectedItem.joined === true) {
-      this.edit.joined = false;
-      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
-        this.selectedItem.created_by, this.edit.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toISOString();
-  
-      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      if (this.selectedItem.joined === true) {
+        this.edit.joined = false;
+        let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+          this.selectedItem.created_by, this.edit.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
+        editedItem.lastUpdate = new Date().toISOString();
+    
+        this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      }
+      else {
+        this.edit.joined = true;
+        let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+          this.selectedItem.created_by, this.edit.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
+        editedItem.lastUpdate = new Date().toISOString();
+    
+        this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      }
+      this.refreshAfterEdit();
     }
-    else {
-      this.edit.joined = true;
-      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
-        this.selectedItem.created_by, this.edit.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toISOString();
-  
-      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    };
-  }
-  else if (this.tf === false) {
-    this.snack.openSnackBar('You do not have permission for this.', 2000);
-  };
-    this.refreshAfterEdit();
+
+    else  {
+      this.snack.openSnackBar('You do not have permission for this.', 2000);
+      this.refreshAfterEdit();
+
+    }
   }
 
   selectCompleteToggle(key: string) {
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-    .child('admin').once('value').then(snapshot => {
-      this.tf = snapshot.val();
-      console.log(this.tf);
-    })
 
-    if (this.tf === true) {
+    if (this.auth.isAdmin() == true) {
 
-    this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
-    if (this.selectedItem.complete === true) {
-      this.edit.complete = false;
-      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
-        this.selectedItem.created_by, this.selectedItem.joined, this.edit.complete, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toISOString();
-  
-      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
+      if (this.selectedItem.complete === true) {
+        this.edit.complete = false;
+        let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+          this.selectedItem.created_by, this.selectedItem.joined, this.edit.complete, this.selectedItem.checkedIn);
+        editedItem.lastUpdate = new Date().toISOString();
+    
+        this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      }
+      else {
+        this.edit.joined = true;
+        let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+          this.selectedItem.created_by, this.selectedItem.joined, true, this.selectedItem.checkedIn);
+        editedItem.lastUpdate = new Date().toISOString();
+    
+        this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      }
+      this.refreshAfterEdit();
     }
     else {
-      this.edit.joined = true;
-      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
-        this.selectedItem.created_by, this.selectedItem.joined, true, this.selectedItem.checkedIn);
-      editedItem.lastUpdate = new Date().toISOString();
-  
-      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    };
-  }
-  else if (this.tf === false) {
-    this.snack.openSnackBar('You do not have permission for this.', 2000);
-  };
-    this.refreshAfterEdit();
+      this.snack.openSnackBar('You do not have permission for this.', 2000);
+      this.refreshAfterEdit();
+    }
   }
 
   selectCheckedInToggle(key: string) {
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-    .child('admin').once('value').then(snapshot => {
-      this.tf = snapshot.val();
-      console.log(this.tf);
-    })
 
-    if (this.tf === true) {
+    if (this.auth.isAdmin() == true) {
 
-    this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
+      this.selectedItem = this.itemList.filter(x => x.$key === key)[0];
 
-    if (this.selectedItem.checkedIn === true) {
-      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
-        this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, false);
-      editedItem.lastUpdate = new Date().toISOString();
-      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      if (this.selectedItem.checkedIn === true) {
+        let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+          this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, false);
+        editedItem.lastUpdate = new Date().toISOString();
+        this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      }
+      else {
+        let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
+          this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, true);
+        editedItem.lastUpdate = new Date().toISOString();
+        this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      }
+      this.refreshAfterEdit();
     }
     else {
-      let editedItem = new Item(this.selectedItem.mac, this.selectedItem.location, this.selectedItem.port, this.selectedItem.created_at,
-        this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, true);
-      editedItem.lastUpdate = new Date().toISOString();
-      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    };
-  }
-    else if (this.tf === false) {
       this.snack.openSnackBar('You do not have permission for this.', 2000);
-    };
-    this.refreshAfterEdit();
+      this.refreshAfterEdit();
+    }
   }
 
   onSave() {
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-    .child('admin').once('value').then(snapshot => {
-      this.tf = snapshot.val();
-      console.log(this.tf);
-    })
 
-    if (this.tf === true) {
-    let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
-      this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
-    editedItem.lastUpdate = new Date().toISOString();
+    if (this.auth.isAdmin() == true) {
+      let editedItem = new Item(this.edit.mac, this.edit.location, this.edit.port, this.selectedItem.created_at,
+        this.selectedItem.created_by, this.selectedItem.joined, this.selectedItem.complete, this.selectedItem.checkedIn);
+      editedItem.lastUpdate = new Date().toISOString();
 
-    this.inventoryService.editItem(this.selectedItem.$key, editedItem);
-    }
-    else if (this.tf === false) {
+      this.inventoryService.editItem(this.selectedItem.$key, editedItem);
+      this.refreshAfterEdit();
+      }
+
+    else {
       this.snack.openSnackBar('You do not have permission for this.', 2000);
-    };
-    this.refreshAfterEdit();
+      this.refreshAfterEdit();
+    }
   }
 
   //After edit, refresh query
