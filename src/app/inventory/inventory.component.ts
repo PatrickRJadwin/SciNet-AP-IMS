@@ -22,6 +22,8 @@ export class InventoryComponent implements OnInit {
 
   itemList: Item[];
   selectedItem: Item;
+
+  isLoading = true;
  
   user: Userm;
 
@@ -103,6 +105,7 @@ export class InventoryComponent implements OnInit {
       this.countJoined = this.itemList.filter(x => x.joined === true).length;
       this.countCompleted = this.itemList.filter(x => x.complete === true).length;
       this.countCheckedIn = this.itemList.filter(x => x.checkedIn === true).length;
+      this.isLoading = false;
     });
 
     if (this.auth.isAdmin() == true) {
