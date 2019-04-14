@@ -2,6 +2,12 @@ import {AfterViewInit, Component, HostListener, Input} from '@angular/core';
 import {fabric} from 'fabric';
 import {fromEvent} from 'rxjs';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { MatDialog } from '@angular/material';
+import { AngularFireStorage } from 'angularfire2/storage';
+import { ImageService } from 'src/app/shared/services/image.service';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { ImageModel } from 'src/app/shared/image.model';
 
 
 @Component({
@@ -24,9 +30,77 @@ export class Img {
   styleUrls: ['./sidenavmenu.component.scss']
 })
 export class SidenavmenuComponent implements AfterViewInit {
-  constructor(private db: AngularFireDatabase) { }
+  constructor(private db: AngularFireDatabase,
+    public dialog: MatDialog,
+    private storage: AngularFireStorage,
+    private imageService: ImageService,
+    private afAuth: AngularFireAuth,
+    private auth: AuthenticationService) { }
 
-// Getter and Setter for EDIT_MODE boolean
+  selectedFiles: File;
+  file: File;
+  imgsrc;
+  image: ImageModel;
+  public tf: boolean;
+  public message: String;
+  public imagePath;
+  imgURL: any;
+
+
+  openUpload(modal: string) {
+    this.openModal(modal);
+  }
+
+  openModal(templateRef) {
+    let dialogRef = this.dialog.open(templateRef, {
+      width: '600px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+
+  preview(files, event) {
+    this.selectedFiles = event.target.files[0];
+    
+    if (files.length === 0)
+      return;
+    
+    var mimetype = files[0].type;
+    if (mimetype.match(/image\/*/) == null) {
+      this.message = "Only images are supported";
+      return
+    }
+
+    var reader = new FileReader();
+
+    this.imagePath = files;
+    reader.readAsDataURL(files[0]);
+    reader.onload = (_event) => {
+      this.imgURL = reader.result;
+    }
+  }
+
+  uploadPic() {
+    console.log("TESTETSETESTE:    " + this.selectedFiles);
+    let file = this.selectedFiles;
+    let uniqkey = 'pic' + Math.floor(Math.random() * 1000000);
+    const uploadTask = this.storage.upload('/floorplans/' + uniqkey, file).then(() => {
+      const ref = this.storage.ref('/floorplans/' + uniqkey);
+      const downloadUrl = ref.getDownloadURL().subscribe(url => {
+        this.image = new ImageModel(url);
+        console.log(this.image.url);
+        this.image.url = url;
+        console.log(this.image.url);
+        this.imageService.addLink(this.image);
+      })
+    });
+    this.dialog.closeAll();
+  }
+
+  // Getter and Setter for EDIT_MODE boolean
   static get EDIT_MODE(): boolean {
     return this._EDIT_MODE;
   }
