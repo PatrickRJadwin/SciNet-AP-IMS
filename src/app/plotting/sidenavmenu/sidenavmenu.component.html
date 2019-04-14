@@ -56,3 +56,11 @@
 </ng-template>
 
 <img src='assets/images/testicon.png' id="my-image" style="display: none;">
+
+<div *ngIf="isLoading" 
+   style="display: flex; justify-content: center; align-items: center;">
+  <mat-progress-spinner 
+    color="accent" 
+    mode="indeterminate">
+  </mat-progress-spinner>
+</div>
