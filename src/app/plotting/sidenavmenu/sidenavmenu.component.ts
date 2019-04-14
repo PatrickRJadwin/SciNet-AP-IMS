@@ -540,16 +540,21 @@ export class SidenavmenuComponent implements AfterViewInit {
   }
 
   savePDF() {
-    let originalheight = SidenavmenuComponent.canvasRef.height;
-    let originalwidth = SidenavmenuComponent.canvasRef.width;
-    SidenavmenuComponent.canvasRef.setHeight(SidenavmenuComponent.fpImageCurrent.height);
-    SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpImageCurrent.width);
-    let doc = new jspdf();
-    let img = SidenavmenuComponent.canvasRef.toDataURL('image/png');
-    doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
-    doc.save('test');
-    SidenavmenuComponent.canvasRef.setHeight(originalheight);
-    SidenavmenuComponent.canvasRef.setWidth(originalwidth);
+    if (SidenavmenuComponent.current == null) {
+      this.snack.openSnackBar('No Image Selected', 2500);
+    }
+    else {
+      let originalheight = SidenavmenuComponent.canvasRef.height;
+      let originalwidth = SidenavmenuComponent.canvasRef.width;
+      SidenavmenuComponent.canvasRef.setHeight(SidenavmenuComponent.fpImageCurrent.height);
+      SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpImageCurrent.width);
+      let doc = new jspdf();
+      let img = SidenavmenuComponent.canvasRef.toDataURL('image/png');
+      doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
+      doc.save('test');
+      SidenavmenuComponent.canvasRef.setHeight(originalheight);
+      SidenavmenuComponent.canvasRef.setWidth(originalwidth);
+    }
 
   }
 
