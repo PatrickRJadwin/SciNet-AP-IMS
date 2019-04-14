@@ -12,8 +12,10 @@
       <mat-label>Password</mat-label>
       <input matInput placeholder="Password" name="password" type="password" #password required>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="auth.login(email.value, password.value)">Login</button>
+    <button id="log" mat-raised-button color="accent" (click)="auth.login(email.value, password.value)">Login</button>
     <!--Need to align buttons-->
-    <button mat-raised-button color="accent" style="float: right;" routerLink="/signup">Sign Up</button>
+    <br>
+    <br>
+    <p style="text-align: center; font-size: 16px;">Don't have an account? <a routerLink="/signup" style="color: aqua; text-decoration: none;">Sign Up</a></p>
   </form>
 </mat-card-content>
