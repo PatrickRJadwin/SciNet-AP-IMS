@@ -6,6 +6,7 @@
       <button mat-raised-button color="primary" (click)="openUpload(uploadfp)" class="mod-button-card">
         Upload Floorplan
       </button>
+      <button mat-raised-button color="accent" style="float: right;" (click)="savePDF()">Save PDF</button>
     </mat-card>
 
     <button class="navbartoggleInnerButton" mat-button (click)="sidenav.toggle()">
@@ -34,6 +35,7 @@
     <div class="navbartoggleContainer">
       <button class="navbartoggleButton" mat-button (click)="sidenav.toggle()">
         < </button> </div> <div id="canvasWrap" class="canvas-wrapper">
+            
           <canvas id="myCanvas"></canvas> <!-- Canvas for plotting -->
     </div>
 
