@@ -1,5 +1,5 @@
 <div style="text-align:center">
-  <h1>Sign-Up</h1>
+  <h1>Register</h1>
 </div>
 
 <mat-card-content>
@@ -12,7 +12,14 @@
       <mat-label>Password</mat-label>
       <input matInput placeholder="Password" name="password" type="password" #password required>
     </mat-form-field>
-    <button mat-raised-button color="primary" (click)="auth.signup(email.value, password.value)">Sign up</button>
-    <button mat-raised-button color="accent" style="float: right;" routerLink="/login">Login</button>
+    <mat-form-field class="full-width">
+        <mat-label>Confirm Password</mat-label>
+        <input matInput placeholder="Password" name="conpassword" type="password" #conpassword required>
+      </mat-form-field>
+    <button id="signup" mat-raised-button color="accent" (click)="auth.signup(email.value, password.value, conpassword.value)">Register</button>
+    <br>
+    <br>
+    <p style="text-align: center; font-size: 16px;">Already have an account? <a routerLink="/login" style="color: aqua; text-decoration: none;">Sign In</a></p>
   </form>
+
 </mat-card-content>
