@@ -150,8 +150,11 @@ export class SidenavmenuComponent implements AfterViewInit {
 
   canvas: any;
 
+  public static isLoading = false;
+
 // Method to load floorplan image from floorplan card
   public static loadFloorplan(fpImage, fpName) {
+    SidenavmenuComponent.isLoading = true;
     console.log('Received Floorplan: ' + fpImage + ' ' + fpName);
     this.current = fpImage;
 
@@ -282,6 +285,8 @@ export class SidenavmenuComponent implements AfterViewInit {
       this.panView();
       console.log('Loaded Floorplan');
     }
+
+    SidenavmenuComponent.isLoading = false;
   }
 
 // Method to change plotted device's name
