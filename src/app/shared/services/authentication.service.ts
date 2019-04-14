@@ -3,9 +3,10 @@ import { Observable } from 'rxjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
-import { AngularFireDatabase, AngularFireList, AngularFireObject, snapshotChanges } from 'angularfire2/database';
-import { User } from './user.model';
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from 'angularfire2/database';
+import { Userm } from './user.model';
 import { SnackbarService } from '../snackbar.service';
+import { User } from 'firebase';
 
 
 @Injectable({
@@ -17,11 +18,12 @@ export class AuthenticationService {
 
   duration = 10;
   public authInfo: Observable<firebase.User>;
-  userList: AngularFireList<User>;
-  u: AngularFireObject<User>;
-  user: User;
+  userList: AngularFireList<Userm>;
+  u: AngularFireObject<Userm>;
+  user: Userm;
   uid: string;
-  queryList: User[];
+  queryList: Userm[];
+  firebaseUser: User;
 
   constructor(private afAuth: AngularFireAuth,
     private router: Router,
@@ -37,9 +39,18 @@ export class AuthenticationService {
       item.forEach(element => {
         let json = element.payload.toJSON();
         json["$key"] = element.key;
-        this.queryList.push(json as User);
+        this.queryList.push(json as Userm);
       });
      });
+
+     this.afAuth.authState.subscribe(user => {
+       if (user) {
+         this.firebaseUser = user;
+         localStorage.setItem('user', JSON.stringify(this.firebaseUser));
+       } else {
+         localStorage.setItem('user', null);
+       }
+     })
    }
 
    login(email, password) {
@@ -71,27 +82,33 @@ export class AuthenticationService {
    }
 
    isloggedIn() {
-     if (localStorage.getItem('log') == 'loggedin') {
-       return true
+     
+     if (localStorage.getItem('user') != 'null') {
+       return true;
      }
      else {
-       return false
+       return false;
      }
    }
 
-   signup(email, password) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-    .then((result) => {
-      this.setupUser(result.user.email),
-      localStorage.setItem('log', 'loggedin'),
-      this.router.navigate(['/inventory'])
-    }).catch((error) => {
-      window.alert(error.message)
-    })
+   signup(email, password, conpassword) {
+    if (password !== conpassword) {
+      this.snack.openSnackBar('Your password does not match', 2500);
+    }
+    else {
+      return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        this.setupUser(result.user.email),
+        localStorage.setItem('log', 'loggedin'),
+        this.router.navigate(['/inventory'])
+      }).catch((error) => {
+        window.alert(error.message);
+      });
+    }
    }
 
    setupUser(email) {
-     this.user = new User(this.afAuth.auth.currentUser.uid, email);
+     this.user = new Userm(this.afAuth.auth.currentUser.uid, email);
      this.userList.set(this.afAuth.auth.currentUser.uid, {
        uid: this.afAuth.auth.currentUser.uid,
        displayName: this.user.displayName,
@@ -128,33 +145,45 @@ export class AuthenticationService {
    }
 
    authenticated(): boolean {
-     if (this.afAuth.auth.currentUser.uid !== null) {
+     if (this.afAuth.auth.currentUser == null) {
+       return false;
+     }
+     else {
        return true;
-     } else {return false;}
+     }
    }
 
-   getUser(): User {
+   getUser(): Userm {
      this.db.database.ref().child('users/' + this.afAuth.auth.currentUser.uid + '/role/admin').toString();
      return this.queryList.filter(x => x.uid === this.afAuth.auth.currentUser.uid)[0];
      
    }
 
-   isAdmin() {
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-     .child('admin').once('value').then(snapshot => {
-       this.tf = snapshot.val();
-       console.log(this.tf);
-     })
-     return this.tf;
+   isAdmin():boolean {
+    if (this.isloggedIn() == true) {
+      return this.queryList.filter(x => x.$key === this.afAuth.auth.currentUser.uid)[0].role.admin;
+    }
+    else {
+      return false;
+    }
    }
 
-   isUser() {
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-     .child('user').once('value').then(snapshot => {
-       this.tf = snapshot.val();
-       console.log(this.tf);
-     })
-     return this.tf;
+   isUser():boolean {
+    if (this.isloggedIn() == true) {
+      return this.queryList.filter(x => x.$key === this.afAuth.auth.currentUser.uid)[0].role.user;
+    }
+    else {
+      return false;
+    }
+   }
+
+   isSuperUser():boolean {
+    if (this.isloggedIn() == true) {
+      return this.queryList.filter(x => x.$key === this.afAuth.auth.currentUser.uid)[0].role.superuser;
+    }
+    else {
+      return false;
+    }
    }
 
    getrole() {
@@ -163,20 +192,10 @@ export class AuthenticationService {
        this.tf = snapshot.val();
        console.log(this.tf);
      })
-     return this.tf;
-     
+     return this.tf;   
    }
 
-   isSuperUser() {
-    this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
-     .child('superuser').once('value').then(snapshot => {
-       this.tf = snapshot.val();
-       console.log(this.tf);
-     })
-     return this.tf;
-   }
-
-   updateUser(key: string, user: User) {
+   updateUser(key: string, user: Userm) {
     this.db.object('/users/' + key).update(user);
    }
 
