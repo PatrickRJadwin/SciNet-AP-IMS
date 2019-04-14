@@ -97,6 +97,7 @@ export class SidenavmenuComponent implements AfterViewInit {
         this.imageService.addLink(this.image);
       })
     });
+    this.dialog.closeAll();
   }
 
   // Getter and Setter for EDIT_MODE boolean
