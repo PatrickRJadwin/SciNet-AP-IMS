@@ -1,9 +1,19 @@
-@import '@angular/material/prebuilt-themes/purple-green.css';
+@import '~@angular/material/theming';
+
 //colors
 $white: white;
 $color_quill_gray_approx: lightgray;
 $nav: #4f5051;
 $background: #424242;
+
+//palette
+$cyan: #5FC8D9;
+$red: #F15E5F;
+$orange: #FDBC4D;
+$green: #3BB54A;
+$blue: #475AA8;
+$purple: #854E9F;
+
 
 mat-toolbar {
 	height: 100px;
@@ -17,7 +27,7 @@ mat-sidenav-container {
 height: 100%;
 position: absolute;
 left: 0;
-right: 0;
+right: 0; 
 }
 
 mat-sidenav-content {
@@ -28,37 +38,104 @@ height: 100%;
 	width: 250px;
 	color: $white;
 }
+
 a {
 	text-decoration: none;
 	font-size: 18px;
-color: $white;
-text-shadow: 2px 3px 0px rgba(0, 0, 0, .2);
-position: relative;
-display: inline-block;
+	color: $white;
+	text-shadow: 2px 3px 0px rgba(0, 0, 0, .2);
+	position: relative;
+	display: inline-block;
 
-&:after {
-	background: none repeat scroll 0 0 transparent;
-	bottom: 0;
-	content: "";
-	display: block;
-	height: 2px;
-	left: 50%;
-	position: absolute;
-	background: #fff;
-	transition: width 0.3s ease 0s, left 0.3s ease 0s;
-	width: 0;
-}
-&:hover:after { 
-	width: 100%; 
-	left: 0; 
-	}
-	@media screen and (max-height: 300px) {
-		ul {
-			margin-top: 40px;
+	&.inv {
+		&:after {
+			background: none repeat scroll 0 0 transparent;
+			bottom: 0;
+			content: "";
+			display: block;
+			height: 2px;
+			left: 50%;
+			position: absolute;
+			background: $green;
+			transition: width 0.3s ease 0s, left 0.3s ease 0s;
+			width: 0;
 		}
 	}
-	
+
+	&.rep {
+		&:after {
+			background: none repeat scroll 0 0 transparent;
+			bottom: 0;
+			content: "";
+			display: block;
+			height: 2px;
+			left: 50%;
+			position: absolute;
+			background: $purple;
+			transition: width 0.3s ease 0s, left 0.3s ease 0s;
+			width: 0;
+		}
+	}
+
+	&.users {
+		&:after {
+			background: none repeat scroll 0 0 transparent;
+			bottom: 0;
+			content: "";
+			display: block;
+			height: 2px;
+			left: 50%;
+			position: absolute;
+			background: $blue;
+			transition: width 0.3s ease 0s, left 0.3s ease 0s;
+			width: 0;
+		}
+	}
+
+	&.plot {
+		&:after {
+			background: none repeat scroll 0 0 transparent;
+			bottom: 0;
+			content: "";
+			display: block;
+			height: 2px;
+			left: 50%;
+			position: absolute;
+			background: $orange;
+			transition: width 0.3s ease 0s, left 0.3s ease 0s;
+			width: 0;
+		}
+	}
+
+	&.log {
+		&:after {
+			background: none repeat scroll 0 0 transparent;
+			bottom: 0;
+			content: "";
+			display: block;
+			height: 2px;
+			left: 50%;
+			position: absolute;
+			background: $red;
+			transition: width 0.3s ease 0s, left 0.3s ease 0s;
+			width: 0;
+		}
+	}
+
+	&:hover:after { 
+		width: 100%; 
+		left: 0; 
+		}
+		@media screen and (max-height: 300px) {
+			ul {
+				margin-top: 40px;
+			}
+		}
 }
+
+
+
+
 .navigation-items {
 list-style: none;
 padding: 0;
@@ -92,6 +169,5 @@ img {
 }
 
 .mat-drawer-container[_ngcontent-c0] {
-    background-color: #424242;
     color: #fff;
 }
