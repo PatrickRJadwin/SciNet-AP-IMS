@@ -1,0 +1,275 @@
+@import '~@angular/material/theming';
+@include mat-core();
+$background: #203556;
+
+
+$md-cyan: (
+    50 : #ecf8fa,
+    100 : #cfeff4,
+    200 : #afe4ec,
+    300 : #8fd9e4,
+    400 : #77d0df,
+    500 : #5fc8d9,
+    600 : #57c2d5,
+    700 : #4dbbcf,
+    800 : #43b4ca,
+    900 : #32a7c0,
+    A100 : #ffffff,
+    A200 : #d4f7ff,
+    A400 : #a1edff,
+    A700 : #87e8ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$md-red: (
+    50 : #fdecec,
+    100 : #fbcfcf,
+    200 : #f8afaf,
+    300 : #f58e8f,
+    400 : #f37677,
+    500 : #f15e5f,
+    600 : #ef5657,
+    700 : #ed4c4d,
+    800 : #eb4243,
+    900 : #e73132,
+    A100 : #ffffff,
+    A200 : #fff7f7,
+    A400 : #ffc4c5,
+    A700 : #ffabab,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$md-orange: (
+    50 : #fff7ea,
+    100 : #feebca,
+    200 : #fedea6,
+    300 : #fed082,
+    400 : #fdc668,
+    500 : #fdbc4d,
+    600 : #fdb646,
+    700 : #fcad3d,
+    800 : #fca534,
+    900 : #fc9725,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #ffe7cf,
+    A700 : #ffdbb6,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$md-green: (
+    50 : #e7f6e9,
+    100 : #c4e9c9,
+    200 : #9ddaa5,
+    300 : #76cb80,
+    400 : #58c065,
+    500 : #3bb54a,
+    600 : #35ae43,
+    700 : #2da53a,
+    800 : #269d32,
+    900 : #198d22,
+    A100 : #c4ffc8,
+    A200 : #91ff99,
+    A400 : #5eff6a,
+    A700 : #45ff52,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+$md-blue: (
+    50 : #e9ebf5,
+    100 : #c8cee5,
+    200 : #a3add4,
+    300 : #7e8cc2,
+    400 : #6373b5,
+    500 : #475aa8,
+    600 : #4052a0,
+    700 : #374897,
+    800 : #2f3f8d,
+    900 : #202e7d,
+    A100 : #bac3ff,
+    A200 : #8797ff,
+    A400 : #546bff,
+    A700 : #3b54ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+);
+
+$md-purple: (
+    50 : #f0eaf3,
+    100 : #dacae2,
+    200 : #c2a7cf,
+    300 : #aa83bc,
+    400 : #9769ad,
+    500 : #854e9f,
+    600 : #7d4797,
+    700 : #723d8d,
+    800 : #683583,
+    900 : #552572,
+    A100 : #e1b4ff,
+    A200 : #cd81ff,
+    A400 : #b94eff,
+    A700 : #af35ff,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #ffffff,
+    )
+);
+
+
+
+
+
+//Changing of individual material items and background
+
+$my-dark-theme-background: (
+  status-bar: green,
+  app-bar:    map_get($mat-blue, 900),
+  background: $background,
+  hover:      rgba(white, 0.04), 
+  card:       map_get($mat-gray, 800),
+  dialog:     map_get($mat-grey, 800),
+  disabled-button: $white-12-opacity,
+  raised-button: map-get($mat-grey, 800),
+  focused-button: $white-6-opacity,
+  selected-button: map_get($mat-grey, 900),
+  selected-disabled-button: map_get($mat-grey, 800),
+  disabled-button-toggle: black,
+  unselected-chip: map_get($mat-grey, 700),
+  disabled-list-option: black,
+);
+
+$my-dark-theme-foreground: (
+  base:              white,
+  divider:           $white-12-opacity,
+  dividers:          $white-12-opacity,
+  disabled:          rgba(white, 0.3),
+  disabled-button:   rgba(white, 0.3),
+  disabled-text:     rgba(white, 0.3),
+  hint-text:         rgba(white, 0.3),
+  secondary-text:    rgba(white, 0.7),
+  icon:              white,
+  icons:             white,
+  text:              white,
+  slider-min:        white,
+  slider-off:        rgba(white, 0.3),
+  slider-off-active: rgba(white, 0.3),
+);
+
+// instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
+@function create-wonky-theme($primary, $accent, $warn: mat-palette($mat-red)) {
+  @return (
+    primary: $primary,
+    accent: $accent,
+    warn: $warn,
+    is-dark: false,
+    foreground: $my-dark-theme-foreground,
+    background: $my-dark-theme-background,
+  );
+}
+
+// Base theme for the application
+$custom-primary: mat-palette($md-purple, 900);
+$custom-accent:  mat-palette($md-green, A400);
+$custom-warn: mat-palette($md-red);
+
+$custom-theme: create-wonky-theme($custom-primary, $custom-accent, $custom-warn);
+
+@include angular-material-theme($custom-theme);
+
+
+
+//ALT - this is for black toolbar
+//If you want to make a custom theme for something, you simply need to do the same process as below, and wrap what you want a different color for in a div with class="yourthemename"
+$alt-primary: mat-palette($mat-grey, 900);
+$alt-theme: create-wonky-theme($alt-primary, $custom-accent);
+
+.dark {
+    @include angular-material-theme($alt-theme);
+}
+
