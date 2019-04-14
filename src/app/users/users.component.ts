@@ -3,7 +3,7 @@ import { MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { AuthenticationService } from '../shared/services/authentication.service';
 import { Router } from '@angular/router';
 import { SnackbarService } from '../shared/snackbar.service';
-import { User } from '../shared/services/user.model';
+import { Userm } from '../shared/services/user.model';
 
 @Component({
   selector: 'app-users',
@@ -14,15 +14,15 @@ export class UsersComponent implements OnInit {
 
   displayedColumns: string[] = ['seqNo', 'email', 'role', 'edit'];
 
-  userList: User[];
-  user: User;
-  selectedUser: User;
+  userList: Userm[];
+  user: Userm;
+  selectedUser: Userm;
 
   selected;
 
   tf: boolean;
 
-  edit = new User("","");
+  edit = new Userm("","");
 
   dataSource = new MatTableDataSource();
 
@@ -48,7 +48,7 @@ export class UsersComponent implements OnInit {
       item.forEach(element => {
         let json = element.payload.toJSON();
         json["$key"] = element.key;
-        this.userList.push(json as User);
+        this.userList.push(json as Userm);
       });
       this.dataSource = new MatTableDataSource(this.userList);
       this.dataSource.sort = this.sort;
@@ -80,9 +80,9 @@ export class UsersComponent implements OnInit {
     if (this.auth.isSuperUser() == false) {
       this.snack.openSnackBar('You do not have permission for this.', 2000);
     }
-    else if (this.auth.isSuperUser() == true) {
+    else {
 
-    let editedUser = new User(this.selectedUser.$key, this.edit.email)
+    let editedUser = new Userm(this.selectedUser.$key, this.edit.email)
     editedUser.rolestring = this.selected
     if (this.selected === 'noaccess') {
       editedUser.role.user = false;
