@@ -11,6 +11,7 @@ import { ImageModel } from 'src/app/shared/image.model';
 import {IText} from "fabric/fabric-impl";
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import * as jspdf from 'jspdf';  
+import { formatDate } from '@angular/common';
 
 
 @Component({
@@ -556,7 +557,8 @@ export class SidenavmenuComponent implements AfterViewInit {
       let doc = new jspdf();
       let img = SidenavmenuComponent.canvasRef.toDataURL('image/png');
       doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
-      doc.save('test');
+      //Will add floorplan name into title of pdf once we have that functionality in the add floorplan
+      doc.save('floorplanName' + '-' + this.auth.getUser().displayName + '-' + formatDate(new Date(), 'M-d-yy-h.mm', 'en-us') + '.pdf');
       SidenavmenuComponent.canvasRef.setHeight(originalheight);
       SidenavmenuComponent.canvasRef.setWidth(originalwidth);
     }
