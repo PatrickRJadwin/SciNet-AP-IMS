@@ -10,6 +10,7 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 import { ImageModel } from 'src/app/shared/image.model';
 import {IText} from "fabric/fabric-impl";
 import { SnackbarService } from 'src/app/shared/snackbar.service';
+import * as jspdf from 'jspdf';  
 
 
 @Component({
@@ -424,7 +425,7 @@ export class SidenavmenuComponent implements AfterViewInit {
 
         // Create the device icon itself
         const imgElement = new Image();
-        imgElement.src = 'https://i.imgur.com/Q5skAxA.png'; // Device Icon URL
+        imgElement.src = 'assets/images/testicon.png'; // Device Icon URL
         const imgInstance = new fabric.Image(imgElement, {
           originX: 'center',
           originY: 'top',
@@ -535,6 +536,20 @@ export class SidenavmenuComponent implements AfterViewInit {
     else {
       this.snack.openSnackBar('You do not have permission for this', 2500);
     }
+
+  }
+
+  savePDF() {
+    let originalheight = SidenavmenuComponent.canvasRef.height;
+    let originalwidth = SidenavmenuComponent.canvasRef.width;
+    SidenavmenuComponent.canvasRef.setHeight(SidenavmenuComponent.fpImageCurrent.height);
+    SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpImageCurrent.width);
+    let doc = new jspdf();
+    let img = SidenavmenuComponent.canvasRef.toDataURL('image/png');
+    doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
+    doc.save('test');
+    SidenavmenuComponent.canvasRef.setHeight(originalheight);
+    SidenavmenuComponent.canvasRef.setWidth(originalwidth);
 
   }
 
