@@ -9,6 +9,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 import { ImageModel } from 'src/app/shared/image.model';
 import {IText} from "fabric/fabric-impl";
+import { SnackbarService } from 'src/app/shared/snackbar.service';
 
 
 @Component({
@@ -36,7 +37,8 @@ export class SidenavmenuComponent implements AfterViewInit {
     private storage: AngularFireStorage,
     private imageService: ImageService,
     private afAuth: AngularFireAuth,
-    private auth: AuthenticationService) { }
+    private auth: AuthenticationService,
+    private snack: SnackbarService) { }
 
   selectedFiles: File;
   file: File;
@@ -517,16 +519,21 @@ export class SidenavmenuComponent implements AfterViewInit {
 
   // Will save Json and url in fb or update if already in fb
   saveJson() {
-    var json = JSON.stringify(SidenavmenuComponent.canvasRef);
+    if (this.auth.isAdmin() == true) {
+      var json = JSON.stringify(SidenavmenuComponent.canvasRef);
 
-    var img = new Img(SidenavmenuComponent.current, json);
-    console.log(img);
+      var img = new Img(SidenavmenuComponent.current, json);
+      console.log(img);
 
-    if (SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current).length === 1) {
-      this.db.object('floorplanJson/' + SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current)[0].$key).update(img);
+      if (SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current).length === 1) {
+        this.db.object('floorplanJson/' + SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current)[0].$key).update(img);
+      }
+      else {
+        this.db.list('floorplanJson').push(img);
+      }
     }
     else {
-      this.db.list('floorplanJson').push(img);
+      this.snack.openSnackBar('You do not have permission for this', 2500);
     }
 
   }
