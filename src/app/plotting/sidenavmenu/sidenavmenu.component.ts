@@ -8,6 +8,7 @@ import { ImageService } from 'src/app/shared/services/image.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 import { ImageModel } from 'src/app/shared/image.model';
+import {IText} from "fabric/fabric-impl";
 
 
 @Component({
@@ -64,10 +65,10 @@ export class SidenavmenuComponent implements AfterViewInit {
 
   preview(files, event) {
     this.selectedFiles = event.target.files[0];
-    
+
     if (files.length === 0)
       return;
-    
+
     var mimetype = files[0].type;
     if (mimetype.match(/image\/*/) == null) {
       this.message = "Only images are supported";
@@ -124,6 +125,9 @@ export class SidenavmenuComponent implements AfterViewInit {
   // Boolean to check if a device's name is currently being edited
   public static textboxOpen = false;
 
+  // Boolean to check if mouse is currently over the floorplan
+  private static mouseOverCanvas;
+
   // Variables to be used for building canvas around floorplan image
   private static fpImageCurrent;
   private static fpWidth;
@@ -138,6 +142,7 @@ export class SidenavmenuComponent implements AfterViewInit {
 
   // Variables for current URL, and imgList
   public static current;
+  public static currentImg;
   public static imgList: Img[];
 
   canvas: any;
@@ -148,13 +153,16 @@ export class SidenavmenuComponent implements AfterViewInit {
     this.current = fpImage;
 
     const tempImage = new Image();
-    
+
     tempImage.addEventListener('load', () => {
       console.log('width: ' + tempImage.naturalWidth + ', height: ' + tempImage.naturalHeight);
     });
     tempImage.src = fpImage;
 
-    if (tempImage.naturalWidth > window.innerWidth * .9) {
+    this.currentImg = tempImage;
+
+    // If the floorplan is greater than 90%/less than 50% of the window width, set the canvas width to 90% of the window
+    if ((tempImage.naturalWidth > window.innerWidth * .9) || (tempImage.naturalWidth <= window.innerWidth * .5)) {
       this.fpWidth = window.innerWidth * .9;
     } else {
       this.fpWidth = tempImage.naturalWidth;
@@ -238,7 +246,7 @@ export class SidenavmenuComponent implements AfterViewInit {
   implementFloorplan(url) {
     document.getElementById('canvasWrap').style.display = 'block';
 
-    /*try {
+    try {
       SidenavmenuComponent.plottedDevices.length = 0;
       SidenavmenuComponent.textboxOpen = false;
 
@@ -246,7 +254,7 @@ export class SidenavmenuComponent implements AfterViewInit {
       SidenavmenuComponent.canvasRef.dispose();
     } catch (err) {
       console.log(err);
-    }*/
+    }
 
     SidenavmenuComponent.canvasRef = new fabric.Canvas('myCanvas');
 
@@ -256,12 +264,12 @@ export class SidenavmenuComponent implements AfterViewInit {
     SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpWidth);
 
 
-    SidenavmenuComponent.fpImageCurrent.crossOrigin = "Anonymous";
+    SidenavmenuComponent.fpImageCurrent.crossOrigin = 'Anonymous';
 
     SidenavmenuComponent.canvasRef.setBackgroundImage(SidenavmenuComponent.fpImageCurrent);
 
     if (SidenavmenuComponent.imgList.filter(x => x.url === url).length === 1) {
-      SidenavmenuComponent.canvasRef.loadFromJSON(SidenavmenuComponent.imgList.filter(x=>x.url === url)[0].json);
+      SidenavmenuComponent.canvasRef.loadFromJSON(SidenavmenuComponent.imgList.filter(x => x.url === url)[0].json);
       this.captureEvents();
       this.panView();
       console.log('Loaded Floorplan');
@@ -275,6 +283,8 @@ export class SidenavmenuComponent implements AfterViewInit {
 
 // Method to change plotted device's name
   public changeDeviceName(imgCaption, deviceGroup, canvasRef) {
+    SidenavmenuComponent.textboxOpen = true;
+
     const editText = new fabric.IText(imgCaption.text.toString(), {
       fontSize: 30,
       originX: 'center',
@@ -290,29 +300,37 @@ export class SidenavmenuComponent implements AfterViewInit {
       }
     };
 
-    SidenavmenuComponent.textboxOpen = true;
-
     console.log('Enter ' + SidenavmenuComponent.textboxOpen);
 
     canvasRef.add(editText);
     editText.enterEditing();
 
-    canvasRef.on('mouse:down', function submit() {
-      if (SidenavmenuComponent.textboxOpen === true) {
+    canvasRef.on('mouse:up', function submit(e) {
+      try {
+        if ((e.target.type.toString() !== 'i-text') && (e.target !== deviceGroup)) {
+          console.log('Its not a text :(');
+          editText.exitEditing();
+        } else if (editText.left !== deviceGroup.left) {
+          if (editText.top !== deviceGroup.top - 45) {
+            editText.top = deviceGroup.top - 45;
+          }
+          editText.left = deviceGroup.left;
+        }
+      } catch {
         editText.exitEditing();
       }
     });
 
-    const removeTextbox = function updateText() {
+    function updateText() {
       imgCaption.insertChars(editText.text.toString(), null, 0, 100);
       canvasRef.remove(editText);
       SidenavmenuComponent.textboxOpen = false;
       console.log('Leave ' + SidenavmenuComponent.textboxOpen);
 
-      editText.off('editing:exited', removeTextbox);
-    };
+      editText.off('editing:exited', updateText);
+    }
 
-    editText.on('editing:exited', removeTextbox);
+    editText.on('editing:exited', updateText);
   }
 
 
@@ -363,6 +381,8 @@ export class SidenavmenuComponent implements AfterViewInit {
 
     // Event: When canvas is clicked, do something
     SidenavmenuComponent.canvasRef.on('mouse:up', function plot(options) {
+      const PLOTTING = SidenavmenuComponent;
+
       // If mouse was being dragged after mouse down, do not plot a new point
       isMouseDown = false;
       const isDragEnd = isMouseDrag;
@@ -376,17 +396,17 @@ export class SidenavmenuComponent implements AfterViewInit {
       */
       if (options.target) {
 
-      } else if ((SidenavmenuComponent.textboxOpen === false) && (isDragEnd === false) && (SidenavmenuComponent._EDIT_MODE)) {
+      } else if ((PLOTTING.textboxOpen === false) && (isDragEnd === false) && (PLOTTING._EDIT_MODE) && PLOTTING.mouseOverCanvas) {
         // Console logs for testing/verification purposes only
-        console.log('devices: ' + SidenavmenuComponent.plottedDevices.length);
+        console.log('devices: ' + PLOTTING.plottedDevices.length);
 
         // Thank you fabric for making this super useful function very easy to find in your documentation </sarcasm>
-        const pointer = SidenavmenuComponent.canvasRef.getPointer(event, false);
+        const pointer = PLOTTING.canvasRef.getPointer(event, false);
 
         // Create default device name based on device array length, with try/catch in case of undefined array
         let name = 'device';
         try {
-          name += SidenavmenuComponent.plottedDevices.length;
+          name += PLOTTING.plottedDevices.length;
         } catch {
           name += '1';
         }
@@ -418,19 +438,35 @@ export class SidenavmenuComponent implements AfterViewInit {
           top: pointer.y,
         });
 
-        SidenavmenuComponent.canvasRef.add(deviceGroup); // Add device to canvas
-        SidenavmenuComponent.plottedDevices.push(deviceGroup); // Add device to device array
+        PLOTTING.canvasRef.add(deviceGroup); // Add device to canvas
+        PLOTTING.plottedDevices.push(deviceGroup); // Add device to device array
 
-        SidenavmenuComponent.prototype.changeDeviceName(imgCaption, deviceGroup, SidenavmenuComponent.canvasRef); // Open caption editor
+        PLOTTING.prototype.changeDeviceName(imgCaption, deviceGroup, PLOTTING.canvasRef); // Open caption editor
       }
     });
 
     // Event: On double click, if target is device, re-open device caption editor
     SidenavmenuComponent.canvasRef.on('mouse:dblclick', function edit(options) {
-      if (options.target && SidenavmenuComponent._EDIT_MODE) {
-        SidenavmenuComponent.prototype.changeDeviceName(options.target._objects[1], options.target, SidenavmenuComponent.canvasRef); // Open caption editor
+      const PLOTTING = SidenavmenuComponent;
+
+      if (options.target && PLOTTING._EDIT_MODE && PLOTTING.textboxOpen !== true) {
+        PLOTTING.prototype.changeDeviceName(options.target._objects[1], options.target, PLOTTING.canvasRef); // Open caption editor
       } else {
         console.log('double clicked canvas');
+      }
+    });
+
+    // Event: When mouse moves over a new target, check if it's still over the floorplan image
+    SidenavmenuComponent.canvasRef.on('mouse:move', function track(e) {
+      const PLOTTING = SidenavmenuComponent;
+
+      const pointer = PLOTTING.canvasRef.getPointer(event, false);
+      const border = PLOTTING.currentImg;
+
+      if ((pointer.x < 0) || (pointer.y < 0) || (pointer.x > border.naturalWidth) || (pointer.y > border.naturalHeight)) {
+        PLOTTING.mouseOverCanvas = false;
+      } else {
+        PLOTTING.mouseOverCanvas = true;
       }
     });
   }
@@ -445,6 +481,7 @@ export class SidenavmenuComponent implements AfterViewInit {
     SidenavmenuComponent.canvasRef.remove(SidenavmenuComponent.canvasRef.getActiveObject());
   }
 
+// Function for panning view of canvas
   panView() {
     SidenavmenuComponent.canvasRef.on('mouse:down', function(opt) {
       const evt = opt.e;
@@ -470,10 +507,15 @@ export class SidenavmenuComponent implements AfterViewInit {
     SidenavmenuComponent.canvasRef.on('mouse:up', function(opt) {
       this.isDragging = false;
       this.selection = true;
+      const objects = SidenavmenuComponent.canvasRef.getObjects();
+
+      for (let i = 0; i < objects.length; i++) {
+        objects[i].setCoords();
+      }
     });
   }
 
-  //Will save Json and url in fb or update if already in fb
+  // Will save Json and url in fb or update if already in fb
   saveJson() {
     var json = JSON.stringify(SidenavmenuComponent.canvasRef);
 
@@ -486,7 +528,7 @@ export class SidenavmenuComponent implements AfterViewInit {
     else {
       this.db.list('floorplanJson').push(img);
     }
-    
+
   }
 
 }
