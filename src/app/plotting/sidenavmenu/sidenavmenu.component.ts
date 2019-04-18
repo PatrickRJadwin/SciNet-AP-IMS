@@ -564,4 +564,20 @@ export class SidenavmenuComponent implements AfterViewInit {
 
   }
 
+  testSVG() {
+    const PLOTTING = SidenavmenuComponent;
+    const fpImage = PLOTTING.currentImg;
+
+    const originalheight = PLOTTING.fpHeight;
+    const originalwidth = PLOTTING.fpWidth;
+
+    PLOTTING.canvasRef.setHeight(fpImage.naturalHeight);
+    PLOTTING.canvasRef.setWidth(fpImage.naturalWidth);
+
+    document.getElementById('testSVG').innerHTML = PLOTTING.canvasRef.toSVG();
+
+    PLOTTING.canvasRef.setHeight(originalheight);
+    PLOTTING.canvasRef.setWidth(originalwidth);
+  }
+
 }
