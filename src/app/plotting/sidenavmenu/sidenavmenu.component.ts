@@ -259,6 +259,7 @@ export class SidenavmenuComponent implements AfterViewInit {
 
       SidenavmenuComponent.canvasRef.clear();
       SidenavmenuComponent.canvasRef.dispose();
+
     } catch (err) {
       console.log(err);
     }
@@ -271,22 +272,16 @@ export class SidenavmenuComponent implements AfterViewInit {
     SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpWidth);
 
 
-    SidenavmenuComponent.fpImageCurrent.crossOrigin = 'Anonymous';
 
     SidenavmenuComponent.canvasRef.setBackgroundImage(SidenavmenuComponent.fpImageCurrent);
 
     if (SidenavmenuComponent.imgList.filter(x => x.url === url).length === 1) {
       SidenavmenuComponent.canvasRef.loadFromJSON(SidenavmenuComponent.imgList.filter(x => x.url === url)[0].json);
-      this.captureEvents();
-      this.panView();
-      console.log('Loaded Floorplan');
-    }
-    else {
-      this.captureEvents();
-      this.panView();
-      console.log('Loaded Floorplan');
     }
 
+    this.captureEvents();
+    this.panView();
+    console.log('Loaded Floorplan');
     SidenavmenuComponent.isLoading = false;
   }
 
@@ -544,23 +539,20 @@ export class SidenavmenuComponent implements AfterViewInit {
       this.snack.openSnackBar('No Image Selected', 2500);
     }
     else {
-      const PLOTTING = SidenavmenuComponent;
-      const fpImage = PLOTTING.currentImg;
-
-      const originalheight = PLOTTING.fpHeight;
-      const originalwidth = PLOTTING.fpWidth;
-
-      PLOTTING.canvasRef.setHeight(fpImage.naturalHeight);
-      PLOTTING.canvasRef.setWidth(fpImage.naturalWidth);
-
-      const doc = new jspdf();
-      const img = PLOTTING.canvasRef.toDataURL('image/png');
-
-      doc.addImage(img, 'jpeg', 0, 0, fpImage.naturalHeight * .09, fpImage.naturalWidth * .09);
+      let originalheight = SidenavmenuComponent.canvasRef.height;
+      let originalwidth = SidenavmenuComponent.canvasRef.width;
+      SidenavmenuComponent.canvasRef.setHeight(SidenavmenuComponent.fpImageCurrent.height);
+      SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpImageCurrent.width);
+      let doc = new jspdf();
+      let img = SidenavmenuComponent.canvasRef.toDataURL({
+        format: 'jpeg'
+      });
+      console.log(img);
+      doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
       // Will add floorplan name into title of pdf once we have that functionality in the add floorplan
       doc.save('floorplanName' + '-' + this.auth.getUser().displayName + '-' + formatDate(new Date(), 'M-d-yy-h.mm', 'en-us') + '.pdf');
-      PLOTTING.canvasRef.setHeight(originalheight);
-      PLOTTING.canvasRef.setWidth(originalwidth);
+      SidenavmenuComponent.canvasRef.setHeight(originalheight);
+      SidenavmenuComponent.canvasRef.setWidth(originalwidth);
     }
 
   }
