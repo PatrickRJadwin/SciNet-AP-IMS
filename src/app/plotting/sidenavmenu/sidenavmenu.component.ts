@@ -8,10 +8,10 @@ import { ImageService } from 'src/app/shared/services/image.service';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthenticationService } from 'src/app/shared/services/authentication.service';
 import { ImageModel } from 'src/app/shared/image.model';
-import {IText} from "fabric/fabric-impl";
+import {IText, Canvas} from "fabric/fabric-impl";
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import * as jspdf from 'jspdf';
 import { formatDate } from '@angular/common';
+import * as svg from 'svgsaver';
 
 
 @Component({
@@ -389,7 +389,6 @@ export class SidenavmenuComponent implements AfterViewInit {
       /* If clicking an object, do nothing
          If mouse was being dragged after mouse down, do nothing
          If text box for device name is open, do nothing
-
          Else, plot new device
       */
       if (options.target) {
@@ -535,7 +534,7 @@ export class SidenavmenuComponent implements AfterViewInit {
   }
 
   savePDF() {
-    if (SidenavmenuComponent.current == null) {
+    /*if (SidenavmenuComponent.current == null) {
       this.snack.openSnackBar('No Image Selected', 2500);
     }
     else {
@@ -560,12 +559,12 @@ export class SidenavmenuComponent implements AfterViewInit {
       doc.save('floorplanName' + '-' + this.auth.getUser().displayName + '-' + formatDate(new Date(), 'M-d-yy-h.mm', 'en-us') + '.pdf');
       PLOTTING.canvasRef.setHeight(originalheight);
       PLOTTING.canvasRef.setWidth(originalwidth);
-    }
+    }*/
 
   }
 
   testSVG() {
-    const PLOTTING = SidenavmenuComponent;
+    let PLOTTING = SidenavmenuComponent;
     const fpImage = PLOTTING.currentImg;
 
     const originalheight = PLOTTING.fpHeight;
@@ -578,6 +577,16 @@ export class SidenavmenuComponent implements AfterViewInit {
 
     PLOTTING.canvasRef.setHeight(originalheight);
     PLOTTING.canvasRef.setWidth(originalwidth);
+
+    const svg1 = document.getElementById('testSVG').innerHTML;
+    console.log(svg1);
+
+    var SvgSaver = require('svgsaver');
+    var svgsaver = new SvgSaver();
+    var svg = document.getElementById('testSVG');
+    svgsaver.asSvg(svg);
+
+
   }
 
 }
