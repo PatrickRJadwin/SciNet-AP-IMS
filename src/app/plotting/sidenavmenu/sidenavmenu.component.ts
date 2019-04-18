@@ -581,6 +581,8 @@ export class SidenavmenuComponent implements AfterViewInit {
     const svg1 = document.getElementById('testSVG').innerHTML;
     console.log(svg1);
 
+    require;
+
     var SvgSaver = require('svgsaver');
     var svgsaver = new SvgSaver();
     var svg = document.getElementById('testSVG');
