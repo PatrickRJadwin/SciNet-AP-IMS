@@ -539,20 +539,27 @@ export class SidenavmenuComponent implements AfterViewInit {
       this.snack.openSnackBar('No Image Selected', 2500);
     }
     else {
-      let originalheight = SidenavmenuComponent.canvasRef.height;
-      let originalwidth = SidenavmenuComponent.canvasRef.width;
-      SidenavmenuComponent.canvasRef.setHeight(SidenavmenuComponent.fpImageCurrent.height);
-      SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpImageCurrent.width);
+      const PLOTTING = SidenavmenuComponent;
+      const fpImage = PLOTTING.currentImg;
+
+      const originalheight = PLOTTING.fpHeight;
+      const originalwidth = PLOTTING.fpWidth;
+
+      PLOTTING.canvasRef.setHeight(fpImage.naturalHeight);
+      PLOTTING.canvasRef.setWidth(fpImage.naturalWidth);
+
       let doc = new jspdf();
       let img = SidenavmenuComponent.canvasRef.toDataURL({
         format: 'jpeg'
       });
       console.log(img);
       doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
+
       // Will add floorplan name into title of pdf once we have that functionality in the add floorplan
+
       doc.save('floorplanName' + '-' + this.auth.getUser().displayName + '-' + formatDate(new Date(), 'M-d-yy-h.mm', 'en-us') + '.pdf');
-      SidenavmenuComponent.canvasRef.setHeight(originalheight);
-      SidenavmenuComponent.canvasRef.setWidth(originalwidth);
+      PLOTTING.canvasRef.setHeight(originalheight);
+      PLOTTING.canvasRef.setWidth(originalwidth);
     }
 
   }
