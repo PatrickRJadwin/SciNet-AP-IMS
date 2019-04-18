@@ -11,6 +11,10 @@ export class ToolbarComponent implements OnInit {
   constructor(public side: SidenavmenuComponent) { }
 
   ngOnInit() {
+      SidenavmenuComponent.EDIT_MODE = true;
+      SidenavmenuComponent.PAN_MODE = false;
+      SidenavmenuComponent.allowObjectSelect(0);
+      console.log('Current mode: EDIT');
   }
 
 // Function to update current canvas interaction mode (Edit or Pan mode)
@@ -49,3 +53,4 @@ export class ToolbarComponent implements OnInit {
     this.side.saveJson();
   }
 }
+
