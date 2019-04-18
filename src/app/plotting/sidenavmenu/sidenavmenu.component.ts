@@ -256,9 +256,9 @@ export class SidenavmenuComponent implements AfterViewInit {
     try {
       SidenavmenuComponent.plottedDevices.length = 0;
       SidenavmenuComponent.textboxOpen = false;
-
       SidenavmenuComponent.canvasRef.clear();
       SidenavmenuComponent.canvasRef.dispose();
+
     } catch (err) {
       console.log(err);
     }
@@ -271,22 +271,16 @@ export class SidenavmenuComponent implements AfterViewInit {
     SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpWidth);
 
 
-    SidenavmenuComponent.fpImageCurrent.crossOrigin = 'Anonymous';
 
     SidenavmenuComponent.canvasRef.setBackgroundImage(SidenavmenuComponent.fpImageCurrent);
 
     if (SidenavmenuComponent.imgList.filter(x => x.url === url).length === 1) {
       SidenavmenuComponent.canvasRef.loadFromJSON(SidenavmenuComponent.imgList.filter(x => x.url === url)[0].json);
-      this.captureEvents();
-      this.panView();
-      console.log('Loaded Floorplan');
-    }
-    else {
-      this.captureEvents();
-      this.panView();
-      console.log('Loaded Floorplan');
     }
 
+    this.captureEvents();
+    this.panView();
+    console.log('Loaded Floorplan');
     SidenavmenuComponent.isLoading = false;
   }
 
@@ -555,7 +549,10 @@ export class SidenavmenuComponent implements AfterViewInit {
       SidenavmenuComponent.canvasRef.setHeight(SidenavmenuComponent.fpImageCurrent.height);
       SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpImageCurrent.width);
       let doc = new jspdf();
-      let img = SidenavmenuComponent.canvasRef.toDataURL('image/png');
+      let img = SidenavmenuComponent.canvasRef.toDataURL({
+        format: 'jpeg'
+      });
+      console.log(img);
       doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
       //Will add floorplan name into title of pdf once we have that functionality in the add floorplan
       doc.save('floorplanName' + '-' + this.auth.getUser().displayName + '-' + formatDate(new Date(), 'M-d-yy-h.mm', 'en-us') + '.pdf');
