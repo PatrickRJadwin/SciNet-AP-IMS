@@ -1,9 +1,9 @@
 <div>
-  <mat-button-toggle-group vertical (change)="modeChanged($event)">
-    <mat-button-toggle value="Edit" checked matTooltip="Plotting Tool" matTooltipPosition="right">
+  <mat-button-toggle-group id="modeButtonGroup" vertical (change)="modeChanged($event)">
+    <mat-button-toggle id="editButton" value="Edit" checked matTooltip="Plotting Tool" matTooltipPosition="right">
       <i class="material-icons" alt="Plot Tool">edit</i>
     </mat-button-toggle>
-    <mat-button-toggle value="Pan" matTooltip="Pan Tool" matTooltipPosition="right">
+    <mat-button-toggle id="panButton" value="Pan" matTooltip="Pan Tool" matTooltipPosition="right">
       <i class="material-icons" alt="Pan Tool">pan_tool</i>
     </mat-button-toggle>
 

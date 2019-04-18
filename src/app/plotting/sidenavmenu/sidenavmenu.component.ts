@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/shared/services/authentication.se
 import { ImageModel } from 'src/app/shared/image.model';
 import {IText} from "fabric/fabric-impl";
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import * as jspdf from 'jspdf';  
+import * as jspdf from 'jspdf';
 import { formatDate } from '@angular/common';
 
 
@@ -347,12 +347,6 @@ export class SidenavmenuComponent implements AfterViewInit {
   ngAfterViewInit() {
     console.log(SidenavmenuComponent.plottedDevices.length);
 
-    SidenavmenuComponent.canvasRef = this.canvas;
-/*
-    this.canvas.setHeight(this.fpHeight);
-    this.canvas.setWidth(this.fpWidth);
-    this.captureEvents(); */
-
     let data = this.db.list('floorplanJson');
     data.snapshotChanges().subscribe(item => {
       SidenavmenuComponent.imgList = [];
@@ -550,17 +544,23 @@ export class SidenavmenuComponent implements AfterViewInit {
       this.snack.openSnackBar('No Image Selected', 2500);
     }
     else {
-      let originalheight = SidenavmenuComponent.canvasRef.height;
-      let originalwidth = SidenavmenuComponent.canvasRef.width;
-      SidenavmenuComponent.canvasRef.setHeight(SidenavmenuComponent.fpImageCurrent.height);
-      SidenavmenuComponent.canvasRef.setWidth(SidenavmenuComponent.fpImageCurrent.width);
-      let doc = new jspdf();
-      let img = SidenavmenuComponent.canvasRef.toDataURL('image/png');
-      doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
-      //Will add floorplan name into title of pdf once we have that functionality in the add floorplan
+      const PLOTTING = SidenavmenuComponent;
+      const fpImage = PLOTTING.currentImg;
+
+      const originalheight = PLOTTING.fpHeight;
+      const originalwidth = PLOTTING.fpWidth;
+
+      PLOTTING.canvasRef.setHeight(fpImage.naturalHeight);
+      PLOTTING.canvasRef.setWidth(fpImage.naturalWidth);
+
+      const doc = new jspdf();
+      const img = PLOTTING.canvasRef.toDataURL('image/png');
+
+      doc.addImage(img, 'jpeg', 0, 0, fpImage.naturalHeight * .09, fpImage.naturalWidth * .09);
+      // Will add floorplan name into title of pdf once we have that functionality in the add floorplan
       doc.save('floorplanName' + '-' + this.auth.getUser().displayName + '-' + formatDate(new Date(), 'M-d-yy-h.mm', 'en-us') + '.pdf');
-      SidenavmenuComponent.canvasRef.setHeight(originalheight);
-      SidenavmenuComponent.canvasRef.setWidth(originalwidth);
+      PLOTTING.canvasRef.setHeight(originalheight);
+      PLOTTING.canvasRef.setWidth(originalwidth);
     }
 
   }
