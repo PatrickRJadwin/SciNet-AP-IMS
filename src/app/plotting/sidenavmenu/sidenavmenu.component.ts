@@ -564,7 +564,7 @@ export class SidenavmenuComponent implements AfterViewInit {
   }
 
   testSVG() {
-    let PLOTTING = SidenavmenuComponent;
+    const PLOTTING = SidenavmenuComponent;
     const fpImage = PLOTTING.currentImg;
 
     const originalheight = PLOTTING.fpHeight;
@@ -573,12 +573,18 @@ export class SidenavmenuComponent implements AfterViewInit {
     PLOTTING.canvasRef.setHeight(fpImage.naturalHeight);
     PLOTTING.canvasRef.setWidth(fpImage.naturalWidth);
 
-    document.getElementById('testSVG').innerHTML = PLOTTING.canvasRef.toSVG();
+    const newWindow = window.open('about:blank', '_blank');
+    const newDIV = document.createElement('div');
+
+    newDIV.innerHTML = PLOTTING.canvasRef.toSVG();
+    newWindow.document.body.appendChild(newDIV);
+    newWindow.focus();
+    newWindow.window.print();
 
     PLOTTING.canvasRef.setHeight(originalheight);
     PLOTTING.canvasRef.setWidth(originalwidth);
 
-    const svg1 = document.getElementById('testSVG');
+    /* const svg1 = document.getElementById('testSVG');
     console.log(svg1);
 
     let serializer = new XMLSerializer();
@@ -586,8 +592,9 @@ export class SidenavmenuComponent implements AfterViewInit {
 
     source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
 
-    let url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
-    console.log(url);
+    let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
+    console.log(url); */
+
 
   }
 
