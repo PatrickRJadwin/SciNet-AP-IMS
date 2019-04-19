@@ -4,9 +4,11 @@
 <mat-grid-list cols="3" rowHeight="100px">
     <mat-grid-tile>
         <form class="search">
+          <div class="inputcolor">
           <mat-form-field class="searching">
             <input matInput placeholder="Search..." (keyup)="applyFilter($event.target.value)">
           </mat-form-field>
+          </div>
         </form>
       </mat-grid-tile>
   </mat-grid-list>
@@ -55,10 +57,13 @@
   <h1 mat-dialog-title>Edit Item</h1>
 <form class="edititem">
   <div mat-dialog-content data-backdrop="static" data-keyboard="false">
+    <div class="inputcolor">
     <mat-form-field class="full-width">
       <input matInput [(ngModel)]="edit.email" type="text" name="email" readonly>
     </mat-form-field>
+    </div>
     <br>
+    <div class="inputcolor">
     <mat-form-field class="full-width">
       <mat-select [(value)]="selected">
         <mat-option value="noaccess">No Access</mat-option>
@@ -67,6 +72,7 @@
         <mat-option value="superuser">Super User</mat-option>
       </mat-select>
     </mat-form-field>
+    </div>
     <br>
   </div>
 
