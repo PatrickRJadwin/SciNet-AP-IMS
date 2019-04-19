@@ -578,16 +578,16 @@ export class SidenavmenuComponent implements AfterViewInit {
     PLOTTING.canvasRef.setHeight(originalheight);
     PLOTTING.canvasRef.setWidth(originalwidth);
 
-    const svg1 = document.getElementById('testSVG').innerHTML;
+    const svg1 = document.getElementById('testSVG');
     console.log(svg1);
 
-    require;
+    let serializer = new XMLSerializer();
+    let source = serializer.serializeToString(svg1);
 
-    var SvgSaver = require('svgsaver');
-    var svgsaver = new SvgSaver();
-    var svg = document.getElementById('testSVG');
-    svgsaver.asSvg(svg);
+    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
 
+    let url = "data:image/svg+xml;charset=utf-8,"+encodeURIComponent(source);
+    console.log(url);
 
   }
 
