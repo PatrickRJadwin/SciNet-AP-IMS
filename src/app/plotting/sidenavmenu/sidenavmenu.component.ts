@@ -11,7 +11,6 @@ import { ImageModel } from 'src/app/shared/image.model';
 import {IText, Canvas} from "fabric/fabric-impl";
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { formatDate } from '@angular/common';
-import * as svg from 'svgsaver';
 
 
 @Component({
