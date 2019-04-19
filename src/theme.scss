@@ -273,3 +273,12 @@ $alt-theme: create-wonky-theme($alt-primary, $custom-accent);
     @include angular-material-theme($alt-theme);
 }
 
+
+//Input colors
+$input-primary: mat-palette($md-orange, 900);
+$input-theme: create-wonky-theme($input-primary, $custom-accent);
+
+.inputcolor {
+    @include angular-material-theme($input-theme);
+}
+
