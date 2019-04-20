@@ -1,9 +1,9 @@
 <div>
-  <mat-button-toggle-group vertical (change)="modeChanged($event)">
-    <mat-button-toggle value="Edit" checked matTooltip="Plotting Tool" matTooltipPosition="right">
+  <mat-button-toggle-group id="modeButtonGroup" vertical (change)="modeChanged($event)">
+    <mat-button-toggle id="editButton" value="Edit" checked matTooltip="Plotting Tool" matTooltipPosition="right">
       <i class="material-icons" alt="Plot Tool">edit</i>
     </mat-button-toggle>
-    <mat-button-toggle value="Pan" matTooltip="Pan Tool" matTooltipPosition="right">
+    <mat-button-toggle id="panButton" value="Pan" matTooltip="Pan Tool" matTooltipPosition="right">
       <i class="material-icons" alt="Pan Tool">pan_tool</i>
     </mat-button-toggle>
 
@@ -11,7 +11,10 @@
       <i class="material-icons" style="font-size: 32px; padding-bottom: 5px; padding-top: 10px;" alt="Zoom In">zoom_in</i>
     </button>
     <button mat-flat-button (click)="zoomChanged(1)" matTooltip="Zoom Out" matTooltipPosition="right">
-      <i class="material-icons" style="font-size: 32px; padding-bottom: 10px; ; padding-top: 5px;" alt="Zoom Out">zoom_out</i>
+      <i class="material-icons" style="font-size: 32px; padding-top: 5px;" alt="Zoom Out">zoom_out</i>
+    </button>
+    <button mat-flat-button (click)="printSVG()" matTooltip="Print Floorplan Image" matTooltipPosition="right">
+      <i class="material-icons" style="font-size: 32px; padding-bottom: 10px; ; padding-top: 10px;" alt="Print">print</i>
     </button>
     <button mat-flat-button color="accent" (click)="saveJ()" matTooltip="Save Plotted Devices" matTooltipPosition="right">
       <i class="material-icons" style="font-size: 32px;" alt="Save">save</i>

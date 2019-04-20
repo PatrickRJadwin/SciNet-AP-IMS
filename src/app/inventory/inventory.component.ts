@@ -17,11 +17,13 @@ import { AuthenticationService } from '../shared/services/authentication.service
 })
 export class InventoryComponent implements OnInit {
   // Columns for table
-  displayedColumns: string[] = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
+  displayedColumns: string[];
   // Datasource var, will replace with db data
 
   itemList: Item[];
   selectedItem: Item;
+
+  isLoading = true;
  
   user: Userm;
 
@@ -103,7 +105,15 @@ export class InventoryComponent implements OnInit {
       this.countJoined = this.itemList.filter(x => x.joined === true).length;
       this.countCompleted = this.itemList.filter(x => x.complete === true).length;
       this.countCheckedIn = this.itemList.filter(x => x.checkedIn === true).length;
+      this.isLoading = false;
     });
+
+    if (this.auth.isAdmin() == true) {
+      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
+    }
+    else {
+      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'joined', 'complete'];
+    }
 
   }
 
@@ -321,12 +331,22 @@ export class InventoryComponent implements OnInit {
     if (changeEvent.checked) {
       this.show = false;
       this.setUpDown = "Tear Down";
-      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'checkedIn', 'edit'];
+      if (this.auth.isAdmin() == true) {
+        this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'checkedIn', 'edit'];
+      }
+      else {
+        this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'checkedIn'];
+      }
     }
     else {
       this.setUpDown = "Setup";
       this.show = true;
-      this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
+      if (this.auth.isAdmin() == true) {
+        this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'created_at', 'created_by', 'joined', 'complete', 'edit', 'trash'];
+      }
+      else {
+        this.displayedColumns = ['seqNo', 'mac', 'location', 'port', 'joined', 'complete'];
+      }
     }
   }
 }

@@ -4,6 +4,7 @@
 <mat-grid-list cols="3" rowHeight="100px">
 <mat-grid-tile>
 <!--Placeholder. Needs to grab dates from datasource  (click)="setListByDate(sel.created_at)"-->
+<div class="inputcolor">
   <mat-form-field>
     <mat-select [(value)]="selected" id="sel" placeholder="Select Date">
       <mat-option *ngFor="let s of dates" [value]="s" (click)="setListByDate(s)">
@@ -11,6 +12,7 @@
       </mat-option>
     </mat-select>
   </mat-form-field>
+  </div>
 </mat-grid-tile>
 <mat-grid-tile>
     <button mat-raised-button (click)="savePDF()" color="primary">Generate PDF</button>
@@ -53,3 +55,11 @@
 </div>
 
 </mat-card>
+
+<div *ngIf="isLoading" 
+   style="display: flex; justify-content: center; align-items: center;">
+  <mat-progress-spinner 
+    color="accent" 
+    mode="indeterminate">
+  </mat-progress-spinner>
+</div>

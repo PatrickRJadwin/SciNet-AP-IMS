@@ -34,6 +34,7 @@
     <div class="navbartoggleContainer">
       <button class="navbartoggleButton" mat-button (click)="sidenav.toggle()">
         < </button> </div> <div id="canvasWrap" class="canvas-wrapper">
+            
           <canvas id="myCanvas"></canvas> <!-- Canvas for plotting -->
     </div>
 
@@ -53,4 +54,12 @@
   </form>
 </ng-template>
 
-<img src='https://i.imgur.com/Q5skAxA.png' id="my-image" style="display: none;">
+<img src='assets/images/testicon.png' id="my-image" style="display: none;">
+
+<div *ngIf="isLoading" 
+   style="display: flex; justify-content: center; align-items: center; z-index: 1002">
+  <mat-progress-spinner 
+    color="accent" 
+    mode="indeterminate">
+  </mat-progress-spinner>
+</div>

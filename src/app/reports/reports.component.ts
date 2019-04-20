@@ -21,6 +21,8 @@ export class ReportsComponent implements OnInit {
   // dataSource var, replace with db data
   dataSource = new MatTableDataSource();
 
+  isLoading = true;
+
   itemList: Item[];
   selectList: AngularFireList<any[]>;
   selList: Item[];
@@ -50,6 +52,7 @@ export class ReportsComponent implements OnInit {
         json["$key"] = element.key;
         this.itemList.push(json as Item);
       });
+      this.isLoading = false;
       this.dataSource = new MatTableDataSource(this.itemList);
       this.dataSource.sort = this.sort;
       this.itemList.forEach(element => {
