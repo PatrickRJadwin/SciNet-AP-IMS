@@ -3,6 +3,8 @@ import {SidenavmenuComponent} from '../sidenavmenu/sidenavmenu.component';
 import { AngularFireList, AngularFireDatabase } from 'angularfire2/database';
 import { ImageModel } from 'src/app/shared/image.model';
 import { ImageService } from 'src/app/shared/services/image.service';
+import { AuthenticationService } from 'src/app/shared/services/authentication.service';
+import { element } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-floorplancard',
@@ -14,7 +16,9 @@ export class FloorplancardComponent implements OnInit {
   itemList: ImageModel[];
 
   constructor(private db: AngularFireDatabase,
-              private image: ImageService) { }
+              private image: ImageService,
+              private auth: AuthenticationService) { 
+              }
 
   ngOnInit() {
     let data = this.image.getLinks();
@@ -28,6 +32,13 @@ export class FloorplancardComponent implements OnInit {
       });
     });
     
+  }
+
+  deleteFp(key: string, i: number) {
+    console.log(this.itemList);
+    console.log(i);
+    this.image.deleteByKey(key)
+    this.ngOnInit();
   }
 
   floorplanClicked(el) {

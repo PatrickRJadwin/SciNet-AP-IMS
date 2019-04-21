@@ -30,4 +30,8 @@ export class ImageService {
   getImage() {
     return this.itemList;
   }
+
+  deleteByKey($key: string) {
+    this.linkList.remove($key);
+  }
 }
