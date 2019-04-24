@@ -343,6 +343,7 @@ export class SidenavmenuComponent implements AfterViewInit {
 
     let isMouseDown = false;
     let isMouseDrag = false;
+    let isActiveDevice = false;
 
     // Event: When delete button (key code: 46) is pressed, delete currently selected object
     canvasWrapper.tabIndex = 1000;
@@ -374,7 +375,7 @@ export class SidenavmenuComponent implements AfterViewInit {
       */
       if (options.target) {
 
-      } else if ((PLOTTING.textboxOpen === false) && (isDragEnd === false) && (PLOTTING._EDIT_MODE) && PLOTTING.mouseOverCanvas) {
+      } else if ((!PLOTTING.textboxOpen) && (!isDragEnd) && (PLOTTING._EDIT_MODE) && (PLOTTING.mouseOverCanvas) && (!isActiveDevice)) {
 
         // Thank you fabric for making this super useful function very easy to find in your documentation </sarcasm>
         const pointer = PLOTTING.canvasRef.getPointer(event, false);
@@ -392,32 +393,46 @@ export class SidenavmenuComponent implements AfterViewInit {
           fontSize: 20,
           originX: 'center',
           originY: 'top',
-          top: 82,
+          top: 45,
           textBackgroundColor: 'darkgrey'
         });
 
         // Create the device icon itself
         const imgElement = new Image();
+
+        // When icon image is loaded, create the rest of the device group
+        imgElement.onload = () => {
+          const imgInstance = new fabric.Image(imgElement, {
+            originX: 'center',
+            originY: 'top',
+            scaleX: .1,
+            scaleY: .1
+          });
+
+          // Create a group for the icon and caption
+          const deviceGroup = new fabric.Group([imgInstance, imgCaption], {
+            originX: 'center',
+            originY: 'center',
+            left: pointer.x,
+            top: pointer.y,
+          });
+
+          PLOTTING.canvasRef.add(deviceGroup); // Add device to canvas
+          PLOTTING.plottedDevices.push(deviceGroup); // Add device to device array
+
+          PLOTTING.prototype.changeDeviceName(imgCaption, deviceGroup, PLOTTING.canvasRef); // Open caption editor
+        };
+
         imgElement.src = 'assets/images/device_icon_blue.svg'; // Device Icon URL
-        const imgInstance = new fabric.Image(imgElement, {
-          originX: 'center',
-          originY: 'top',
-          scaleX: .2,
-          scaleY: .2
-        });
+      }
 
-        // Create a group for the icon and caption
-        const deviceGroup = new fabric.Group([imgInstance, imgCaption], {
-          originX: 'center',
-          originY: 'center',
-          left: pointer.x,
-          top: pointer.y,
-        });
-
-        PLOTTING.canvasRef.add(deviceGroup); // Add device to canvas
-        PLOTTING.plottedDevices.push(deviceGroup); // Add device to device array
-
-        PLOTTING.prototype.changeDeviceName(imgCaption, deviceGroup, PLOTTING.canvasRef); // Open caption editor
+      // If a device or group of devices is currently selected, do not plot a device on next click on canvas
+      if (options.target !== null) {
+        isActiveDevice = true;
+      } else if (isDragEnd && (PLOTTING.canvasRef.getActiveObjects().length > 0)) {
+        isActiveDevice = true;
+      } else if (options.target === null) {
+        isActiveDevice = false;
       }
     });
 
