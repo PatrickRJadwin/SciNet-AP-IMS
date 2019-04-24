@@ -269,7 +269,6 @@ export class SidenavmenuComponent implements AfterViewInit {
       SidenavmenuComponent.canvasRef.loadFromJSON(SidenavmenuComponent.imgList.filter(x => x.url === url)[0].json);
     }
 
-    this.deviceList = SidenavmenuComponent.canvasRef.getObjects;
     this.captureEvents();
     this.panView();
     SidenavmenuComponent.isLoading = false;
