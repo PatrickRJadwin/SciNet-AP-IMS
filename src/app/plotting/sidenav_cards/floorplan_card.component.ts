@@ -50,9 +50,6 @@ export class FloorplancardComponent implements OnInit {
     
   }
 
-<<<<<<< HEAD
-  deleteFp(key: string, i: number) {
-=======
   deleteFp(key: string) {
     console.log(this.itemList);
     
@@ -63,7 +60,6 @@ export class FloorplancardComponent implements OnInit {
       this.imgfire.remove(keyjson);
     }
     
->>>>>>> fcc53299b602fda09a34de547bccf63096a66238
     this.image.deleteByKey(key)
   }
 
