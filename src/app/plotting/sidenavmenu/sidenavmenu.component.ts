@@ -269,6 +269,7 @@ export class SidenavmenuComponent implements AfterViewInit {
       SidenavmenuComponent.canvasRef.loadFromJSON(SidenavmenuComponent.imgList.filter(x => x.url === url)[0].json);
     }
 
+    this.deviceList = SidenavmenuComponent.canvasRef.getObjects;
     this.captureEvents();
     this.panView();
     SidenavmenuComponent.isLoading = false;
@@ -284,7 +285,68 @@ export class SidenavmenuComponent implements AfterViewInit {
       originY: 'center',
       left: deviceGroup.left,
       top: deviceGroup.top - 45,
-      textBackgroundColor: 'white'
+      textBackgroundColor: 'white',
+      selectable: false
+    });
+
+    const colorBG = new fabric.Ellipse({
+      fill: 'grey',
+      rx: 85,
+      ry: 15,
+      left: deviceGroup.left - 85,
+      top: deviceGroup.top + 35,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+
+    const blue = new fabric.Circle({
+      name: 'blue',
+      radius: 10,
+      fill: 'blue',
+      left: deviceGroup.left - 70,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const green = new fabric.Circle({
+      name: 'green',
+      radius: 10,
+      fill: 'green',
+      left: deviceGroup.left - 40,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const purple = new fabric.Circle({
+      name: 'purple',
+      radius: 10,
+      fill: 'purple',
+      left: deviceGroup.left - 10,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const red = new fabric.Circle({
+      name: 'red',
+      radius: 10,
+      fill: 'red',
+      left: deviceGroup.left + 20,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const yellow = new fabric.Circle({
+      name: 'yellow',
+      radius: 10,
+      fill: 'yellow',
+      left: deviceGroup.left + 50,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
     });
 
     document.onkeydown = e => {
@@ -294,31 +356,72 @@ export class SidenavmenuComponent implements AfterViewInit {
     };
 
     canvasRef.add(editText);
+    canvasRef.add(colorBG, blue, green, purple, red, yellow);
     editText.enterEditing();
 
-    canvasRef.on('mouse:up', function submit(e) {
+    function submit(e) {
       try {
-        if ((e.target.type.toString() !== 'i-text') && (e.target !== deviceGroup)) {
+        if ((e.target.type.toString() !== 'i-text') && (e.target !== deviceGroup)
+              && (e.target !== colorBG) && (e.target !== blue) && (e.target !== green)
+                && (e.target !== purple) && (e.target !== red) && (e.target !== yellow)) {
           editText.exitEditing();
         } else if (editText.left !== deviceGroup.left) {
           if (editText.top !== deviceGroup.top - 45) {
             editText.top = deviceGroup.top - 45;
+            colorBG.top = deviceGroup.top + 35;
+            blue.top = deviceGroup.top + 40;
+            green.top = deviceGroup.top + 40;
+            purple.top = deviceGroup.top + 40;
+            red.top = deviceGroup.top + 40;
+            yellow.top = deviceGroup.top + 40;
           }
           editText.left = deviceGroup.left;
+          colorBG.left = deviceGroup.left - 85;
+          blue.left = deviceGroup.left - 70;
+          green.left = deviceGroup.left - 40;
+          purple.left = deviceGroup.left - 10;
+          red.left = deviceGroup.left + 20;
+          yellow.left = deviceGroup.left + 50;
+        }
+
+        if (e.target.name !== undefined) {
+          switch (e.target.name) {
+            case 'blue':
+              console.log(e.target.name);
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 0);
+              break;
+            case 'green':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 1);
+              break;
+            case 'purple':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 2);
+              break;
+            case 'red':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 3);
+              break;
+            case 'yellow':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 4);
+              break;
+            default:
+              console.log('Error: Invalid switch case (Line 405 - Sidenavmenu)');
+              break;
+          }
         }
       } catch {
         editText.exitEditing();
       }
-    });
+    }
 
     function updateText() {
       imgCaption.insertChars(editText.text.toString(), null, 0, 100);
-      canvasRef.remove(editText);
+      canvasRef.remove(editText, colorBG, blue, green, purple, red, yellow);
       SidenavmenuComponent.textboxOpen = false;
 
+      canvasRef.off('mouse:up', submit);
       editText.off('editing:exited', updateText);
     }
 
+    canvasRef.on('mouse:up', submit)
     editText.on('editing:exited', updateText);
   }
 
@@ -340,6 +443,7 @@ export class SidenavmenuComponent implements AfterViewInit {
 
 // Listener for user events on canvas
   captureEvents() {
+    SidenavmenuComponent.plottedDevices = SidenavmenuComponent.canvasRef.getObjects();
     const rect = document.getElementById('myCanvas').getBoundingClientRect();
     const canvasWrapper = document.getElementById('canvasWrap');
 
@@ -412,14 +516,17 @@ export class SidenavmenuComponent implements AfterViewInit {
 
           // Create a group for the icon and caption
           const deviceGroup = new fabric.Group([imgInstance, imgCaption], {
+            name: '' + name,
             originX: 'center',
             originY: 'center',
             left: pointer.x,
             top: pointer.y,
+            hasControls: false
           });
 
           PLOTTING.canvasRef.add(deviceGroup); // Add device to canvas
           PLOTTING.plottedDevices.push(deviceGroup); // Add device to device array
+          PLOTTING.canvasRef.setActiveObject(deviceGroup);
 
           PLOTTING.prototype.changeDeviceName(imgCaption, deviceGroup, PLOTTING.canvasRef); // Open caption editor
         };
@@ -484,8 +591,7 @@ export class SidenavmenuComponent implements AfterViewInit {
   }
 
 // Function to change device icon color
-  deviceColor(color) {
-    let devices;
+  deviceColor(device, color) {
     let imgUrl;
 
     switch (color) {
@@ -496,47 +602,34 @@ export class SidenavmenuComponent implements AfterViewInit {
         imgUrl = 'assets/images/device_icon_green.svg';
         break;
       case 2:
-        imgUrl = 'assets/images/device_icon_blue.svg';
+        imgUrl = 'assets/images/device_icon_purple.svg';
         break;
       case 3:
-        imgUrl = 'assets/images/device_icon_green.svg';
+        imgUrl = 'assets/images/device_icon_red.svg';
         break;
       case 4:
-        imgUrl = 'assets/images/device_icon_blue.svg';
+        imgUrl = 'assets/images/device_icon_yellow.svg';
         break;
     }
 
     try {
-      devices = SidenavmenuComponent.canvasRef.getActiveObjects();
+      const img = new Image();
 
-      if (devices.length >= 1) {
-        for (let i = 0; i < devices.length; i++) {
-
-          const img = new Image();
-
-
-
-          img.onload = () => {
-            const imgInstance = new fabric.Image(img, {
-              originX: 'center',
-              originY: 'top',
-              scaleX: .1,
-              scaleY: .1,
-              top: -34.5
-            });
+      img.onload = () => {
+        const imgInstance = new fabric.Image(img, {
+          originX: 'center',
+          originY: 'top',
+          scaleX: .1,
+          scaleY: .1,
+          top: -34.5
+        });
 
 
-            devices[i].insertAt(imgInstance, 0, false);
-            devices[i].removeWithUpdate(devices[i]._objects[1]);
-          };
+        device.insertAt(imgInstance, 0, false);
+        device.removeWithUpdate(device._objects[1]);
+      };
 
-          img.src = imgUrl;
-        }
-      } else {
-        this.snack.openSnackBar('No device selected', 2000);
-      }
-
-
+      img.src = imgUrl;
     } catch {
       this.snack.openSnackBar('No device selected', 2000);
     }
