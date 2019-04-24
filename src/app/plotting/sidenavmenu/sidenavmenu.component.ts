@@ -392,13 +392,13 @@ export class SidenavmenuComponent implements AfterViewInit {
           fontSize: 20,
           originX: 'center',
           originY: 'top',
-          top: 35,
+          top: 82,
           textBackgroundColor: 'darkgrey'
         });
 
         // Create the device icon itself
         const imgElement = new Image();
-        imgElement.src = 'assets/images/testicon.png'; // Device Icon URL
+        imgElement.src = 'assets/images/device_icon_blue.svg'; // Device Icon URL
         const imgInstance = new fabric.Image(imgElement, {
           originX: 'center',
           originY: 'top',
