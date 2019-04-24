@@ -35,15 +35,11 @@ export class FloorplancardComponent implements OnInit {
   }
 
   deleteFp(key: string, i: number) {
-    console.log(this.itemList);
-    console.log(i);
     this.image.deleteByKey(key)
     this.ngOnInit();
   }
 
   floorplanClicked(el) {
-    console.log(el.src + ' ' + el.id);
-
     let fpImage;
     let fpName;
 

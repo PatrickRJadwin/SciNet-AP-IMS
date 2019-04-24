@@ -88,16 +88,13 @@ export class SidenavmenuComponent implements AfterViewInit {
   }
 
   uploadPic() {
-    console.log("TESTETSETESTE:    " + this.selectedFiles);
     let file = this.selectedFiles;
     let uniqkey = 'pic' + Math.floor(Math.random() * 1000000);
     const uploadTask = this.storage.upload('/floorplans/' + uniqkey, file).then(() => {
       const ref = this.storage.ref('/floorplans/' + uniqkey);
       const downloadUrl = ref.getDownloadURL().subscribe(url => {
         this.image = new ImageModel(url);
-        console.log(this.image.url);
         this.image.url = url;
-        console.log(this.image.url);
         this.imageService.addLink(this.image);
       })
     });
@@ -155,13 +152,11 @@ export class SidenavmenuComponent implements AfterViewInit {
 // Method to load floorplan image from floorplan card
   public static loadFloorplan(fpImage, fpName) {
     SidenavmenuComponent.isLoading = true;
-    console.log('Received Floorplan: ' + fpImage + ' ' + fpName);
     this.current = fpImage;
 
     const tempImage = new Image();
 
     tempImage.addEventListener('load', () => {
-      console.log('width: ' + tempImage.naturalWidth + ', height: ' + tempImage.naturalHeight);
     });
     tempImage.src = fpImage;
 
@@ -221,8 +216,6 @@ export class SidenavmenuComponent implements AfterViewInit {
   static zoomView(zoomChoice) {
     let zoom = SidenavmenuComponent.canvasRef.getZoom();
 
-    console.log('Zoom Start: ' + zoom);
-
     // Zoom in
     if (zoomChoice === 0) {
       zoom += .2;
@@ -230,8 +223,6 @@ export class SidenavmenuComponent implements AfterViewInit {
       if (zoom > 4) {
         zoom = 4;
       }
-
-      console.log('Zoom End: ' + zoom);
     }
 
     // Zoom out
@@ -241,8 +232,6 @@ export class SidenavmenuComponent implements AfterViewInit {
       if (zoom < 0.2) {
         zoom = 0.2;
       }
-
-      console.log('Zoom End: ' + zoom);
     }
 
     SidenavmenuComponent.canvasRef.setZoom(zoom);
@@ -280,7 +269,6 @@ export class SidenavmenuComponent implements AfterViewInit {
 
     this.captureEvents();
     this.panView();
-    console.log('Loaded Floorplan');
     SidenavmenuComponent.isLoading = false;
   }
 
@@ -303,15 +291,12 @@ export class SidenavmenuComponent implements AfterViewInit {
       }
     };
 
-    console.log('Enter ' + SidenavmenuComponent.textboxOpen);
-
     canvasRef.add(editText);
     editText.enterEditing();
 
     canvasRef.on('mouse:up', function submit(e) {
       try {
         if ((e.target.type.toString() !== 'i-text') && (e.target !== deviceGroup)) {
-          console.log('Its not a text :(');
           editText.exitEditing();
         } else if (editText.left !== deviceGroup.left) {
           if (editText.top !== deviceGroup.top - 45) {
@@ -328,7 +313,6 @@ export class SidenavmenuComponent implements AfterViewInit {
       imgCaption.insertChars(editText.text.toString(), null, 0, 100);
       canvasRef.remove(editText);
       SidenavmenuComponent.textboxOpen = false;
-      console.log('Leave ' + SidenavmenuComponent.textboxOpen);
 
       editText.off('editing:exited', updateText);
     }
@@ -339,8 +323,6 @@ export class SidenavmenuComponent implements AfterViewInit {
 
 // Initialize the component
   ngAfterViewInit() {
-    console.log(SidenavmenuComponent.plottedDevices.length);
-
     let data = this.db.list('floorplanJson');
     data.snapshotChanges().subscribe(item => {
       SidenavmenuComponent.imgList = [];
@@ -393,8 +375,6 @@ export class SidenavmenuComponent implements AfterViewInit {
       if (options.target) {
 
       } else if ((PLOTTING.textboxOpen === false) && (isDragEnd === false) && (PLOTTING._EDIT_MODE) && PLOTTING.mouseOverCanvas) {
-        // Console logs for testing/verification purposes only
-        console.log('devices: ' + PLOTTING.plottedDevices.length);
 
         // Thank you fabric for making this super useful function very easy to find in your documentation </sarcasm>
         const pointer = PLOTTING.canvasRef.getPointer(event, false);
@@ -517,7 +497,6 @@ export class SidenavmenuComponent implements AfterViewInit {
       var json = JSON.stringify(SidenavmenuComponent.canvasRef);
 
       var img = new Img(SidenavmenuComponent.current, json);
-      console.log(img);
 
       if (SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current).length === 1) {
         this.db.object('floorplanJson/' + SidenavmenuComponent.imgList.filter(x => x.url === SidenavmenuComponent.current)[0].$key).update(img);
@@ -529,36 +508,6 @@ export class SidenavmenuComponent implements AfterViewInit {
     else {
       this.snack.openSnackBar('You do not have permission for this', 2500);
     }
-
-  }
-
-  savePDF() {
-    /*if (SidenavmenuComponent.current == null) {
-      this.snack.openSnackBar('No Image Selected', 2500);
-    }
-    else {
-      const PLOTTING = SidenavmenuComponent;
-      const fpImage = PLOTTING.currentImg;
-
-      const originalheight = PLOTTING.fpHeight;
-      const originalwidth = PLOTTING.fpWidth;
-
-      PLOTTING.canvasRef.setHeight(fpImage.naturalHeight);
-      PLOTTING.canvasRef.setWidth(fpImage.naturalWidth);
-
-      let doc = new jspdf();
-      let img = SidenavmenuComponent.canvasRef.toDataURL({
-        format: 'jpeg'
-      });
-      console.log(img);
-      doc.addImage(img, 'jpeg', 0, 0, SidenavmenuComponent.fpImageCurrent.height * .09, SidenavmenuComponent.fpImageCurrent.width * .09);
-
-      // Will add floorplan name into title of pdf once we have that functionality in the add floorplan
-
-      doc.save('floorplanName' + '-' + this.auth.getUser().displayName + '-' + formatDate(new Date(), 'M-d-yy-h.mm', 'en-us') + '.pdf');
-      PLOTTING.canvasRef.setHeight(originalheight);
-      PLOTTING.canvasRef.setWidth(originalwidth);
-    }*/
 
   }
 
@@ -582,19 +531,6 @@ export class SidenavmenuComponent implements AfterViewInit {
 
     PLOTTING.canvasRef.setHeight(originalheight);
     PLOTTING.canvasRef.setWidth(originalwidth);
-
-    /* const svg1 = document.getElementById('testSVG');
-    console.log(svg1);
-
-    let serializer = new XMLSerializer();
-    let source = serializer.serializeToString(svg1);
-
-    source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
-
-    let url = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(source);
-    console.log(url); */
-
-
   }
 
 }
