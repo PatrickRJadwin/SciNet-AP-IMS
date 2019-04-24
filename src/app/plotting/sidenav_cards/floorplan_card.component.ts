@@ -51,8 +51,6 @@ export class FloorplancardComponent implements OnInit {
   }
 
   deleteFp(key: string) {
-    console.log(this.itemList);
-    
     const url = this.itemList.filter(x => x.$key == key)[0].url;
 
     if (this.imgList.filter(x=>x.url == url).length > 0) {
