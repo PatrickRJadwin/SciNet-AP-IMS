@@ -8,23 +8,12 @@
       </button>
     </mat-card>
 
-    <button class="navbartoggleInnerButton" mat-button (click)="sidenav.toggle()">
-      < </button> <mat-card class="sidenavMenu">
-        <mat-tab-group>
-          <mat-tab class="sidenavcontentContainer" label="Floorplans">
-            <div>
-              <app-floorplancard></app-floorplancard>
-            </div>
-          </mat-tab>
+    <button class="navbartoggleInnerButton" mat-button (click)="sidenav.toggle()"> < </button> <mat-card class="sidenavMenu">
 
-          <mat-tab class="sidenavcontentContainer" label="Devices">
-            <div>
-              <app-floorplancard></app-floorplancard>
-            </div>
-          </mat-tab>
-        </mat-tab-group>
 
-        </mat-card>
+    <app-floorplancard class="sidenavMenu"></app-floorplancard>
+
+    </mat-card>
   </mat-sidenav>
 
   <!-- Content not displayed within sidenav -->
@@ -53,8 +42,6 @@
       (click)="uploadPic()">Submit</button>
   </form>
 </ng-template>
-
-<img src='assets/images/testicon.png' id="my-image" style="display: none;">
 
 <div *ngIf="isLoading" 
    style="display: flex; justify-content: center; align-items: center; z-index: 1002">

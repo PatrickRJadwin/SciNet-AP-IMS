@@ -125,6 +125,8 @@ export class SidenavmenuComponent implements AfterViewInit {
   // Boolean to check if a device's name is currently being edited
   public static textboxOpen = false;
 
+  private static isActiveDevice = false;
+
   // Boolean to check if mouse is currently over the floorplan
   private static mouseOverCanvas;
 
@@ -282,7 +284,68 @@ export class SidenavmenuComponent implements AfterViewInit {
       originY: 'center',
       left: deviceGroup.left,
       top: deviceGroup.top - 45,
-      textBackgroundColor: 'white'
+      textBackgroundColor: 'white',
+      selectable: false
+    });
+
+    const colorBG = new fabric.Ellipse({
+      fill: 'grey',
+      rx: 85,
+      ry: 15,
+      left: deviceGroup.left - 85,
+      top: deviceGroup.top + 35,
+      selectable: false,
+      hoverCursor: 'default'
+    });
+
+    const blue = new fabric.Circle({
+      name: 'blue',
+      radius: 10,
+      fill: 'blue',
+      left: deviceGroup.left - 70,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const green = new fabric.Circle({
+      name: 'green',
+      radius: 10,
+      fill: 'green',
+      left: deviceGroup.left - 40,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const purple = new fabric.Circle({
+      name: 'purple',
+      radius: 10,
+      fill: 'purple',
+      left: deviceGroup.left - 10,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const red = new fabric.Circle({
+      name: 'red',
+      radius: 10,
+      fill: 'red',
+      left: deviceGroup.left + 20,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
+    });
+
+    const yellow = new fabric.Circle({
+      name: 'yellow',
+      radius: 10,
+      fill: 'yellow',
+      left: deviceGroup.left + 50,
+      top: deviceGroup. top + 40,
+      selectable: false,
+      hoverCursor: 'pointer'
     });
 
     document.onkeydown = e => {
@@ -292,31 +355,72 @@ export class SidenavmenuComponent implements AfterViewInit {
     };
 
     canvasRef.add(editText);
+    canvasRef.add(colorBG, blue, green, purple, red, yellow);
     editText.enterEditing();
 
-    canvasRef.on('mouse:up', function submit(e) {
+    function submit(e) {
       try {
-        if ((e.target.type.toString() !== 'i-text') && (e.target !== deviceGroup)) {
+        if ((e.target.type.toString() !== 'i-text') && (e.target !== deviceGroup)
+              && (e.target !== colorBG) && (e.target !== blue) && (e.target !== green)
+                && (e.target !== purple) && (e.target !== red) && (e.target !== yellow)) {
           editText.exitEditing();
         } else if (editText.left !== deviceGroup.left) {
           if (editText.top !== deviceGroup.top - 45) {
             editText.top = deviceGroup.top - 45;
+            colorBG.top = deviceGroup.top + 35;
+            blue.top = deviceGroup.top + 40;
+            green.top = deviceGroup.top + 40;
+            purple.top = deviceGroup.top + 40;
+            red.top = deviceGroup.top + 40;
+            yellow.top = deviceGroup.top + 40;
           }
           editText.left = deviceGroup.left;
+          colorBG.left = deviceGroup.left - 85;
+          blue.left = deviceGroup.left - 70;
+          green.left = deviceGroup.left - 40;
+          purple.left = deviceGroup.left - 10;
+          red.left = deviceGroup.left + 20;
+          yellow.left = deviceGroup.left + 50;
+        }
+
+        if (e.target.name !== undefined) {
+          switch (e.target.name) {
+            case 'blue':
+              console.log(e.target.name);
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 0);
+              break;
+            case 'green':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 1);
+              break;
+            case 'purple':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 2);
+              break;
+            case 'red':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 3);
+              break;
+            case 'yellow':
+              SidenavmenuComponent.prototype.deviceColor(deviceGroup, 4);
+              break;
+            default:
+              console.log('Error: Invalid switch case (Line 405 - Sidenavmenu)');
+              break;
+          }
         }
       } catch {
         editText.exitEditing();
       }
-    });
+    }
 
     function updateText() {
       imgCaption.insertChars(editText.text.toString(), null, 0, 100);
-      canvasRef.remove(editText);
+      canvasRef.remove(editText, colorBG, blue, green, purple, red, yellow);
       SidenavmenuComponent.textboxOpen = false;
 
+      canvasRef.off('mouse:up', submit);
       editText.off('editing:exited', updateText);
     }
 
+    canvasRef.on('mouse:up', submit)
     editText.on('editing:exited', updateText);
   }
 
@@ -338,6 +442,7 @@ export class SidenavmenuComponent implements AfterViewInit {
 
 // Listener for user events on canvas
   captureEvents() {
+    SidenavmenuComponent.plottedDevices = SidenavmenuComponent.canvasRef.getObjects();
     const rect = document.getElementById('myCanvas').getBoundingClientRect();
     const canvasWrapper = document.getElementById('canvasWrap');
 
@@ -374,7 +479,7 @@ export class SidenavmenuComponent implements AfterViewInit {
       */
       if (options.target) {
 
-      } else if ((PLOTTING.textboxOpen === false) && (isDragEnd === false) && (PLOTTING._EDIT_MODE) && PLOTTING.mouseOverCanvas) {
+      } else if ((!PLOTTING.textboxOpen) && (!isDragEnd) && (PLOTTING._EDIT_MODE) && (PLOTTING.mouseOverCanvas) && (!PLOTTING.isActiveDevice)) {
 
         // Thank you fabric for making this super useful function very easy to find in your documentation </sarcasm>
         const pointer = PLOTTING.canvasRef.getPointer(event, false);
@@ -392,32 +497,49 @@ export class SidenavmenuComponent implements AfterViewInit {
           fontSize: 20,
           originX: 'center',
           originY: 'top',
-          top: 35,
+          top: 45,
           textBackgroundColor: 'darkgrey'
         });
 
         // Create the device icon itself
         const imgElement = new Image();
-        imgElement.src = 'assets/images/testicon.png'; // Device Icon URL
-        const imgInstance = new fabric.Image(imgElement, {
-          originX: 'center',
-          originY: 'top',
-          scaleX: .2,
-          scaleY: .2
-        });
 
-        // Create a group for the icon and caption
-        const deviceGroup = new fabric.Group([imgInstance, imgCaption], {
-          originX: 'center',
-          originY: 'center',
-          left: pointer.x,
-          top: pointer.y,
-        });
+        // When icon image is loaded, create the rest of the device group
+        imgElement.onload = () => {
+          const imgInstance = new fabric.Image(imgElement, {
+            originX: 'center',
+            originY: 'top',
+            scaleX: .1,
+            scaleY: .1
+          });
 
-        PLOTTING.canvasRef.add(deviceGroup); // Add device to canvas
-        PLOTTING.plottedDevices.push(deviceGroup); // Add device to device array
+          // Create a group for the icon and caption
+          const deviceGroup = new fabric.Group([imgInstance, imgCaption], {
+            name: '' + name,
+            originX: 'center',
+            originY: 'center',
+            left: pointer.x,
+            top: pointer.y,
+            hasControls: false
+          });
 
-        PLOTTING.prototype.changeDeviceName(imgCaption, deviceGroup, PLOTTING.canvasRef); // Open caption editor
+          PLOTTING.canvasRef.add(deviceGroup); // Add device to canvas
+          PLOTTING.plottedDevices.push(deviceGroup); // Add device to device array
+          PLOTTING.canvasRef.setActiveObject(deviceGroup);
+
+          PLOTTING.prototype.changeDeviceName(imgCaption, deviceGroup, PLOTTING.canvasRef); // Open caption editor
+        };
+
+        imgElement.src = 'assets/images/device_icon_blue.svg'; // Device Icon URL
+      }
+
+      // If a device or group of devices is currently selected, do not plot a device on next click on canvas
+      if (options.target !== null) {
+        PLOTTING.isActiveDevice = true;
+      } else if (isDragEnd && (PLOTTING.canvasRef.getActiveObjects().length > 0)) {
+        PLOTTING.isActiveDevice = true;
+      } else if (options.target === null) {
+        PLOTTING.isActiveDevice = false;
       }
     });
 
@@ -447,14 +569,69 @@ export class SidenavmenuComponent implements AfterViewInit {
     });
   }
 
-// Function to delete currently selected object
+// Function to delete currently selected objects
   deleteObject() {
-    for (let i = 0; i < SidenavmenuComponent.plottedDevices.length; i++) {
-      if (SidenavmenuComponent.plottedDevices[i] === SidenavmenuComponent.canvasRef.getActiveObject()) {
-        SidenavmenuComponent.plottedDevices.splice(i, 1);
+    const PLOTTING = SidenavmenuComponent;
+    const devices = PLOTTING.canvasRef.getActiveObjects();
+
+    for (let i = 0; i < PLOTTING.plottedDevices.length; i++) {
+      for (let j = 0; j < PLOTTING.canvasRef.getActiveObjects().length; j++) {
+        if (PLOTTING.plottedDevices[i] === PLOTTING.canvasRef.getActiveObjects()[j]) {
+          PLOTTING.plottedDevices.splice(i, 1);
+        }
       }
     }
-    SidenavmenuComponent.canvasRef.remove(SidenavmenuComponent.canvasRef.getActiveObject());
+
+    for (let i = 0; i < devices.length; i++) {
+      PLOTTING.canvasRef.remove(devices[i]);
+    }
+    PLOTTING.canvasRef.discardActiveObject();
+    PLOTTING.isActiveDevice = false;
+  }
+
+// Function to change device icon color
+  deviceColor(device, color) {
+    let imgUrl;
+
+    switch (color) {
+      case 0:
+        imgUrl = 'assets/images/device_icon_blue.svg';
+        break;
+      case 1:
+        imgUrl = 'assets/images/device_icon_green.svg';
+        break;
+      case 2:
+        imgUrl = 'assets/images/device_icon_purple.svg';
+        break;
+      case 3:
+        imgUrl = 'assets/images/device_icon_red.svg';
+        break;
+      case 4:
+        imgUrl = 'assets/images/device_icon_yellow.svg';
+        break;
+    }
+
+    try {
+      const img = new Image();
+
+      img.onload = () => {
+        const imgInstance = new fabric.Image(img, {
+          originX: 'center',
+          originY: 'top',
+          scaleX: .1,
+          scaleY: .1,
+          top: -34.5
+        });
+
+
+        device.insertAt(imgInstance, 0, false);
+        device.removeWithUpdate(device._objects[1]);
+      };
+
+      img.src = imgUrl;
+    } catch {
+      this.snack.openSnackBar('No device selected', 2000);
+    }
   }
 
 // Function for panning view of canvas
