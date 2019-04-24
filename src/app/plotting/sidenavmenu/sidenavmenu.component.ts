@@ -125,6 +125,8 @@ export class SidenavmenuComponent implements AfterViewInit {
   // Boolean to check if a device's name is currently being edited
   public static textboxOpen = false;
 
+  private static isActiveDevice = false;
+
   // Boolean to check if mouse is currently over the floorplan
   private static mouseOverCanvas;
 
@@ -343,7 +345,6 @@ export class SidenavmenuComponent implements AfterViewInit {
 
     let isMouseDown = false;
     let isMouseDrag = false;
-    let isActiveDevice = false;
 
     // Event: When delete button (key code: 46) is pressed, delete currently selected object
     canvasWrapper.tabIndex = 1000;
@@ -375,7 +376,7 @@ export class SidenavmenuComponent implements AfterViewInit {
       */
       if (options.target) {
 
-      } else if ((!PLOTTING.textboxOpen) && (!isDragEnd) && (PLOTTING._EDIT_MODE) && (PLOTTING.mouseOverCanvas) && (!isActiveDevice)) {
+      } else if ((!PLOTTING.textboxOpen) && (!isDragEnd) && (PLOTTING._EDIT_MODE) && (PLOTTING.mouseOverCanvas) && (!PLOTTING.isActiveDevice)) {
 
         // Thank you fabric for making this super useful function very easy to find in your documentation </sarcasm>
         const pointer = PLOTTING.canvasRef.getPointer(event, false);
@@ -428,11 +429,11 @@ export class SidenavmenuComponent implements AfterViewInit {
 
       // If a device or group of devices is currently selected, do not plot a device on next click on canvas
       if (options.target !== null) {
-        isActiveDevice = true;
+        PLOTTING.isActiveDevice = true;
       } else if (isDragEnd && (PLOTTING.canvasRef.getActiveObjects().length > 0)) {
-        isActiveDevice = true;
+        PLOTTING.isActiveDevice = true;
       } else if (options.target === null) {
-        isActiveDevice = false;
+        PLOTTING.isActiveDevice = false;
       }
     });
 
@@ -462,14 +463,24 @@ export class SidenavmenuComponent implements AfterViewInit {
     });
   }
 
-// Function to delete currently selected object
+// Function to delete currently selected objects
   deleteObject() {
-    for (let i = 0; i < SidenavmenuComponent.plottedDevices.length; i++) {
-      if (SidenavmenuComponent.plottedDevices[i] === SidenavmenuComponent.canvasRef.getActiveObject()) {
-        SidenavmenuComponent.plottedDevices.splice(i, 1);
+    const PLOTTING = SidenavmenuComponent;
+    const devices = PLOTTING.canvasRef.getActiveObjects();
+
+    for (let i = 0; i < PLOTTING.plottedDevices.length; i++) {
+      for (let j = 0; j < PLOTTING.canvasRef.getActiveObjects().length; j++) {
+        if (PLOTTING.plottedDevices[i] === PLOTTING.canvasRef.getActiveObjects()[j]) {
+          PLOTTING.plottedDevices.splice(i, 1);
+        }
       }
     }
-    SidenavmenuComponent.canvasRef.remove(SidenavmenuComponent.canvasRef.getActiveObject());
+
+    for (let i = 0; i < devices.length; i++) {
+      PLOTTING.canvasRef.remove(devices[i]);
+    }
+    PLOTTING.canvasRef.discardActiveObject();
+    PLOTTING.isActiveDevice = false;
   }
 
 // Function for panning view of canvas
