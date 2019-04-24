@@ -1,5 +1,3 @@
-{{test(itemList)}}
-
 <mat-card *ngFor="let element of itemList" class="cardContainer"> <!-- Floorplan Card w/ Grey "No Plotted Devices" icon -->
 
   <mat-card-content class="cardContent"> <!-- Floorplan image will go here-->
@@ -10,7 +8,7 @@
 
   <mat-card-footer class="cardFooter">
     <span class="floorplanName">Floorplan Name</span> <!-- Floorplan name goes here -->
-    <img (click)="deleteFp(element.$key, i)" class="icon" src="https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/trash-circle-red-512.png" alt="Grey Disconnected Icon" matTooltip="Delete Floorplan">
+    <img (click)="deleteFp(element.$key)" class="icon" src="https://cdn0.iconfinder.com/data/icons/social-messaging-ui-color-shapes/128/trash-circle-red-512.png" alt="Grey Disconnected Icon" matTooltip="Delete Floorplan">
   </mat-card-footer>
 </mat-card>
 
