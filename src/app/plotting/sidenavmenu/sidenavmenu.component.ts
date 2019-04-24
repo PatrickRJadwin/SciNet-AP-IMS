@@ -483,6 +483,65 @@ export class SidenavmenuComponent implements AfterViewInit {
     PLOTTING.isActiveDevice = false;
   }
 
+// Function to change device icon color
+  deviceColor(color) {
+    let devices;
+    let imgUrl;
+
+    switch (color) {
+      case 0:
+        imgUrl = 'assets/images/device_icon_blue.svg';
+        break;
+      case 1:
+        imgUrl = 'assets/images/device_icon_green.svg';
+        break;
+      case 2:
+        imgUrl = 'assets/images/device_icon_blue.svg';
+        break;
+      case 3:
+        imgUrl = 'assets/images/device_icon_green.svg';
+        break;
+      case 4:
+        imgUrl = 'assets/images/device_icon_blue.svg';
+        break;
+    }
+
+    try {
+      devices = SidenavmenuComponent.canvasRef.getActiveObjects();
+
+      if (devices.length >= 1) {
+        for (let i = 0; i < devices.length; i++) {
+
+          const img = new Image();
+
+
+
+          img.onload = () => {
+            const imgInstance = new fabric.Image(img, {
+              originX: 'center',
+              originY: 'top',
+              scaleX: .1,
+              scaleY: .1,
+              top: -34.5
+            });
+
+
+            devices[i].insertAt(imgInstance, 0, false);
+            devices[i].removeWithUpdate(devices[i]._objects[1]);
+          };
+
+          img.src = imgUrl;
+        }
+      } else {
+        this.snack.openSnackBar('No device selected', 2000);
+      }
+
+
+    } catch {
+      this.snack.openSnackBar('No device selected', 2000);
+    }
+  }
+
 // Function for panning view of canvas
   panView() {
     SidenavmenuComponent.canvasRef.on('mouse:down', function(opt) {
