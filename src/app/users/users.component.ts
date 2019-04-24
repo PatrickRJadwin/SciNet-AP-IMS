@@ -71,8 +71,6 @@ export class UsersComponent implements OnInit {
     this.edit.email = this.selectedUser.email;
     this.selected = this.selectedUser.rolestring;
     this.openModal(modal);
-    console.log(this.selectedUser);
-    console.log(this.edit);
   }
 
   onSave() {

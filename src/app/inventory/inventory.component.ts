@@ -134,8 +134,6 @@ export class InventoryComponent implements OnInit {
     this.edit.location = this.selectedItem.location;
     this.edit.port = this.selectedItem.port;
     this.openModal(modal);
-    console.log(this.selectedItem);
-    console.log(this.edit);
   }
 
   selectJoinedToggle(key: string) {

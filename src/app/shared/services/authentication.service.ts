@@ -190,7 +190,6 @@ export class AuthenticationService {
     this.db.database.ref('/users/').child(this.afAuth.auth.currentUser.uid).child('role')
      .child('superuser').once('value').then(snapshot => {
        this.tf = snapshot.val();
-       console.log(this.tf);
      })
      return this.tf;   
    }
